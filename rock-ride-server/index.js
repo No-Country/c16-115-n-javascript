@@ -1,5 +1,5 @@
-const server = require('./src/app')
-// const { conn } = require('./src/db.js')
+import server from './src/app.js'
+import { sequelize } from './src/database.js'
 // const { createServer } = require('node:http')
 // const { Server } = require('socket.io')
 
@@ -13,7 +13,10 @@ const server = require('./src/app')
 
 const PORT = process.env.PORT | 3001
 
-
-server.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`)
-}) 
+sequelize.sync({ force: true })
+  .then(() => {
+    console.log("DB Connect");
+    server.listen(PORT, () => {
+      console.log(`Server running on port ${PORT}`)
+    })
+  })

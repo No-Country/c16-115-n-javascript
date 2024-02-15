@@ -1,6 +1,6 @@
-const express = require('express')
-const cors = require('cors')
-const logger = require('morgan')
+import express from 'express'
+import cors from 'cors'
+import logger from 'morgan'
 // const path = require('path')
 // const Routes = require('./routes')
 
@@ -30,4 +30,5 @@ server.use(express.json())
 
 // server.use(express.static(path.join(__dirname, 'public')))
 
-module.exports = server
+
+export default server
