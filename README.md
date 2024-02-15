@@ -1,6 +1,6 @@
 # Drive-Rock: 🚗🤘
 
-Drive-Rock es más que una aplicación, ¡es tu boleto para viajar a tu recital favorito y conocer personas increíbles! 🌟
+Drive-Rock es más que una aplicación, ¡es un boleto para viajar a tu recital favorito y conocer personas increíbles! 🌟
 
 ## Conéctate y Ahorra 💰
 
