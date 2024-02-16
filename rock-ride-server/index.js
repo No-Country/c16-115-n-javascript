@@ -1,5 +1,5 @@
 import server from './src/app.js'
-import { sequelize } from './src/database.js'
+import { conn } from './src/database.js'
 // const { createServer } = require('node:http')
 // const { Server } = require('socket.io')
 
@@ -13,7 +13,7 @@ import { sequelize } from './src/database.js'
 
 const PORT = process.env.PORT | 3001
 
-sequelize.sync({ force: true })
+conn.sync({ force: true })
   .then(() => {
     console.log("DB Connect");
     server.listen(PORT, () => {

@@ -1,12 +1,15 @@
 import express from 'express'
 import cors from 'cors'
 import logger from 'morgan'
+import morgan from 'morgan'
 // const path = require('path')
-// const Routes = require('./routes')
+import Routes from './routes/index.js'
 
 const server = express()
 
 server.use(cors())
+
+server.use(morgan('dev'))
 
 server.use(logger('dev'))
 
@@ -26,9 +29,7 @@ server.use((req, res, next) => {
 
 server.use(express.json())
   
-// server.use(Routes)
-
-// server.use(express.static(path.join(__dirname, 'public')))
+server.use(Routes)
 
 
 export default server
