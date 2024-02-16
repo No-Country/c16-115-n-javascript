@@ -10,6 +10,6 @@
 
 Backend Rock-Ride
 
-### Diagrama de la Base de Datos
+### Database Diagram
 
-![Diagrama de la Base de Datos](./database/model_rock-ride.png)
+![Database Diagram](./database/model_rock-ride.png)
