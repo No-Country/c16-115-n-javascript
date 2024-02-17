@@ -11,11 +11,11 @@ export const registerHandler = async (req, res) => {
 
   try {
 
-    const { user, token } = await createNewUser(email, password, address, city, fullName, phone, isDriver, plate)
+    const { ok, token, message } = await createNewUser(email, password, address, city, fullName, phone, isDriver, plate)
     
-    res.status(201).json({ ok: true, token })
+    res.status(201).json({ ok, token, message })
   } catch (error) {
     console.log(error.message);
-    res.status(500).json({ ok: false, message: "Internal server error" });
+    res.status(500).json({ ok, message: "Internal server error" });
   }
 }
