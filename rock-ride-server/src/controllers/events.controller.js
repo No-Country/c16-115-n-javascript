@@ -25,3 +25,16 @@ export const getEventById = async (eventId) => {
     throw new Error("Error fetching event by ID");
   }
 };
+
+export const getEventByName = async (eventName) => {
+  try {
+    const event = await Event.findOne({
+      where: { name: eventName },
+    });
+
+    return event;
+  } catch (error) {
+    console.error("Error in getEventByName:", error.message);
+    throw new Error("Error fetching event by name");
+  }
+};
