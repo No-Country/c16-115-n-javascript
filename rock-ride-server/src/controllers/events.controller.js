@@ -15,3 +15,13 @@ export const getEvents = async () => {
     };
   }
 };
+
+export const getEventById = async (eventId) => {
+  try {
+    const event = await Event.findByPk(eventId);
+    return event;
+  } catch (error) {
+    console.error("Error in getEventById:", error.message);
+    throw new Error("Error fetching event by ID");
+  }
+};
