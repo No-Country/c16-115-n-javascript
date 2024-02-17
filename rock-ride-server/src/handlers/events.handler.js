@@ -1,4 +1,4 @@
-import { createNewEvent, getEventById, getEventByName, getEvents } from "../controllers/events.controller.js";
+import { createNewEvent, getEventById, getEventByName, getEvents, updateEvent } from "../controllers/events.controller.js";
 import { validate as validateUuid } from "uuid";
 
 export const getEventsHandler = async (req, res) => {
@@ -64,6 +64,39 @@ export const postEventHandler = async (req, res) => {
     res.status(201).json({ ok, event });
   } catch (error) {
     console.error("Error in postEventHandler:", error.message);
+    res.status(500).json({ ok: false, message: "Internal server error" });
+  }
+};
+
+export const putEventHandler = async (req, res) => {
+  const eventId = req.params.id;
+  if (!validateUuid(eventId)) {
+    return res.status(400).json({ ok: false, message: "Invalid eventId format" });
+  }
+
+  const { name, location, date, category } = req.body;
+  if (!eventId || !name || !location || !date || !category) {
+    return res
+      .status(400)
+      .json({ ok: false, message: "All fields are required" });
+  }
+
+  try {
+    const { ok, event } = await updateEvent(
+      eventId,
+      name,
+      location,
+      date,
+      category
+    );
+
+    if (ok) {
+      res.status(200).json({ ok, event });
+    } else {
+      res.status(404).json({ ok, message: "Event not found" });
+    }
+  } catch (error) {
+    console.error("Error in putEventHandler:", error.message);
     res.status(500).json({ ok: false, message: "Internal server error" });
   }
 };

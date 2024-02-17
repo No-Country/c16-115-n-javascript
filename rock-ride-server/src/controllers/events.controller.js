@@ -60,3 +60,38 @@ export const createNewEvent = async (name, location, date, category) => {
     };
   }
 };
+
+export const updateEvent = async (eventId, name, location, date, category) => {
+  try {
+    const [rowsUpdated, [updatedEvent]] = await Event.update(
+      {
+        name,
+        location,
+        date,
+        category,
+      },
+      {
+        where: { id: eventId },
+        returning: true,
+      }
+    );
+
+    if (rowsUpdated > 0) {
+      return {
+        ok: true,
+        event: updatedEvent,
+      };
+    } else {
+      return {
+        ok: false,
+        message: "Event not found",
+      };
+    }
+  } catch (error) {
+    console.error("Error in updateEvent:", error.message);
+    return {
+      ok: false,
+      message: "Error updating event",
+    };
+  }
+};
