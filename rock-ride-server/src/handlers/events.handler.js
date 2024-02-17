@@ -1,4 +1,4 @@
-import { createNewEvent, getEventById, getEventByName, getEvents, updateEvent } from "../controllers/events.controller.js";
+import { createNewEvent, deleteEvent, getEventById, getEventByName, getEvents, updateEvent } from "../controllers/events.controller.js";
 import { validate as validateUuid } from "uuid";
 
 export const getEventsHandler = async (req, res) => {
@@ -97,6 +97,26 @@ export const putEventHandler = async (req, res) => {
     }
   } catch (error) {
     console.error("Error in putEventHandler:", error.message);
+    res.status(500).json({ ok: false, message: "Internal server error" });
+  }
+};
+
+export const deleteEventHandler = async (req, res) => {
+  const eventId = req.params.id;
+  if (!validateUuid(eventId)) {
+    return res.status(400).json({ ok: false, message: "Invalid eventId format" });
+  }
+  
+  try {
+    const deletedEventCount = await deleteEvent(eventId);
+
+    if (deletedEventCount > 0) {
+      res.status(200).json({ ok: true, message: "Event deleted successfully" });
+    } else {
+      res.status(404).json({ ok: false, message: "Event not found" });
+    }
+  } catch (error) {
+    console.error("Error in deleteEventHandler:", error.message);
     res.status(500).json({ ok: false, message: "Internal server error" });
   }
 };

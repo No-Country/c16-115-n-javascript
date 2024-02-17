@@ -95,3 +95,17 @@ export const updateEvent = async (eventId, name, location, date, category) => {
     };
   }
 };
+
+export const deleteEvent = async (eventId) => {
+  try {
+    const deletedEvent = await Event.destroy({
+      where: { id: eventId },
+    });
+
+    return deletedEvent;
+  } catch (error) {
+    console.error("Error in deleteEventById:", error.message);
+    throw new Error("Error deleting event by ID");
+  }
+};
+
