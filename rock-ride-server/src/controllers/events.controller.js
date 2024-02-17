@@ -38,3 +38,25 @@ export const getEventByName = async (eventName) => {
     throw new Error("Error fetching event by name");
   }
 };
+
+export const createNewEvent = async (name, location, date, category) => {
+  try {
+    const event = await Event.create({
+      name,
+      location,
+      date,
+      category,
+    });
+
+    return {
+      ok: true,
+      event,
+    };
+  } catch (error) {
+    console.error("Error in createNewEvent:", error.message);
+    return {
+      ok: false,
+      message: "Error creating event",
+    };
+  }
+};
