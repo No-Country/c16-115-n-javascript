@@ -13,7 +13,7 @@ import { conn } from './src/database.js'
 
 const PORT = process.env.PORT | 3001
 
-conn.sync({ force: false })
+conn.sync({ force: true })
   .then(() => {
     console.log("DB Connect");
     server.listen(PORT, () => {
