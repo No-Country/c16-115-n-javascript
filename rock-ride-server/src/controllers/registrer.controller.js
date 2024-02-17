@@ -27,9 +27,16 @@ export const createNewUser = async (email, password, address, city, fullName, ph
 
   try {
     
-    const [ user, created ]= await User.findOrCreate({ where: userData })
+    const [ user, created ]= await User.findOrCreate({ 
+      where: {
+        email: userData.email
+      }, 
+      defaults: userData
+    })
 
-    if (created === false) return { ok: false, message: "The email already exist" }
+    if (created === false) {
+      return { ok: false, message: "The email already exist" }
+    }
 
 
     if (created === true) {
@@ -42,11 +49,14 @@ export const createNewUser = async (email, password, address, city, fullName, ph
         expiresIn: '30d',
       })
       return {
+        ok: true,
         token
       }
     }
 
   } catch (error) {
+
+    console.log(error.message);
     return {
       ok: false,
       message: error.message,
