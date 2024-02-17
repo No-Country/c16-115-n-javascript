@@ -1,4 +1,11 @@
-import { createNewEvent, deleteEvent, getEventById, getEventByName, getEvents, updateEvent } from "../controllers/events.controller.js";
+import {
+  createNewEvent,
+  deleteEvent,
+  getEventById,
+  getEventByName,
+  getEvents,
+  updateEvent,
+} from "../controllers/events.controller.js";
 import { validate as validateUuid } from "uuid";
 
 export const getEventsHandler = async (req, res) => {
@@ -15,7 +22,9 @@ export const getEventByIdHandler = async (req, res) => {
   const eventId = req.params.id;
 
   if (!validateUuid(eventId)) {
-    return res.status(400).json({ ok: false, message: "Invalid eventId format" });
+    return res
+      .status(400)
+      .json({ ok: false, message: "Invalid eventId format" });
   }
 
   try {
@@ -28,7 +37,9 @@ export const getEventByIdHandler = async (req, res) => {
     return res.status(200).json({ ok: true, event });
   } catch (error) {
     console.error("Error in getEventByIdHandler:", error.message);
-    return res.status(500).json({ ok: false, message: "Internal server error" });
+    return res
+      .status(500)
+      .json({ ok: false, message: "Internal server error" });
   }
 };
 
@@ -71,7 +82,9 @@ export const postEventHandler = async (req, res) => {
 export const putEventHandler = async (req, res) => {
   const eventId = req.params.id;
   if (!validateUuid(eventId)) {
-    return res.status(400).json({ ok: false, message: "Invalid eventId format" });
+    return res
+      .status(400)
+      .json({ ok: false, message: "Invalid eventId format" });
   }
 
   const { name, location, date, category } = req.body;
@@ -104,9 +117,11 @@ export const putEventHandler = async (req, res) => {
 export const deleteEventHandler = async (req, res) => {
   const eventId = req.params.id;
   if (!validateUuid(eventId)) {
-    return res.status(400).json({ ok: false, message: "Invalid eventId format" });
+    return res
+      .status(400)
+      .json({ ok: false, message: "Invalid eventId format" });
   }
-  
+
   try {
     const deletedEventCount = await deleteEvent(eventId);
 
