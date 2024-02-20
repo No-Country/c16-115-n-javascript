@@ -64,3 +64,43 @@ export const createNewUser = async (email, password, address, city, fullName, ph
   }
 
 }
+
+
+
+export const login = async (email, password) => {
+  try {
+
+    const user = await User.findOne({ where: { email } })
+
+    if (!user) {
+      return { ok: false, message: "The email doesn't exist" }
+    }
+
+    const validPassword = bcryptjs.compareSync(password, user.password)
+
+    if (!validPassword) {
+      return { ok: false, message: "The password is incorrect" }
+    }
+
+    const payload = {
+      id: user.id,
+      role: user.role,
+    }
+    const token = jwt.sign(payload, process.env.SECRET_KEY, {
+      expiresIn: '30d',
+    })
+
+    return {
+      ok: true,
+      message: "Login successful",
+      token
+    }
+
+  } catch (error) {
+    console.log(error.message);
+    return {
+      ok: false,
+      message: error.message,
+    }
+  }
+}
