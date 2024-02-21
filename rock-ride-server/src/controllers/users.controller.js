@@ -129,6 +129,13 @@ export const updateUser = async (id, userRole, { fullName, email, password, isDr
         {
           role,
           active,
+          fullName,
+          email,
+          password,
+          address,
+          city,
+          profileImg,
+          carPhotos
         },
         {
           where: { id },

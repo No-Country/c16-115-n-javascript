@@ -12,3 +12,4 @@ router.use('/users', verifyToken, userRouter)
 router.use('/events',verifyToken, eventRouter)
 
 export default router
+
