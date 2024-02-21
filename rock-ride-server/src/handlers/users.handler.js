@@ -26,6 +26,12 @@ export const getUserByIdHandler = async (req, res) => {
 export const getUsersHandler = async (req, res) => {
   // Darle la authorizacion del token
   const { name } = req.query;
+
+  console.log("REQ.USERS: ", req.user);
+  const { role: userRole } = req.user;
+
+  if (userRole !== "admin") return res.status(401).json({ok: false, message: "Unauthorized" })
+
   try {
 
     const {ok, users} = await getUsers(name);

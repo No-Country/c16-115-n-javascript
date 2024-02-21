@@ -9,6 +9,8 @@ const router = Router()
 
 router.use('/auth', authRouter)
 router.use('/users', verifyToken, userRouter)
-router.use('/events',eventRouter)
+router.use('/events', eventRouter)
 
 export default router
+
+
