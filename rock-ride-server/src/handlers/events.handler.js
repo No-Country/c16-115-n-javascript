@@ -2,16 +2,16 @@ import {
   createNewEvent,
   deleteEvent,
   getEventById,
-  getEventByName,
   getEvents,
   updateEvent,
 } from "../controllers/events.controller.js";
 import { validate as validateUuid } from "uuid";
 
 export const getEventsHandler = async (req, res) => {
+  const { name } = req.query;
   try {
-    const { ok, events } = await getEvents();
-    res.status(200).json({ ok, events });
+    const { ok, events, message } = await getEvents(name);
+    res.status(200).json({ ok, events, message });
   } catch (error) {
     console.error(error.message);
     res.status(500).json({ ok: false, message: "Internal server error" });
@@ -40,23 +40,6 @@ export const getEventByIdHandler = async (req, res) => {
     return res
       .status(500)
       .json({ ok: false, message: "Internal server error" });
-  }
-};
-
-export const getEventByNameHandler = async (req, res) => {
-  const eventName = req.params.name;
-
-  try {
-    const event = await getEventByName(eventName);
-
-    if (event) {
-      res.status(200).json({ ok: true, event });
-    } else {
-      res.status(404).json({ ok: false, message: "Event not found" });
-    }
-  } catch (error) {
-    console.error("Error in getEventByNameHandler:", error.message);
-    res.status(500).json({ ok: false, message: "Internal server error" });
   }
 };
 

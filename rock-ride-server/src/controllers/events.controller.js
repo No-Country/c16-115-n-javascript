@@ -1,7 +1,30 @@
+import { Op } from "sequelize";
 import { Event } from "../database.js";
 
-export const getEvents = async () => {
+export const getEvents = async (name) => {
   try {
+    
+    if (name) {
+      const events = await Event.findAll({
+        where: {
+          name: {
+            [ Op.iLike ]: `%${ name.toLowerCase() }%` 
+          }
+        }
+      })
+      if (!events.length) {
+        return {
+          ok: false,
+          message: "Events not found"
+        } 
+      } else {
+        return {
+          ok: true,
+          events,
+        }
+      }
+    }
+
     const events = await Event.findAll();
     return {
       ok: true,
@@ -23,19 +46,6 @@ export const getEventById = async (eventId) => {
   } catch (error) {
     console.error("Error in getEventById:", error.message);
     throw new Error("Error fetching event by ID");
-  }
-};
-
-export const getEventByName = async (eventName) => {
-  try {
-    const event = await Event.findOne({
-      where: { name: eventName },
-    });
-
-    return event;
-  } catch (error) {
-    console.error("Error in getEventByName:", error.message);
-    throw new Error("Error fetching event by name");
   }
 };
 
