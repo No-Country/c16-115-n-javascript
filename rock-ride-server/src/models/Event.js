@@ -11,6 +11,14 @@ export const EventModel = (sequelize) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
+    address: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    city: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
     location: {
       type: DataTypes.JSON,
       allowNull: false,

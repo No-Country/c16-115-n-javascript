@@ -44,18 +44,18 @@ export const getEventByIdHandler = async (req, res) => {
 };
 
 export const postEventHandler = async (req, res) => {
-  const { name, location, date, category } = req.body;
+  const { name, address, city, date, category } = req.body;
 
-  if (!name || !location || !date || !category) {
+  if (!name || !address || !city || !category || !date) {
     return res
       .status(400)
       .json({ ok: false, message: "All fields are required" });
   }
 
   try {
-    const { ok, event } = await createNewEvent(name, location, date, category);
+    const { ok, event, message } = await createNewEvent(name, date, category, address, city);
 
-    res.status(201).json({ ok, event });
+    res.status(201).json({ ok, event, message });
   } catch (error) {
     console.error("Error in postEventHandler:", error.message);
     res.status(500).json({ ok: false, message: "Internal server error" });

@@ -1,5 +1,6 @@
 import { Op } from "sequelize";
 import { Event } from "../database.js";
+import { useLocation } from "../helpers/useLocation.js";
 
 export const getEvents = async (name) => {
   try {
@@ -49,13 +50,17 @@ export const getEventById = async (eventId) => {
   }
 };
 
-export const createNewEvent = async (name, location, date, category) => {
+export const createNewEvent = async (name, date, category, address, city) => {
+  const { coordinates } = await useLocation(address, city)
+
   try {
     const event = await Event.create({
       name,
-      location,
+      address,
+      location: coordinates,
       date,
       category,
+      city
     });
 
     return {
