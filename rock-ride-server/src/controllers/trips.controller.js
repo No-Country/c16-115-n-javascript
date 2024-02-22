@@ -7,6 +7,7 @@ export const createNewTrip = async (datetime, eventId, userId) => {
       return {
         ok: false,
         message: "Invalid user for creating a trip",
+        statusCode: 403,
       };
     }
 
@@ -15,6 +16,7 @@ export const createNewTrip = async (datetime, eventId, userId) => {
       return {
         ok: false,
         message: "Event does not exist",
+        statusCode: 404,
       };
     }
 
@@ -28,12 +30,14 @@ export const createNewTrip = async (datetime, eventId, userId) => {
     return {
       ok: true,
       trip,
+      statusCode: 201,
     };
   } catch (error) {
     console.error("Error in createNewTrip:", error.message);
     return {
       ok: false,
       message: "Error creating trip",
+      statusCode: 500,
     };
   }
 };
@@ -44,12 +48,14 @@ export const getTrips = async () => {
     return {
       ok: true,
       trips,
+      statusCode: 200,
     };
   } catch (error) {
     console.error("Error in getTrips:", error.message);
     return {
       ok: false,
       message: "Error fetching trips",
+      statusCode: 500,
     };
   }
 };
@@ -57,20 +63,27 @@ export const getTrips = async () => {
 export const getTripById = async (tripId) => {
   try {
     const trip = await Trip.findByPk(tripId);
-    return trip;
+    if (!trip) {
+      return {
+        message: "Trip not found",
+        statusCode: 404,
+      };
+    }
+    return {trip, statusCode:200};
   } catch (error) {
     console.error("Error in getTripById:", error.message);
     throw new Error("Error fetching trip by ID");
   }
 };
 
-export const updateTrip = async (tripId, datetime, eventId, userId) => {
+export const updateTrip = async (tripId, datetime, eventId, userId, userRole, userIdToken) => {
   try {
     const user = await User.findByPk(userId);
     if (!user || !user.isDriver) {
       return {
         ok: false,
         message: "Invalid user for updating a trip",
+        statusCode: 403
       };
     }
 
@@ -79,6 +92,18 @@ export const updateTrip = async (tripId, datetime, eventId, userId) => {
       return {
         ok: false,
         message: "Event does not exist",
+        statusCode: 404
+      };
+    }
+
+    const trip = await Trip.findByPk(tripId);
+    if (!trip) return { ok: false, message: "Trip not found", statusCode: 404 };
+
+    if (userRole === "user" && trip.userId !== userIdToken) {
+      return {
+        ok: false,
+        message: "Invalid user for update this trip",
+        statusCode: 403
       };
     }
 
@@ -99,11 +124,14 @@ export const updateTrip = async (tripId, datetime, eventId, userId) => {
       return {
         ok: true,
         trip: updatedTrip,
+        message: "Trip updated",
+        statusCode: 200
       };
     } else {
       return {
         ok: false,
         message: "Trip not found",
+        statusCode: 404
       };
     }
   } catch (error) {
@@ -111,20 +139,22 @@ export const updateTrip = async (tripId, datetime, eventId, userId) => {
     return {
       ok: false,
       message: "Error updating trip",
+      statusCode: 500
     };
   }
 };
 
-export const deleteTrip = async (tripId, roleUser, userIdToken) => {
+export const deleteTrip = async (tripId, userRole, userIdToken) => {
   try {
     const trip = await Trip.findByPk(tripId);
 
-    if (!trip) return { ok: false, message: "Event not found" };
+    if (!trip) return { ok: false, message: "Trip not found", statusCode: 404 };
 
-    if (roleUser === "user" && trip.userId !== userIdToken) {
+    if (userRole === "user" && trip.userId !== userIdToken) {
       return {
         ok: false,
         message: "Invalid user for delete this trip",
+        statusCode: 403
       };
     }
 
@@ -132,6 +162,7 @@ export const deleteTrip = async (tripId, roleUser, userIdToken) => {
     return {
       ok: true,
       message: "Event deleted successfully",
+      statusCode: 200
     };
   } catch (error) {
     console.error("Error in deletetTripById:", error.message);

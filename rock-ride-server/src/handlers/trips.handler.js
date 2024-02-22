@@ -18,13 +18,13 @@ export const postTripHandler = async (req, res) => {
   }
 
   try {
-    const { ok, trip, message } = await createNewTrip(
+    const { ok, trip, message, statusCode } = await createNewTrip(
       datetime,
       eventId,
       userId
     );
 
-    res.status(201).json({ ok, trip, message });
+    res.status(statusCode).json({ ok, trip, message });
   } catch (error) {
     console.error("Error in postTripHandler:", error.message);
     res.status(500).json({ ok: false, message: "Internal server error" });
@@ -33,8 +33,8 @@ export const postTripHandler = async (req, res) => {
 
 export const getTripsHandler = async (req, res) => {
   try {
-    const { ok, trips, message } = await getTrips();
-    res.status(200).json({ ok, trips, message });
+    const { ok, trips, message,statusCode } = await getTrips();
+    res.status(statusCode).json({ ok, trips, message });
   } catch (error) {
     console.error(error.message);
     res.status(500).json({ ok: false, message: "Internal server error" });
@@ -51,13 +51,8 @@ export const getTripByIdHandler = async (req, res) => {
   }
 
   try {
-    const trip = await getTripById(tripId);
-
-    if (!trip) {
-      return res.status(404).json({ ok: false, message: "Trip not found" });
-    }
-
-    return res.status(200).json({ ok: true, trip });
+    const {trip, statusCode, message} = await getTripById(tripId);
+    return res.status(statusCode).json({ trip, message });
   } catch (error) {
     console.error("Error in getTripByIdHandler:", error.message);
     return res
@@ -90,18 +85,17 @@ export const putTripHandler = async (req, res) => {
   }
 
   try {
-    const { ok, trip } = await updateTrip(
+    const { ok, trip, statusCode, message} = await updateTrip(
       tripId,
       datetime,
       eventId,
       userId,
+      userRole,
+      userIdToken
     );
 
-    if (ok) {
-      res.status(200).json({ ok, trip });
-    } else {
-      res.status(404).json({ ok, message: "Trip not found" });
-    }
+    res.status(statusCode).json({ ok, trip, message });
+    
   } catch (error) {
     console.error("Error in putTripHandler:", error.message);
     res.status(500).json({ ok: false, message: "Internal server error" });
@@ -119,13 +113,9 @@ export const deleteTripHandler = async (req, res) => {
   }
 
   try {
-    const {ok, message} = await deleteTrip(eventId, userRole, userIdToken);
+    const {ok, message, statusCode} = await deleteTrip(eventId, userRole, userIdToken);
 
-    if (ok) {
-      res.status(200).json({ ok, message });
-    } else {
-      res.status(404).json({ ok, message });
-    }
+    res.status(statusCode).json({ ok, message });
   } catch (error) {
     console.error("Error in deleteEventHandler:", error.message);
     res.status(500).json({ ok: false, message: "Internal server error" });
