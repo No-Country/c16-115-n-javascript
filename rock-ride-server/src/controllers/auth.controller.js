@@ -8,16 +8,21 @@ import { useLocation } from "../helpers/useLocation.js";
 
 
 
-export const createNewUser = async (email, password, address, city, fullName, phone, isDriver, plate) => {
+export const createNewUser = async (email, password, streetName, streetNumber, city, province, fullName, phone, isDriver, plate) => {
 
-  const { coordinates, country } = await useLocation(address, city)
+  const { ok, message, coordinates, streetNameGoogle, streetNumberGoogle, cityGoogle, stateOrProvince, country } = await useLocation(`${ streetName } ${ streetNumber }`, city, province)
+
+  if (!ok) return { ok, message }
+
+  const formateAddres = streetNumberGoogle === null ?`${ streetNameGoogle } ${ streetNumber }`: `${ streetNameGoogle } ${ streetNumberGoogle }` 
 
   const userData = {
     email,
     password: bcryptjs.hashSync( password ),
     fullName,
-    address,
-    city,
+    address: formateAddres,
+    city: cityGoogle,
+    stateOrProvince,
     country,
     location: coordinates,
     phone,

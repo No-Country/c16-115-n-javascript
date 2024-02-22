@@ -71,6 +71,8 @@ export const getUsers = async (name) => {
   }
 }
 
+
+
 export const updateUser = async (id, userRole, { fullName, email, password, isDriver, plate, address, city, role, active, profileImg, carPhotos }) => {
   try {
     const user = await User.findByPk(id);
@@ -162,5 +164,24 @@ export const updateUser = async (id, userRole, { fullName, email, password, isDr
       ok: false,
       message: "Internal server error"
     }
+  }
+}
+
+
+export const deleteUser = async (id) => {
+
+  try {
+
+    const user = await User.findByPk(id);
+
+    if (!user) return { ok: false, message: "User not found" }
+
+    await User.destroy( { where: { id } } )
+
+    return { ok: true, message: "User deleted successfully" }
+    
+  } catch (error) {
+    console.log(error.message);
+    return { ok: false, message: "Internal server error" }
   }
 }
