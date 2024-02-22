@@ -2,7 +2,7 @@ import { DataTypes, UUIDV4 } from 'sequelize';
 
 
 export const UserModel =  (sequelize) => {
-  sequelize.define('User', {
+  const User = sequelize.define('User', {
     id: {
       type: DataTypes.UUID,
       defaultValue: UUIDV4,
@@ -71,5 +71,7 @@ export const UserModel =  (sequelize) => {
       type: DataTypes.ARRAY(DataTypes.STRING),
       allowNull: true,
     }
-  })
+  });
+
+  return User; 
 }
