@@ -2,16 +2,16 @@ import { createNewUser, login } from "../controllers/auth.controller.js";
 
 
 export const registerHandler = async (req, res) => {
-  const { email, password, address, city, fullName, phone, isDriver, plate } = req.body;
+  const { email, password, streetName, streetNumber, city, province, fullName, phone, isDriver, plate } = req.body;
 
-  if (!email || !password || !fullName || !phone || !address || !city) {
-    return res.status(400).json({ ok: false, message: "Email and password are required" });
+  if (!email || !password || !fullName || !phone || !streetName || !streetNumber || !province || !city) {
+    return res.status(400).json({ ok: false, message: "Missing dates" });
   }
 
 
   try {
 
-    const { ok, token, message } = await createNewUser(email, password, address, city, fullName, phone, isDriver, plate)
+    const { ok, token, message } = await createNewUser(email, password, streetName, streetNumber, city, province, fullName, phone, isDriver, plate)
 
     res.status(201).json({ ok, token, message })
   } catch (error) {

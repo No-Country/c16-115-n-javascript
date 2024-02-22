@@ -36,6 +36,10 @@ export const UserModel =  (sequelize) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
+    stateOrProvince: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
     country: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -70,6 +74,11 @@ export const UserModel =  (sequelize) => {
     carPhotos: {
       type: DataTypes.ARRAY(DataTypes.STRING),
       allowNull: true,
+    },
+    deleted: {
+      type: DataTypes.BOOLEAN,
+      allowNull: true,
+      defaultValue: false,
     }
   })
 }

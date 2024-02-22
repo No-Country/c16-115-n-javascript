@@ -64,4 +64,15 @@ export const putUserHandler = async (req, res) => {
 }
 
 
+export const deleteUserHandler = async (req, res) => {
+  const { id } = req.params;
 
+  const { role: userRole } = req.user;
+
+
+}
+
+
+// Huergo 1980	Santa Fe Daniela Romero
+// Mario Ramirez	44455544	Av Libertador Sur 320
+// Jose Perez	44455544	Buenos Aires 670	Villa María
