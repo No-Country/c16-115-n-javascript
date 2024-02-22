@@ -2,6 +2,7 @@ import { Router } from 'express'
 import authRouter from './auth.js'
 import eventRouter from './events.js'
 import userRouter from './users.js'
+import tripRouter from './trips.js'
 import { verifyToken } from '../middlewares/auth-middleware.js'
 
 const router = Router()
@@ -9,7 +10,8 @@ const router = Router()
 
 router.use('/auth', authRouter)
 router.use('/users', verifyToken, userRouter)
-router.use('/events',verifyToken, eventRouter)
+router.use('/events', verifyToken, eventRouter)
+router.use('/trips', verifyToken, tripRouter)
 
 export default router
 
