@@ -1,7 +1,31 @@
+import { Op } from "sequelize";
 import { Event } from "../database.js";
+import { useLocation } from "../helpers/useLocation.js";
 
-export const getEvents = async () => {
+export const getEvents = async (name) => {
   try {
+    
+    if (name) {
+      const events = await Event.findAll({
+        where: {
+          name: {
+            [ Op.iLike ]: `%${ name.toLowerCase() }%` 
+          }
+        }
+      })
+      if (!events.length) {
+        return {
+          ok: false,
+          message: "Events not found"
+        } 
+      } else {
+        return {
+          ok: true,
+          events,
+        }
+      }
+    }
+
     const events = await Event.findAll();
     return {
       ok: true,
@@ -26,26 +50,17 @@ export const getEventById = async (eventId) => {
   }
 };
 
-export const getEventByName = async (eventName) => {
-  try {
-    const event = await Event.findOne({
-      where: { name: eventName },
-    });
+export const createNewEvent = async (name, date, category, address, city) => {
+  const { coordinates } = await useLocation(address, city)
 
-    return event;
-  } catch (error) {
-    console.error("Error in getEventByName:", error.message);
-    throw new Error("Error fetching event by name");
-  }
-};
-
-export const createNewEvent = async (name, location, date, category) => {
   try {
     const event = await Event.create({
       name,
-      location,
+      address,
+      location: coordinates,
       date,
       category,
+      city
     });
 
     return {
