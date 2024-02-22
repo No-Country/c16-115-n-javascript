@@ -1,4 +1,5 @@
-import { createNewTrip, getTrips } from "../controllers/trips.controller.js";
+import { createNewTrip, getTripById, getTrips } from "../controllers/trips.controller.js";
+import { validate as validateUuid } from "uuid";
 
 export const postTripHandler = async (req, res) => {
   const { datetime, eventId, userId } = req.body;
@@ -30,5 +31,30 @@ export const getTripsHandler = async (req, res) => {
   } catch (error) {
     console.error(error.message);
     res.status(500).json({ ok: false, message: "Internal server error" });
+  }
+};
+
+export const getTripByIdHandler = async (req, res) => {
+  const tripId = req.params.id;
+
+  if (!validateUuid(tripId)) {
+    return res
+      .status(400)
+      .json({ ok: false, message: "Invalid tripId format" });
+  }
+
+  try {
+    const trip = await getTripById(tripId);
+
+    if (!trip) {
+      return res.status(404).json({ ok: false, message: "Trip not found" });
+    }
+
+    return res.status(200).json({ ok: true, trip });
+  } catch (error) {
+    console.error("Error in getTripByIdHandler:", error.message);
+    return res
+      .status(500)
+      .json({ ok: false, message: "Internal server error" });
   }
 };

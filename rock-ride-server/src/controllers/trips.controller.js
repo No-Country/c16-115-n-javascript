@@ -1,10 +1,6 @@
 import { Trip, User, Event } from "../database.js";
 
-export const createNewTrip = async (
-  datetime,
-  eventId,
-  userId
-) => {
+export const createNewTrip = async (datetime, eventId, userId) => {
   try {
     const user = await User.findByPk(userId);
     if (!user || !user.isDriver) {
@@ -44,7 +40,6 @@ export const createNewTrip = async (
 
 export const getTrips = async () => {
   try {
-
     const trips = await Trip.findAll();
     return {
       ok: true,
@@ -56,5 +51,15 @@ export const getTrips = async () => {
       ok: false,
       message: "Error fetching trips",
     };
+  }
+};
+
+export const getTripById = async (tripId) => {
+  try {
+    const trip = await Trip.findByPk(tripId);
+    return trip;
+  } catch (error) {
+    console.error("Error in getTripById:", error.message);
+    throw new Error("Error fetching trip by ID");
   }
 };
