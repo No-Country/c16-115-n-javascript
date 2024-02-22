@@ -66,7 +66,6 @@ export const getTripById = async (tripId) => {
 
 export const updateTrip = async (tripId, datetime, eventId, userId) => {
   try {
-
     const user = await User.findByPk(userId);
     if (!user || !user.isDriver) {
       return {
@@ -113,5 +112,29 @@ export const updateTrip = async (tripId, datetime, eventId, userId) => {
       ok: false,
       message: "Error updating trip",
     };
+  }
+};
+
+export const deleteTrip = async (tripId, roleUser, userIdToken) => {
+  try {
+    const trip = await Trip.findByPk(tripId);
+
+    if (!trip) return { ok: false, message: "Event not found" };
+
+    if (roleUser === "user" && trip.userId !== userIdToken) {
+      return {
+        ok: false,
+        message: "Invalid user for delete this trip",
+      };
+    }
+
+    await Trip.destroy({ where: { id: tripId } });
+    return {
+      ok: true,
+      message: "Event deleted successfully",
+    };
+  } catch (error) {
+    console.error("Error in deletetTripById:", error.message);
+    throw new Error("Error deleting trip by ID");
   }
 };

@@ -1,13 +1,20 @@
-import { createNewTrip, getTripById, getTrips, updateTrip } from "../controllers/trips.controller.js";
+import { createNewTrip, deleteTrip, getTripById, getTrips, updateTrip } from "../controllers/trips.controller.js";
 import { validate as validateUuid } from "uuid";
 
 export const postTripHandler = async (req, res) => {
   const { datetime, eventId, userId } = req.body;
+  const { role: userRole, id: userIdToken } = req.user;
 
   if (!datetime || !eventId || !userId) {
     return res
       .status(400)
       .json({ ok: false, message: "All fields are required" });
+  }
+
+  if(userRole==='user' && userId !== userIdToken){
+    return res
+    .status(403)
+    .json({ ok: false, message: "Invalid user for create this trip" });
   }
 
   try {
@@ -97,6 +104,30 @@ export const putTripHandler = async (req, res) => {
     }
   } catch (error) {
     console.error("Error in putTripHandler:", error.message);
+    res.status(500).json({ ok: false, message: "Internal server error" });
+  }
+};
+
+export const deleteTripHandler = async (req, res) => {
+  const eventId = req.params.id;
+  const { role: userRole, id: userIdToken } = req.user;
+  
+  if (!validateUuid(eventId)) {
+    return res
+      .status(400)
+      .json({ ok: false, message: "Invalid eventId format" });
+  }
+
+  try {
+    const {ok, message} = await deleteTrip(eventId, userRole, userIdToken);
+
+    if (ok) {
+      res.status(200).json({ ok, message });
+    } else {
+      res.status(404).json({ ok, message });
+    }
+  } catch (error) {
+    console.error("Error in deleteEventHandler:", error.message);
     res.status(500).json({ ok: false, message: "Internal server error" });
   }
 };
