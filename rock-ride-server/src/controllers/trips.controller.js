@@ -63,3 +63,55 @@ export const getTripById = async (tripId) => {
     throw new Error("Error fetching trip by ID");
   }
 };
+
+export const updateTrip = async (tripId, datetime, eventId, userId) => {
+  try {
+
+    const user = await User.findByPk(userId);
+    if (!user || !user.isDriver) {
+      return {
+        ok: false,
+        message: "Invalid user for updating a trip",
+      };
+    }
+
+    const event = await Event.findByPk(eventId);
+    if (!event) {
+      return {
+        ok: false,
+        message: "Event does not exist",
+      };
+    }
+
+    const [rowsUpdated, [updatedTrip]] = await Trip.update(
+      {
+        datetime,
+        origin: user.location,
+        eventId,
+        userId,
+      },
+      {
+        where: { id: tripId },
+        returning: true,
+      }
+    );
+
+    if (rowsUpdated > 0) {
+      return {
+        ok: true,
+        trip: updatedTrip,
+      };
+    } else {
+      return {
+        ok: false,
+        message: "Trip not found",
+      };
+    }
+  } catch (error) {
+    console.error("Error in updateTrip:", error.message);
+    return {
+      ok: false,
+      message: "Error updating trip",
+    };
+  }
+};

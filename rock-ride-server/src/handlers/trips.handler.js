@@ -1,4 +1,4 @@
-import { createNewTrip, getTripById, getTrips } from "../controllers/trips.controller.js";
+import { createNewTrip, getTripById, getTrips, updateTrip } from "../controllers/trips.controller.js";
 import { validate as validateUuid } from "uuid";
 
 export const postTripHandler = async (req, res) => {
@@ -56,5 +56,47 @@ export const getTripByIdHandler = async (req, res) => {
     return res
       .status(500)
       .json({ ok: false, message: "Internal server error" });
+  }
+};
+
+export const putTripHandler = async (req, res) => {
+  const tripId = req.params.id;
+  const { role: userRole, id: userIdToken } = req.user;
+
+  if (!validateUuid(tripId)) {
+    return res
+      .status(400)
+      .json({ ok: false, message: "Invalid tripId format" });
+  }
+
+  const { datetime, eventId, userId } = req.body;
+  if (!datetime || !eventId || !userId) {
+    return res
+      .status(400)
+      .json({ ok: false, message: "All fields are required" });
+  }
+
+  if(userRole==='user' && userId !== userIdToken){
+    return res
+    .status(403)
+    .json({ ok: false, message: "Invalid user for update this trip" });
+  }
+
+  try {
+    const { ok, trip } = await updateTrip(
+      tripId,
+      datetime,
+      eventId,
+      userId,
+    );
+
+    if (ok) {
+      res.status(200).json({ ok, trip });
+    } else {
+      res.status(404).json({ ok, message: "Trip not found" });
+    }
+  } catch (error) {
+    console.error("Error in putTripHandler:", error.message);
+    res.status(500).json({ ok: false, message: "Internal server error" });
   }
 };
