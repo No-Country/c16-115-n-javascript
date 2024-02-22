@@ -41,3 +41,20 @@ export const createNewTrip = async (
     };
   }
 };
+
+export const getTrips = async () => {
+  try {
+
+    const trips = await Trip.findAll();
+    return {
+      ok: true,
+      trips,
+    };
+  } catch (error) {
+    console.error("Error in getTrips:", error.message);
+    return {
+      ok: false,
+      message: "Error fetching trips",
+    };
+  }
+};
