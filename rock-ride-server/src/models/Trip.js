@@ -17,14 +17,14 @@ export const TripModel = (sequelize) => {
       type: DataTypes.JSON,
       allowNull: false,
     },
-    createdAt: {
-      type: DataTypes.DATE,
+    places: {
+      type: DataTypes.INTEGER,
       allowNull: false,
     },
-    updatedAt: {
-      type: DataTypes.DATE,
+    occupants: {
+      type: DataTypes.INTEGER,
       allowNull: false,
-    },
+    }
   });
 
   Trip.belongsTo(EventModel(sequelize), { foreignKey: "eventId" });
