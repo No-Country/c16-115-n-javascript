@@ -2,11 +2,12 @@ import clsx from "clsx";
 import { useForm } from "react-hook-form";
 
 // import { login, registerUser } from "@/actions"
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
 import { yupResolver } from "@hookform/resolvers/yup"
 import { registerSchema } from "../../../schemas/validationSchema";
 import { useState } from "react";
+import { createNewUser } from "../../../fetch/auth";
 
 
 const countries = [
@@ -67,6 +68,8 @@ export const RegisterForm = () => {
 
 
   const [errorMessage, setErrorMessage] = useState('')
+
+  const navigate = useNavigate()
   // const [showMessage, setShowMessage] = useState(false)
   const [loader, setLoader] = useState(false)
 
@@ -76,7 +79,7 @@ export const RegisterForm = () => {
   const handleIsDriverChange = () => {
     setIsDriver((prevIsDriver) => !prevIsDriver); // Actualiza el estado al cambiar el checkbox
   };
-  console.log(isDriver);
+  // console.log(isDriver);
 
   const { register, handleSubmit, formState: { errors }, reset } = useForm({
     defaultValues: {
@@ -84,6 +87,9 @@ export const RegisterForm = () => {
       email: '',
       streetName: '',
       streetNumber: '',
+      city: '',
+      province: '',
+      country: '',
       phone: '',
       isDriver: false,
       password: '',
@@ -92,18 +98,27 @@ export const RegisterForm = () => {
   });
 
 
-
   const onSubmit = async (data) => {
     setLoader(true)
-    console.log(data);
-    console.log(errors);
+    // console.log(data);
+    const result = await createNewUser(data)
+
+
+    console.log(result);
+
+    result.token && localStorage.setItem('auth-token', result.token)
+
+
     setLoader(false)
     reset()
+    setIsDriver(false);
     setErrorMessage('')
+
+    result.ok ? navigate('/') : alert(result.message)
   }
 
   return (
-    <div className="w-[350px] max-w-[90%]">
+    <div className="w-[400px] max-w-[90%]">
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col text-slate-200">
 
         {/* {
@@ -155,7 +170,7 @@ export const RegisterForm = () => {
           className="p-2 border rounded-md bg-gray-200 text-gray-800"
           { ...register('country', { required: true }) }
         >
-          <option value="" selected>[ Seleccione ]</option>
+          <option value="">[ Seleccione ]</option>
           {
             countries.map(country => (
               <option key={ country.id } className="text-gray-800" value={ country }>{ country }</option>
@@ -165,12 +180,12 @@ export const RegisterForm = () => {
       </div>
 
       <div className="flex flex-col mb-5">
-        <span>Parovincia</span>
+        <span>Provincia</span>
         <select 
           className="p-2 border rounded-md bg-gray-200 text-gray-800"
-          { ...register('country', { required: true }) }
+          { ...register('province', { required: true }) }
         >
-          <option value="" selected>[ Seleccione ]</option>
+          <option value="">[ Seleccione ]</option>
           {
             provinces.map(country => (
               <option key={ country.id } className="text-gray-800" value={ country }>{ country }</option>
@@ -183,9 +198,9 @@ export const RegisterForm = () => {
         <span>Ciudad</span>
         <select 
           className="p-2 border rounded-md bg-gray-200 text-gray-800"
-          { ...register('country', { required: true }) }
+          { ...register('city') }
         >
-          <option value="" selected>[ Seleccione ]</option>
+          <option value="">[ Seleccione ]</option>
           {
             cities.map(country => (
               <option key={ country.id } className="text-gray-800" value={ country }>{ country }</option>
@@ -203,7 +218,7 @@ export const RegisterForm = () => {
                 clsx(
                   "px-5 py-2 border bg-gray-200 rounded mb-5 text-gray-800",
                   {
-                    'focus:outline-red-500 border-red-500': errors.email
+                    'focus:outline-red-500 border-red-500': errors.streetName
                   }
                 )
               }
@@ -224,7 +239,7 @@ export const RegisterForm = () => {
                 clsx(
                   "px-5 py-2 border bg-gray-200 rounded mb-5 text-gray-800",
                   {
-                    'focus:outline-red-500 border-red-500': errors.email
+                    'focus:outline-red-500 border-red-500': errors.streetNumber
                   }
                 )
               }
@@ -245,12 +260,12 @@ export const RegisterForm = () => {
                 clsx(
                   "px-5 py-2 border bg-gray-200 rounded mb-5 text-gray-800",
                   {
-                    'focus:outline-red-500 border-red-500': errors.email
+                    'focus:outline-red-500 border-red-500': errors.phone
                   }
                 )
               }
               type="text"
-              {...register("streetNumber") }
+              {...register("phone") }
               aria-invalid={errors.phone ? "true" : "false"}
             />
               {errors.streetNumber?.type !== undefined && (
@@ -292,14 +307,14 @@ export const RegisterForm = () => {
         {
           isDriver && (
             <>
-              <label htmlFor="calle">N° de placa</label>
+              <label htmlFor="plate">N° de placa</label>
               <input
-                autoComplete="calle"
+                autoComplete="plate"
                 className={
                   clsx(
                     "px-5 py-2 border bg-gray-200 rounded mb-5 text-gray-800",
                     {
-                      'focus:outline-red-500 border-red-500': errors.email
+                      'focus:outline-red-500 border-red-500': errors.plate
                     }
                   )
                 }

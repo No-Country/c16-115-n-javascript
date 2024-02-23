@@ -7,6 +7,10 @@
 }
 
 
+@font-face {
+  font-family: 'Barbaro';
+  src: url('./assets/fonts/barbaro-punta.ttf')
+}
 
 @keyframes fadeIn {
   0% {opacity: 0;}
