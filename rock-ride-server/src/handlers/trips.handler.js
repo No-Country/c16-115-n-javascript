@@ -2,26 +2,22 @@ import { createNewTrip, deleteTrip, getTripById, getTrips, updateTrip } from "..
 import { validate as validateUuid } from "uuid";
 
 export const postTripHandler = async (req, res) => {
-  const { datetime, eventId, userId } = req.body;
-  const { role: userRole, id: userIdToken } = req.user;
+  const { datetime, eventId, places, occupants } = req.body;
+  const { id: userId} = req.user;
 
-  if (!datetime || !eventId || !userId) {
+  if (!datetime || !places || !occupants || !eventId || !userId) {
     return res
       .status(400)
       .json({ ok: false, message: "All fields are required" });
   }
 
-  if(userRole==='user' && userId !== userIdToken){
-    return res
-    .status(403)
-    .json({ ok: false, message: "Invalid user for create this trip" });
-  }
-
   try {
     const { ok, trip, message, statusCode } = await createNewTrip(
       datetime,
+      places,
+      occupants,
       eventId,
-      userId
+      userId,
     );
 
     res.status(statusCode).json({ ok, trip, message });
@@ -63,7 +59,7 @@ export const getTripByIdHandler = async (req, res) => {
 
 export const putTripHandler = async (req, res) => {
   const tripId = req.params.id;
-  const { role: userRole, id: userIdToken } = req.user;
+  const { role: userRole, id: userId } = req.user;
 
   if (!validateUuid(tripId)) {
     return res
@@ -71,27 +67,22 @@ export const putTripHandler = async (req, res) => {
       .json({ ok: false, message: "Invalid tripId format" });
   }
 
-  const { datetime, eventId, userId } = req.body;
-  if (!datetime || !eventId || !userId) {
+  const { datetime, eventId, places, occupants } = req.body;
+  if (!datetime || !places || !occupants || !eventId || !userId) {
     return res
       .status(400)
       .json({ ok: false, message: "All fields are required" });
-  }
-
-  if(userRole==='user' && userId !== userIdToken){
-    return res
-    .status(403)
-    .json({ ok: false, message: "Invalid user for update this trip" });
   }
 
   try {
     const { ok, trip, statusCode, message} = await updateTrip(
       tripId,
       datetime,
+      places,
+      occupants,
       eventId,
       userId,
       userRole,
-      userIdToken
     );
 
     res.status(statusCode).json({ ok, trip, message });
@@ -104,7 +95,7 @@ export const putTripHandler = async (req, res) => {
 
 export const deleteTripHandler = async (req, res) => {
   const eventId = req.params.id;
-  const { role: userRole, id: userIdToken } = req.user;
+  const { role: userRole, id: userId } = req.user;
   
   if (!validateUuid(eventId)) {
     return res
@@ -113,7 +104,7 @@ export const deleteTripHandler = async (req, res) => {
   }
 
   try {
-    const {ok, message, statusCode} = await deleteTrip(eventId, userRole, userIdToken);
+    const {ok, message, statusCode} = await deleteTrip(eventId, userRole, userId);
 
     res.status(statusCode).json({ ok, message });
   } catch (error) {
