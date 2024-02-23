@@ -26,17 +26,9 @@ export const registerSchema = yup.object().shape({
   password: yup.string().required('La contraseña es obligatoria'),
 
 })
-  // .object({
-  //   fullName: {
-  //     required: 'El nombre es obligatorio',
-  //     minLength: 3,
-  //   },
-  //   email: {
-  //     required: 'El correo electrónico es obligatorio',
-  //     pattern: /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
-  //   },
-  //   streetName: {
-  //     required: 'La calle es obligatoria',
-  //   }
-  // })
-  // .required()
+
+
+export const loginSchema = yup.object().shape({
+    email: yup.string().email('El correo no es válido').required('El correo es obligatorio'),
+    password: yup.string().required('La contraseña es obligatoria'),
+})

@@ -1,7 +1,17 @@
-import { Trip, User, Event } from "../database.js";
+import { Trip, User, Event, Ticket} from "../database.js";
 
-export const createNewTrip = async (datetime, eventId, userId) => {
+export const createNewTrip = async (datetime, places, occupants, eventId, userId) => {
   try {
+
+    const ticket =  await Ticket.findOne({ where: { userId: userId, eventId: eventId }})
+    if(!ticket){
+      return {
+        ok: false,
+        message: "The user does not have a ticket for the event",
+        statusCode: 404,
+      };
+    }
+
     const user = await User.findByPk(userId);
     if (!user || !user.isDriver) {
       return {
@@ -23,6 +33,8 @@ export const createNewTrip = async (datetime, eventId, userId) => {
     const trip = await Trip.create({
       datetime,
       origin: user.location,
+      places,
+      occupants,
       eventId,
       userId,
     });
@@ -76,8 +88,18 @@ export const getTripById = async (tripId) => {
   }
 };
 
-export const updateTrip = async (tripId, datetime, eventId, userId, userRole, userIdToken) => {
+export const updateTrip = async (tripId, datetime, places, occupants, eventId, userId, userRole) => {
   try {
+
+    const ticket =  await Ticket.findOne({ where: { userId: userId, eventId: eventId }})
+    if(!ticket){
+      return {
+        ok: false,
+        message: "The user does not have a ticket",
+        statusCode: 404,
+      };
+    }
+
     const user = await User.findByPk(userId);
     if (!user || !user.isDriver) {
       return {
@@ -99,7 +121,7 @@ export const updateTrip = async (tripId, datetime, eventId, userId, userRole, us
     const trip = await Trip.findByPk(tripId);
     if (!trip) return { ok: false, message: "Trip not found", statusCode: 404 };
 
-    if (userRole === "user" && trip.userId !== userIdToken) {
+    if (userRole === "user" && trip.userId !== userId) {
       return {
         ok: false,
         message: "Invalid user for update this trip",
@@ -111,6 +133,8 @@ export const updateTrip = async (tripId, datetime, eventId, userId, userRole, us
       {
         datetime,
         origin: user.location,
+        places,
+        occupants,
         eventId,
         userId,
       },
@@ -144,13 +168,13 @@ export const updateTrip = async (tripId, datetime, eventId, userId, userRole, us
   }
 };
 
-export const deleteTrip = async (tripId, userRole, userIdToken) => {
+export const deleteTrip = async (tripId, userRole, userId) => {
   try {
     const trip = await Trip.findByPk(tripId);
 
     if (!trip) return { ok: false, message: "Trip not found", statusCode: 404 };
 
-    if (userRole === "user" && trip.userId !== userIdToken) {
+    if (userRole === "user" && trip.userId !== userId) {
       return {
         ok: false,
         message: "Invalid user for delete this trip",
@@ -161,7 +185,7 @@ export const deleteTrip = async (tripId, userRole, userIdToken) => {
     await Trip.destroy({ where: { id: tripId } });
     return {
       ok: true,
-      message: "Event deleted successfully",
+      message: "Trip deleted successfully",
       statusCode: 200
     };
   } catch (error) {
