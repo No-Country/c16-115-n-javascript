@@ -4,25 +4,24 @@ import { useLocation } from "../helpers/useLocation.js";
 
 export const getEvents = async (name) => {
   try {
-    
     if (name) {
       const events = await Event.findAll({
         where: {
           name: {
-            [ Op.iLike ]: `%${ name.toLowerCase() }%` 
-          }
-        }
-      })
+            [Op.iLike]: `%${name.toLowerCase()}%`,
+          },
+        },
+      });
       if (!events.length) {
         return {
           ok: false,
-          message: "Events not found"
-        } 
+          message: "Events not found",
+        };
       } else {
         return {
           ok: true,
           events,
-        }
+        };
       }
     }
 
@@ -50,17 +49,42 @@ export const getEventById = async (eventId) => {
   }
 };
 
-export const createNewEvent = async (name, date, category, address, city) => {
-  const { coordinates } = await useLocation(address, city)
+export const createNewEvent = async (
+  name,
+  date,
+  category,
+  streetName,
+  streetNumber,
+  city,
+  province
+) => {
+  const {
+    ok,
+    message,
+    coordinates,
+    streetNameGoogle,
+    streetNumberGoogle,
+    cityGoogle,
+    stateOrProvince,
+    country,
+  } = await useLocation(`${streetName} ${streetNumber}`, city, province);
+
+  if (!ok) return { ok, message };
+  const formateAddres =
+    streetNumberGoogle === null
+      ? `${streetNameGoogle} ${streetNumber}`
+      : `${streetNameGoogle} ${streetNumberGoogle}`;
 
   try {
     const event = await Event.create({
       name,
-      address,
+      address: formateAddres,
       location: coordinates,
       date,
       category,
-      city
+      city: cityGoogle,
+      stateOrProvince,
+      country,
     });
 
     return {
@@ -76,14 +100,44 @@ export const createNewEvent = async (name, date, category, address, city) => {
   }
 };
 
-export const updateEvent = async (eventId, name, location, date, category) => {
+export const updateEvent = async (
+  eventId,
+  name,
+  date,
+  category,
+  streetName,
+  streetNumber,
+  city,
+  province
+) => {
+  const {
+    ok,
+    message,
+    coordinates,
+    streetNameGoogle,
+    streetNumberGoogle,
+    cityGoogle,
+    stateOrProvince,
+    country,
+  } = await useLocation(`${streetName} ${streetNumber}`, city, province);
+
+  if (!ok) return { ok, message };
+  const formateAddres =
+    streetNumberGoogle === null
+      ? `${streetNameGoogle} ${streetNumber}`
+      : `${streetNameGoogle} ${streetNumberGoogle}`;
+
   try {
     const [rowsUpdated, [updatedEvent]] = await Event.update(
       {
         name,
-        location,
+        address: formateAddres,
+        location: coordinates,
         date,
         category,
+        city: cityGoogle,
+        stateOrProvince,
+        country,
       },
       {
         where: { id: eventId },
@@ -123,4 +177,3 @@ export const deleteEvent = async (eventId) => {
     throw new Error("Error deleting event by ID");
   }
 };
-
