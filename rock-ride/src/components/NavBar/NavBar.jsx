@@ -1,19 +1,17 @@
-import React from 'react'
+import React from "react";
 import { IoIosArrowBack } from "react-icons/io";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 const NavBar = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   return (
     <div>
-        <div onClick={() => navigate(-1)}>
-        <IoIosArrowBack/>
-        <img src='https://lanman2018.ieee-lanman.org/files/2016/01/sample-logo@2x.png'/>
-
-        </div>
-
+      <div className=" cursor-pointer flex items-center justify-between w-[8rem] h-[5rem]" onClick={() => navigate(-1)}>
+        <IoIosArrowBack />
+        <img className="h-[2rem]" src="https://lanman2018.ieee-lanman.org/files/2016/01/sample-logo@2x.png" />
+      </div>
     </div>
-  )
-}
+  );
+};
 
-export default NavBar
+export default NavBar;
