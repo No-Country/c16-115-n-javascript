@@ -44,19 +44,22 @@ export const getEventByIdHandler = async (req, res) => {
 };
 
 export const postEventHandler = async (req, res) => {
-  const { name, address, city, date, category } = req.body;
+  const { name, date, category, streetName, streetNumber, city, province } = req.body;
   const { role: userRole } = req.user;
 
-  if (userRole !== "admin") return res.status(401).json({ok: false, message: "Unauthorized" })
+  if (userRole !== "admin")
+    return res.status(401).json({ ok: false, message: "Unauthorized" });
 
-  if (!name || !address || !city || !category || !date) {
+  if (!name || !category || !date || !streetName || !streetNumber || !city || !province) {
     return res
       .status(400)
       .json({ ok: false, message: "All fields are required" });
   }
 
   try {
-    const { ok, event, message } = await createNewEvent(name, date, category, address, city);
+    const { ok, event, message } = await createNewEvent(
+      name, date, category, streetName, streetNumber, city, province
+    );
 
     res.status(201).json({ ok, event, message });
   } catch (error) {
@@ -69,7 +72,8 @@ export const putEventHandler = async (req, res) => {
   const eventId = req.params.id;
   const { role: userRole } = req.user;
 
-  if (userRole !== "admin") return res.status(401).json({ok: false, message: "Unauthorized" })
+  if (userRole !== "admin")
+    return res.status(401).json({ ok: false, message: "Unauthorized" });
 
   if (!validateUuid(eventId)) {
     return res
@@ -77,8 +81,8 @@ export const putEventHandler = async (req, res) => {
       .json({ ok: false, message: "Invalid eventId format" });
   }
 
-  const { name, location, date, category } = req.body;
-  if (!eventId || !name || !location || !date || !category) {
+  const { name, date, category, streetName, streetNumber, city, province } = req.body;
+  if (!name || !category || !date || !streetName || !streetNumber || !city || !province) {
     return res
       .status(400)
       .json({ ok: false, message: "All fields are required" });
@@ -86,11 +90,7 @@ export const putEventHandler = async (req, res) => {
 
   try {
     const { ok, event } = await updateEvent(
-      eventId,
-      name,
-      location,
-      date,
-      category
+      eventId, name, date, category, streetName, streetNumber, city, province
     );
 
     if (ok) {
@@ -108,8 +108,9 @@ export const deleteEventHandler = async (req, res) => {
   const eventId = req.params.id;
   const { role: userRole } = req.user;
 
-  if (userRole !== "admin") return res.status(401).json({ok: false, message: "Unauthorized" })
-  
+  if (userRole !== "admin")
+    return res.status(401).json({ ok: false, message: "Unauthorized" });
+
   if (!validateUuid(eventId)) {
     return res
       .status(400)
