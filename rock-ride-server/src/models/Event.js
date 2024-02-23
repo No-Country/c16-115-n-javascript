@@ -1,7 +1,7 @@
 import { DataTypes, UUIDV4 } from "sequelize";
 
 export const EventModel = (sequelize) => {
-  sequelize.define("Event", {
+  const Event = sequelize.define("Event", {
     id: {
       type: DataTypes.UUID,
       defaultValue: UUIDV4,
@@ -32,4 +32,6 @@ export const EventModel = (sequelize) => {
       allowNull: false,
     }
   });
+
+  return Event; 
 };
