@@ -39,3 +39,21 @@ export const createNewTicket = async (eventId, userId) => {
     };
   }
 };
+
+export const getTickets = async () => {
+    try {
+      const tickets = await Ticket.findAll();
+      return {
+        ok: true,
+        tickets,
+        statusCode: 200,
+      };
+    } catch (error) {
+      console.error("Error in getTickets:", error.message);
+      return {
+        ok: false,
+        message: "Error fetching ticket",
+        statusCode: 500,
+      };
+    }
+  };
