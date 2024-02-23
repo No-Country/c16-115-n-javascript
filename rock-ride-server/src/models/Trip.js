@@ -22,7 +22,7 @@ export const TripModel = (sequelize) => {
       allowNull: false,
     },
     occupants: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.ARRAY(DataTypes.UUID),
       allowNull: false,
     }
   });
