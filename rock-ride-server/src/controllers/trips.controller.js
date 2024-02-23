@@ -185,7 +185,7 @@ export const deleteTrip = async (tripId, userRole, userId) => {
     await Trip.destroy({ where: { id: tripId } });
     return {
       ok: true,
-      message: "Event deleted successfully",
+      message: "Trip deleted successfully",
       statusCode: 200
     };
   } catch (error) {
