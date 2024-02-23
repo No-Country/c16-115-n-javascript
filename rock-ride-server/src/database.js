@@ -3,6 +3,7 @@ import dotenv from "dotenv"
 import { UserModel } from "./models/User.js"
 import { EventModel } from "./models/Event.js"
 import { TripModel } from "./models/Trip.js"
+import { TicketModel } from "./models/Ticket.js"
 
 dotenv.config()
 
@@ -19,9 +20,9 @@ const sequelize = new Sequelize(process.env.DATABASE_URL, { logging: false, nati
 UserModel(sequelize)
 EventModel(sequelize)
 TripModel(sequelize)
+TicketModel(sequelize)
 
-
-export const { User, Event, Trip} = sequelize.models
+export const { User, Event, Trip, Ticket} = sequelize.models
 
 
 export const conn = sequelize
