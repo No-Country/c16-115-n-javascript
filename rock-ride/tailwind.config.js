@@ -5,7 +5,14 @@ export default {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      // backgroundColor: {
+
+      // }
+      dropShadow: {
+        "2xl-light": "0 0 20px rgba(93, 144, 247, 0.1)",
+      }
+    },
   },
   plugins: [],
 }
