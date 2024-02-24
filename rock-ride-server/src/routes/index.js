@@ -11,9 +11,9 @@ const router = Router()
 
 router.use('/auth', authRouter)
 router.use('/users', verifyToken, userRouter)
-router.use('/events', verifyToken, eventRouter)
-router.use('/trips', verifyToken, tripRouter)
-router.use('/tickets', verifyToken, ticketRouter)
+router.use('/events', eventRouter)
+router.use('/trips', tripRouter)
+router.use('/tickets', ticketRouter)
 
 export default router
 

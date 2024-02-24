@@ -6,12 +6,12 @@ import { Client } from "@googlemaps/google-maps-services-js";
 
 const googleMapsClient = new Client({ key: process.env.GOOGLE_MAPS_API_KEY })
 
-export const useLocation = async ( address, city, province ) => {
+export const useLocation = async ( address, city, province, country ) => {
 
   const args = {
     params: {
       key: process.env.GOOGLE_MAPS_API_KEY,
-      address: `${address}, ${city}, ${province}`,
+      address: `${ address }, ${ city }, ${ province }, ${ country }`,
     }
   };
 
