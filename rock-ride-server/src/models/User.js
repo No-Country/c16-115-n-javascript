@@ -75,6 +75,14 @@ export const UserModel =  (sequelize) => {
       type: DataTypes.ARRAY(DataTypes.STRING),
       allowNull: true,
     },
+    favoriteArtists: {
+      type: DataTypes.ARRAY(DataTypes.STRING),
+      allowNull: true,
+    },
+    favoriteSong: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
     deleted: {
       type: DataTypes.BOOLEAN,
       allowNull: true,
