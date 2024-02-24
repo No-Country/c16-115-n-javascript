@@ -8,9 +8,9 @@ import { useLocation } from "../helpers/useLocation.js";
 
 
 
-export const createNewUser = async (email, password, streetName, streetNumber, city, province, fullName, phone, isDriver, plate) => {
+export const createNewUser = async (email, password, streetName, streetNumber, city, province, countryUser, fullName, phone, isDriver, plate) => {
 
-  const { ok, message, coordinates, streetNameGoogle, streetNumberGoogle, cityGoogle, stateOrProvince, country } = await useLocation(`${ streetName } ${ streetNumber }`, city, province)
+  const { ok, message, coordinates, streetNameGoogle, streetNumberGoogle, cityGoogle, stateOrProvince, country } = await useLocation(`${ streetName } ${ streetNumber }`, city, province, countryUser)
 
   if (!ok) return { ok, message }
 
