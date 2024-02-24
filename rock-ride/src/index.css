@@ -34,11 +34,11 @@
 
 
 .btn-primary {
-  @apply  bg-[#222222] text-white w-auto px-[2rem] rounded-xl   h-[3rem] transition-all;
+  @apply  bg-[#222222] text-white w-auto px-[1.5rem] rounded-xl   h-[2.5rem] transition-all;
 }
 
 .btn-secondary {
-  @apply px-[2rem] w-auto rounded-xl border-solid border-[1px] border-[#222222] h-[3rem] text-[#222222] transition-all;
+  @apply px-[1.5rem] w-auto rounded-xl border-solid border-[1px] border-[#222222] h-[2.5rem] text-[#222222] transition-all;
 }
 
 .btn-disabled {
