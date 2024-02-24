@@ -2,7 +2,7 @@ import React from 'react'
 
 const NavButtons = ({text,style}) => {
   return (
-    <button className={`  ${style} w-auto h-[2.5rem] px-[1rem] rounded-xl `}>
+    <button className={`  ${style} w-auto h-[2rem] px-[1rem] rounded-2xl `}>
         <p>
             {text}
         </p>
