@@ -44,13 +44,13 @@ export const getEventByIdHandler = async (req, res) => {
 };
 
 export const postEventHandler = async (req, res) => {
-  const { name, date, category, streetName, streetNumber, city, province } = req.body;
+  const { name, date, category, streetName, streetNumber, city, province, country: countryEvent } = req.body;
   const { role: userRole } = req.user;
 
   if (userRole !== "admin")
     return res.status(401).json({ ok: false, message: "Unauthorized" });
 
-  if (!name || !category || !date || !streetName || !streetNumber || !city || !province) {
+  if (!name || !category || !date || !streetName || !streetNumber || !city || !province || !countryEvent) {
     return res
       .status(400)
       .json({ ok: false, message: "All fields are required" });
@@ -58,7 +58,7 @@ export const postEventHandler = async (req, res) => {
 
   try {
     const { ok, event, message } = await createNewEvent(
-      name, date, category, streetName, streetNumber, city, province
+      name, date, category, streetName, streetNumber, city, province, countryEvent
     );
 
     res.status(201).json({ ok, event, message });
@@ -81,8 +81,8 @@ export const putEventHandler = async (req, res) => {
       .json({ ok: false, message: "Invalid eventId format" });
   }
 
-  const { name, date, category, streetName, streetNumber, city, province } = req.body;
-  if (!name || !category || !date || !streetName || !streetNumber || !city || !province) {
+  const { name, date, category, streetName, streetNumber, city, province, country: countryEvent } = req.body;
+  if (!name || !category || !date || !streetName || !streetNumber || !city || !province || !countryEvent) {
     return res
       .status(400)
       .json({ ok: false, message: "All fields are required" });
@@ -90,7 +90,7 @@ export const putEventHandler = async (req, res) => {
 
   try {
     const { ok, event } = await updateEvent(
-      eventId, name, date, category, streetName, streetNumber, city, province
+      eventId, name, date, category, streetName, streetNumber, city, province, countryEvent
     );
 
     if (ok) {
