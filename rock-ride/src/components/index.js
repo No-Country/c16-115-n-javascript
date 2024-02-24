@@ -7,3 +7,4 @@ export { default as NavBar } from './NavBar/NavBar';
 export { default as RegisterNavBar } from './NavBar/RegisterNavBar';
 export { default as Carousel } from './Ui/Carousel';
 export { default as Divider } from './Ui/Divider';
+export { default as InfoItem } from './Ui/InfoItem';
