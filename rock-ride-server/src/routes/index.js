@@ -10,7 +10,7 @@ const router = Router()
 
 
 router.use('/auth', authRouter)
-router.use('/users', verifyToken, userRouter)
+router.use('/users', userRouter)
 router.use('/events', verifyToken, eventRouter)
 router.use('/trips', verifyToken, tripRouter)
 router.use('/tickets', verifyToken, ticketRouter)

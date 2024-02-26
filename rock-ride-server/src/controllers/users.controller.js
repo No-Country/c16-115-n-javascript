@@ -15,7 +15,11 @@ export const getUserById = async (id) => {
 
   try {
 
-    const user = await User.findByPk(id);
+    const user = await User.findByPk(id, {
+      where: {
+        deleted: false,
+      }
+    });
     return {
       ok: true,
       user
@@ -38,6 +42,7 @@ export const getUsers = async (name) => {
     if (name) {
       const users = await User.findAll({
         where: {
+          deleted: false,
           fullName: {
             [ Op.iLike ]: `%${ name.toLowerCase() }%` 
           }
@@ -57,7 +62,11 @@ export const getUsers = async (name) => {
       }
     }
 
-    const users = await User.findAll();
+    const users = await User.findAll({
+      where: {
+        deleted: false,
+      }
+    });
     return { 
       ok: true, 
       users 
@@ -73,7 +82,21 @@ export const getUsers = async (name) => {
 
 
 
-export const updateUser = async (id, userRole, { fullName, email, password, isDriver, plate, address, city, role, active, profileImg, carPhotos }) => {
+export const updateUser = async (id, userRole, { 
+  fullName, 
+  email, 
+  password, 
+  isDriver, 
+  plate, 
+  address, 
+  city, 
+  role, 
+  active, 
+  profileImg, 
+  carPhotos,
+  deleted
+}) => {
+
   try {
     const user = await User.findByPk(id);
     if (!user) {
@@ -103,7 +126,8 @@ export const updateUser = async (id, userRole, { fullName, email, password, isDr
           address,
           city,
           profileImg,
-          carPhotos
+          carPhotos,
+          deleted
         },
         {
           where: { id },
@@ -168,20 +192,39 @@ export const updateUser = async (id, userRole, { fullName, email, password, isDr
 }
 
 
-export const deleteUser = async (id) => {
+export const recoverAccount = async (email) => {
 
   try {
-
-    const user = await User.findByPk(id);
-
-    if (!user) return { ok: false, message: "User not found" }
-
-    await User.destroy( { where: { id } } )
-
-    return { ok: true, message: "User deleted successfully" }
     
+    const user = await User.findOne({
+      where: {
+        email,
+        deleted: true,
+      }
+    })
+
+    if (!user) {
+      return {
+        ok: false,
+        message: "User not found"
+      }
+    }
+
+    user.deleted = false;
+    await user.save();
+
+    return {
+      ok: true,
+      message: "User successfully recovered"
+    }
+
   } catch (error) {
     console.log(error.message);
-    return { ok: false, message: "Internal server error" }
+    return {
+      ok: false,
+      message: "Internal server error"
+    }
+    
   }
+
 }
