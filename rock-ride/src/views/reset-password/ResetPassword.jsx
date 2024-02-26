@@ -2,7 +2,7 @@
 import logo from '../../assets/imgs/drive-rock-v4.webp'
 import { ResetPasswordForm } from './ui/ResetPasswordForm'
 
-export const ResetPassword = () => {
+export default function ResetPassword() {
 
 
   return (

@@ -2,7 +2,7 @@
 import logo from '../../assets/imgs/drive-rock-v4.webp'
 import { InputEmailForm } from './ui/InputEmailForm'
 
-export const InputEmailToResetPassword = () => {
+export default function InputEmailToResetPassword() {
 
 
   return (
