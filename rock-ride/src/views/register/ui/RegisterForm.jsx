@@ -103,18 +103,12 @@ export const RegisterForm = () => {
     // console.log(data);
     const result = await createNewUser(data)
 
-
-    console.log(result);
-
-    result.token && localStorage.setItem('auth-token', result.token)
-
-
     setLoader(false)
     reset()
     setIsDriver(false);
     setErrorMessage('')
 
-    result.ok ? navigate('/') : alert(result.message)
+    result.ok ? navigate('/pending-verified') : alert(result.message)
   }
 
   return (
