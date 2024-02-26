@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom"
-import { EventPage, HomePage, LoginPage, RegisterPage } from "../views"
-
+import HomePage from "../views/Home"
+import LoginPage from "../views/login/Login"
+import RegisterPage from "../views/register/Register"
 
 
 export default function Navigation() {
@@ -10,7 +11,6 @@ export default function Navigation() {
           <Route path="/" element={<HomePage />}/>
           <Route path="/auth/sign-up" element={<RegisterPage/>} />
           <Route path="/auth/sign-in" element={<LoginPage/>} />
-          <Route path="/event/:id" element={<EventPage/>} />
         </Routes>
     </BrowserRouter>
   )
