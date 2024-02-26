@@ -190,7 +190,7 @@ export const LoginForm = () => {
           </div>
           {/* divisor l ine */}
           <div className="flex items-center my-5">|</div>
-          <p className="text-md"> Olvidé mi contraseña</p>
+          <NavLink to="/auth/reset-password" className="text-md"> Olvidé mi contraseña</NavLink>
         </div>
 
         {/* divisor l ine */}

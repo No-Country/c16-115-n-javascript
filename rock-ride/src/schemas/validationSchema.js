@@ -32,3 +32,14 @@ export const loginSchema = yup.object().shape({
     email: yup.string().email('El correo no es válido').required('El correo es obligatorio'),
     password: yup.string().required('La contraseña es obligatoria'),
 })
+
+
+export const resetPasswordSchema = yup.object().shape({
+    password: yup.string().required('La contraseña es obligatoria'),
+    confirmPassword: yup.string().required('La contraseña es obligatoria')
+    .oneOf([yup.ref('password'), null], 'Las contraseñas no coinciden'),
+})
+
+export const sendEmailToResetPasswordSchema = yup.object().shape({
+    email: yup.string().email('El correo no es válido').required('El correo es obligatorio'),
+})
