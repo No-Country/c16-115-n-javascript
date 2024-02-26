@@ -1,7 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom"
-import HomePage from "../views/Home"
-import LoginPage from "../views/login/Login"
-import RegisterPage from "../views/register/Register"
+import { EventPage, HomePage, LoginPage, RegisterPage } from "../views"
+
 import ErrorVerifiedPage from "../views/error-verify/ErrorVerified"
 import PendingVerifiedPage from "../views/pending-verified/PendingVerified"
 import { ResetPassword } from "../views/reset-password/ResetPassword"
@@ -19,6 +18,7 @@ export default function Navigation() {
           <Route path="/auth/sign-in" element={<LoginPage/>} />
           <Route path="/error-verified" element={ <ErrorVerifiedPage /> } />
           <Route path="/pending-verified" element={ <PendingVerifiedPage /> } />
+          <Route path="/event/:id" element={<EventPage/>} />
         </Routes>
     </BrowserRouter>
   )

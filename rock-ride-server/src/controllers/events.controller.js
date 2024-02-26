@@ -56,7 +56,8 @@ export const createNewEvent = async (
   streetName,
   streetNumber,
   city,
-  province
+  province,
+  countryEvent
 ) => {
   const {
     ok,
@@ -67,9 +68,15 @@ export const createNewEvent = async (
     cityGoogle,
     stateOrProvince,
     country,
-  } = await useLocation(`${streetName} ${streetNumber}`, city, province);
+  } = await useLocation(
+    `${streetName} ${streetNumber}`,
+    city,
+    province,
+    countryEvent
+  );
 
   if (!ok) return { ok, message };
+
   const formateAddres =
     streetNumberGoogle === null
       ? `${streetNameGoogle} ${streetNumber}`
@@ -108,7 +115,8 @@ export const updateEvent = async (
   streetName,
   streetNumber,
   city,
-  province
+  province,
+  countryEvent
 ) => {
   const {
     ok,
@@ -119,9 +127,15 @@ export const updateEvent = async (
     cityGoogle,
     stateOrProvince,
     country,
-  } = await useLocation(`${streetName} ${streetNumber}`, city, province);
+  } = await useLocation(
+    `${streetName} ${streetNumber}`,
+    city,
+    province,
+    countryEvent
+  );
 
   if (!ok) return { ok, message };
+
   const formateAddres =
     streetNumberGoogle === null
       ? `${streetNameGoogle} ${streetNumber}`
