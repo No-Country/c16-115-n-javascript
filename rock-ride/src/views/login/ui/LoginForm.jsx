@@ -1,10 +1,5 @@
 
 
-
-// import { useFormStatus } from "react-dom";
-
-
-// import { IoInformationCircleSharp } from "react-icons/io5";
 import clsx from "clsx";
 import { useEffect, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
@@ -14,8 +9,8 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { FaRegEyeSlash } from "react-icons/fa";
 import { FaRegEye } from "react-icons/fa";
 
-import { loginSchema } from "../../../schemas/validationSchema";
-import { login } from "../../../fetch/auth";
+import { loginSchema } from "@/schemas/validationSchema";
+import { login } from "@/fetch/auth";
 
 export const LoginForm = () => {
 
@@ -60,7 +55,7 @@ export const LoginForm = () => {
 
   const onSubmit = async (data) => {
     setLoader(true)
-    // console.log(data);
+
     if (saveLocalData) {
       localStorage.setItem('email', JSON.stringify(data.email))
     } else {
