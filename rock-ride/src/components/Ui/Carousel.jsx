@@ -1,4 +1,4 @@
-import React from "react";
+// import React from "react";
 import { Navigation, Pagination, Scrollbar, A11y, Autoplay } from "swiper/modules";
 
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -8,10 +8,12 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/scrollbar";
 
-const Carousel = ({ events = [1, 5, 3, 4, 8] }) => {
+const events = [1, 5, 3, 4, 8]
+
+const Carousel = () => {
   return (
     <Swiper
-    className=" "
+      className=""
       modules={[Navigation, Pagination, Scrollbar, Autoplay, A11y]}
       spaceBetween={0}
       autoplay={{
@@ -21,9 +23,9 @@ const Carousel = ({ events = [1, 5, 3, 4, 8] }) => {
       slidesPerView={2.3}
       
     >
-      {events.map((e) => {
+      {events.map((e, index) => {
         return (
-          <SwiperSlide>
+          <SwiperSlide key={index}>
             <EventCard />
           </SwiperSlide>
         );

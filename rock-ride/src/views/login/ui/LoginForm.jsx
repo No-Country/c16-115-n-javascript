@@ -92,7 +92,7 @@ export const LoginForm = () => {
   }
 
   return (
-    <div className="w-[400px] max-w-[90%]">
+    <div className="w-[90%] max-w-[400px]">
       <form
         autoComplete="off"
         onSubmit={handleSubmit(onSubmit)}
@@ -156,8 +156,8 @@ export const LoginForm = () => {
           disabled={false}
         >Ingresar</button>
 
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
+        <div className="flex w-full items-center justify-between">
+          <div className="flex items-center sm:gap-2">
             <label
               className="relative flex cursor-pointer items-center rounded-full p-3"
               htmlFor="checkbox"
@@ -186,11 +186,11 @@ export const LoginForm = () => {
                 </svg>
               </div>
             </label>
-            <label htmlFor="driver" className="flex items-center gap-2">Recordar datos</label>
+            <label htmlFor="driver" className="flex items-center gap-2 text-xs sm:text-base">Recordar datos</label>
           </div>
           {/* divisor l ine */}
           <div className="flex items-center my-5">|</div>
-          <NavLink to="/auth/reset-password" className="text-md"> Olvidé mi contraseña</NavLink>
+          <NavLink to="/auth/reset-password" className="text-xs sm:text-base"> Olvidé mi contraseña</NavLink>
         </div>
 
         {/* divisor l ine */}
