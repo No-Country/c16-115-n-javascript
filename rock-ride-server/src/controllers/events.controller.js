@@ -1,6 +1,8 @@
 import { Op } from "sequelize";
 import { Event } from "../database.js";
 import { useLocation } from "../helpers/useLocation.js";
+import { uploadImage } from "../../config/cloudinary.js";
+/* import { cleaner } from "../helpers/cleanerUploads.js"; */
 
 export const getEvents = async (name) => {
   try {
@@ -57,7 +59,8 @@ export const createNewEvent = async (
   streetNumber,
   city,
   province,
-  countryEvent
+  countryEvent,
+  img
 ) => {
   const {
     ok,
@@ -82,6 +85,12 @@ export const createNewEvent = async (
       ? `${streetNameGoogle} ${streetNumber}`
       : `${streetNameGoogle} ${streetNumberGoogle}`;
 
+      const result = await uploadImage(img);
+      const image = result.secure_url;
+      /* if(image){
+        cleaner();
+      } */
+
   try {
     const event = await Event.create({
       name,
@@ -92,6 +101,7 @@ export const createNewEvent = async (
       city: cityGoogle,
       stateOrProvince,
       country,
+      img: image
     });
 
     return {
