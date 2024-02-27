@@ -38,6 +38,10 @@ export const EventModel = (sequelize) => {
     category: {
       type: DataTypes.STRING,
       allowNull: false,
+    },
+    img: {
+      type: DataTypes.STRING,
+      allowNull: false,
     }
   });
 

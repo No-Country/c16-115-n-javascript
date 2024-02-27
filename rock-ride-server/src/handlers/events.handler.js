@@ -46,11 +46,12 @@ export const getEventByIdHandler = async (req, res) => {
 export const postEventHandler = async (req, res) => {
   const { name, date, category, streetName, streetNumber, city, province, country: countryEvent } = req.body;
   const { role: userRole } = req.user;
+  const  img  = req.files.img.tempFilePath;  
 
   if (userRole !== "admin")
     return res.status(401).json({ ok: false, message: "Unauthorized" });
 
-  if (!name || !category || !date || !streetName || !streetNumber || !city || !province || !countryEvent) {
+  if (!name || !category || !date || !streetName || !streetNumber || !city || !province || !countryEvent || !img) {
     return res
       .status(400)
       .json({ ok: false, message: "All fields are required" });
@@ -58,9 +59,9 @@ export const postEventHandler = async (req, res) => {
 
   try {
     const { ok, event, message } = await createNewEvent(
-      name, date, category, streetName, streetNumber, city, province, countryEvent
+      name, date, category, streetName, streetNumber, city, province, countryEvent, img
     );
-
+    
     res.status(201).json({ ok, event, message });
   } catch (error) {
     console.error("Error in postEventHandler:", error.message);
