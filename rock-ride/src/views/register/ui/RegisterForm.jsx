@@ -112,7 +112,7 @@ export const RegisterForm = () => {
   }
 
   return (
-    <div className="w-[400px] max-w-[90%]">
+    <div className="w-[90%] max-w-[400px]">
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col text-slate-200">
 
         {/* {
