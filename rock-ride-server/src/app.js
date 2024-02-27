@@ -1,12 +1,18 @@
-const express = require('express')
-const cors = require('cors')
-const logger = require('morgan')
+import express from 'express'
+import cors from 'cors'
+import logger from 'morgan'
+import morgan from 'morgan'
+import bodyParser from 'body-parser'
 // const path = require('path')
-// const Routes = require('./routes')
+import Routes from './routes/index.js'
+import path from 'path'
+
 
 const server = express()
 
 server.use(cors())
+
+server.use(morgan('dev'))
 
 server.use(logger('dev'))
 
@@ -24,10 +30,14 @@ server.use((req, res, next) => {
     next();
 });
 
+
+server.use(express.static('public'))
+server.use(express.urlencoded({ extended: true }))
+server.use(bodyParser.urlencoded({ extended: true }))
+
 server.use(express.json())
   
-// server.use(Routes)
+server.use(Routes)
 
-// server.use(express.static(path.join(__dirname, 'public')))
 
-module.exports = server
+export default server
