@@ -1,5 +1,5 @@
 import { LoginForm } from "./ui/LoginForm";
-import logo from '../../assets/imgs/drive-rock-v4.webp'
+import logo from '@/assets/imgs/drive-rock-v4.webp'
 
 
 export default function LoginPage() {

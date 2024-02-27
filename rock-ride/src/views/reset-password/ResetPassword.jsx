@@ -1,5 +1,5 @@
 
-import logo from '../../assets/imgs/drive-rock-v4.webp'
+import logo from '@/assets/imgs/drive-rock-v4.webp'
 import { ResetPasswordForm } from './ui/ResetPasswordForm'
 
 export default function ResetPassword() {

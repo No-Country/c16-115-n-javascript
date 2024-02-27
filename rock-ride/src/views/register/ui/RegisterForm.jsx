@@ -1,85 +1,56 @@
+import { useState } from "react";
 import clsx from "clsx";
 import { useForm } from "react-hook-form";
-
-// import { login, registerUser } from "@/actions"
 import { NavLink, useNavigate } from "react-router-dom";
-
 import { yupResolver } from "@hookform/resolvers/yup"
-import { registerSchema } from "../../../schemas/validationSchema";
-import { useState } from "react";
-import { createNewUser } from "../../../fetch/auth";
+
+import { registerSchema } from "@/schemas/validationSchema";
+import { createNewUser } from "@/fetch/auth";
+import { useDemographic } from "@/hooks/useDemographic";
 
 
-const countries = [
-  "Argentina"
-]
-
-const provinces = [
-  "Buenos Aires",
-  "Catamarca",
-  "Chaco",
-  "Chubut",
-  "Córdoba",
-  "Corrientes",
-  "Entre Ríos",
-  "Formosa",
-  "Jujuy",
-  "La Pampa",
-  "La Rioja",
-  "Mendoza",
-  "Misiones",
-  "Neuquén",
-  "Río Negro",
-  "San Juan",
-  "San Luis",
-  "Santa Cruz",
-  "Santa Fe",
-  "Santiago del Estero",
-  "Tierra del Fuego, Antártida e Islas del Atlántico Sur",
-  "Tucumán",
-]
-
-const cities = [
-  "Córdoba",
-  "Villa Carlos Paz",
-  "Río Cuarto",
-  "San Francisco",
-  "Alta Gracia",
-  "Villa María",
-  "Jesús María",
-  "Río Tercero",
-  "Cruz del Eje",
-  "Bell Ville",
-  "Laboulaye",
-  "Marcos Juárez",
-  "Morteros",
-  "Arroyito",
-  "Leones",
-  "Oncativo",
-  "Villa Allende",
-  "La Falda",
-  "Las Varillas",
-  "Mina Clavero",
-  "Cosquín",
-]
 
 
 export const RegisterForm = () => {
 
+  const navigate = useNavigate()
 
   const [errorMessage, setErrorMessage] = useState('')
-
-  const navigate = useNavigate()
-  // const [showMessage, setShowMessage] = useState(false)
   const [loader, setLoader] = useState(false)
-
-
   const [isDriver, setIsDriver] = useState(false); 
 
   const handleIsDriverChange = () => {
     setIsDriver((prevIsDriver) => !prevIsDriver); // Actualiza el estado al cambiar el checkbox
   };
-  // console.log(isDriver);
+
+  // Se creó un Custom Hook para abstraer toda la lógica que obtiene los paises, 
+  // provincias según país y ciudades según país y provincia
+  const {
+    countries,
+    provinces,
+    cities,
+    selectedCountry,
+    selectedProvince,
+    loadingCountries,
+    loadingProvinces,
+    loadingCities,
+    setSelectedCountry,
+    setSelectedProvince
+  } = useDemographic()
+
+
+  const handleCountryChange = (event) => {
+    const country = event.target.value;
+    const countryCode = JSON.parse(country).iso2;
+    setSelectedCountry(countryCode);
+  }
+
+  const handleProvinceChange = (event) => {
+    const province = event.target.value;
+    const provinceCode = JSON.parse(province).iso2;
+    setSelectedProvince(provinceCode);
+  }
+
 
   const { register, handleSubmit, formState: { errors }, reset } = useForm({
     defaultValues: {
@@ -96,20 +67,31 @@ export const RegisterForm = () => {
     },
     resolver: yupResolver(registerSchema)
   });
+  
 
+ 
 
   const onSubmit = async (data) => {
-    setLoader(true)
-    // console.log(data);
-    const result = await createNewUser(data)
 
+    const { country, province, ...rest } = data
+
+    const formateData = {
+      ...rest,
+      country: JSON.parse(country).name,
+      province: JSON.parse(province).name,
+    }
+    setLoader(true)
+    // console.log(formateData);
+    const result = await createNewUser(formateData)
     setLoader(false)
     reset()
     setIsDriver(false);
     setErrorMessage('')
 
-    result.ok ? navigate('/pending-verified') : alert(result.message)
+    result.ok ? navigate('/pending-verified') : setErrorMessage(result.message)
   }
+
+
 
   return (
     <div className="w-[90%] max-w-[400px]">
@@ -161,13 +143,14 @@ export const RegisterForm = () => {
         <div className="flex flex-col mb-5">
         <span>País</span>
         <select 
+          disabled={loadingCountries}
           className="p-2 border rounded-md bg-gray-200 text-gray-800"
-          { ...register('country', { required: true }) }
+          { ...register('country', { required: true, onChange: handleCountryChange }) }
         >
           <option value="">[ Seleccione ]</option>
           {
             countries.map(country => (
-              <option key={ country.id } className="text-gray-800" value={ country }>{ country }</option>
+              <option key={ country.id } className="text-gray-800" value={ JSON.stringify(country) }>{ country.name }</option>
             ))
           }
         </select>
@@ -176,13 +159,14 @@ export const RegisterForm = () => {
       <div className="flex flex-col mb-5">
         <span>Provincia</span>
         <select 
+          disabled={loadingProvinces || selectedCountry === ''}
           className="p-2 border rounded-md bg-gray-200 text-gray-800"
-          { ...register('province', { required: true }) }
+          { ...register('province', { required: true, onChange: handleProvinceChange }) }
         >
           <option value="">[ Seleccione ]</option>
           {
-            provinces.map(country => (
-              <option key={ country.id } className="text-gray-800" value={ country }>{ country }</option>
+            provinces.map(province => (
+              <option key={ province.id } className="text-gray-800" value={ JSON.stringify(province) }>{ province.name }</option>
             ))
           }
         </select>
@@ -191,13 +175,14 @@ export const RegisterForm = () => {
       <div className="flex flex-col mb-5">
         <span>Ciudad</span>
         <select 
+          disabled={loadingCities || selectedProvince === ''}
           className="p-2 border rounded-md bg-gray-200 text-gray-800"
           { ...register('city') }
         >
           <option value="">[ Seleccione ]</option>
           {
-            cities.map(country => (
-              <option key={ country.id } className="text-gray-800" value={ country }>{ country }</option>
+            cities.map(city => (
+              <option key={ city.id } className="text-gray-800" value={ city.name }>{ city.name }</option>
             ))
           }
         </select>

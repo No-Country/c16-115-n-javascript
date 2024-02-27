@@ -1,5 +1,5 @@
 import { RegisterForm } from "./ui/RegisterForm";
-import logo from '../../assets/imgs/drive-rock-v4.webp'
+import logo from '@/assets/imgs/drive-rock-v4.webp'
 
 export default function RegisterPage() {
   return (
