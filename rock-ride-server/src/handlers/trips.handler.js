@@ -94,17 +94,17 @@ export const putTripHandler = async (req, res) => {
 };
 
 export const deleteTripHandler = async (req, res) => {
-  const eventId = req.params.id;
+  const tripId = req.params.id;
   const { role: userRole, id: userId } = req.user;
   
-  if (!validateUuid(eventId)) {
+  if (!validateUuid(tripId)) {
     return res
       .status(400)
-      .json({ ok: false, message: "Invalid eventId format" });
+      .json({ ok: false, message: "Invalid tripId format" });
   }
 
   try {
-    const {ok, message, statusCode} = await deleteTrip(eventId, userRole, userId);
+    const {ok, message, statusCode} = await deleteTrip(tripId, userRole, userId);
 
     res.status(statusCode).json({ ok, message });
   } catch (error) {

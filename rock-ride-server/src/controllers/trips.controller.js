@@ -3,15 +3,6 @@ import { Trip, User, Event, Ticket} from "../database.js";
 export const createNewTrip = async (datetime, places, occupants, eventId, userId) => {
   try {
 
-    const ticket =  await Ticket.findOne({ where: { userId: userId, eventId: eventId }})
-    if(!ticket){
-      return {
-        ok: false,
-        message: "The user does not have a ticket for the event",
-        statusCode: 404,
-      };
-    }
-
     const user = await User.findByPk(userId);
     if (!user || !user.isDriver) {
       return {
@@ -26,6 +17,15 @@ export const createNewTrip = async (datetime, places, occupants, eventId, userId
       return {
         ok: false,
         message: "Event does not exist",
+        statusCode: 404,
+      };
+    }
+
+    const ticket =  await Ticket.findOne({ where: { userId: userId, eventId: eventId }})
+    if(!ticket){
+      return {
+        ok: false,
+        message: "The user does not have a ticket for the event",
         statusCode: 404,
       };
     }
@@ -91,15 +91,6 @@ export const getTripById = async (tripId) => {
 export const updateTrip = async (tripId, datetime, places, occupants, eventId, userId, userRole) => {
   try {
 
-    const ticket =  await Ticket.findOne({ where: { userId: userId, eventId: eventId }})
-    if(!ticket){
-      return {
-        ok: false,
-        message: "The user does not have a ticket",
-        statusCode: 404,
-      };
-    }
-
     const user = await User.findByPk(userId);
     if (!user || !user.isDriver) {
       return {
@@ -115,6 +106,15 @@ export const updateTrip = async (tripId, datetime, places, occupants, eventId, u
         ok: false,
         message: "Event does not exist",
         statusCode: 404
+      };
+    }
+
+    const ticket =  await Ticket.findOne({ where: { userId: userId, eventId: eventId }})
+    if(!ticket){
+      return {
+        ok: false,
+        message: "The user does not have a ticket",
+        statusCode: 404,
       };
     }
 

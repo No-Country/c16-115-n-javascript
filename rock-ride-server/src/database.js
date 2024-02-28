@@ -4,6 +4,7 @@ import { UserModel } from "./models/User.js"
 import { EventModel } from "./models/Event.js"
 import { TripModel } from "./models/Trip.js"
 import { TicketModel } from "./models/Ticket.js"
+import { BookingModel } from "./models/Booking.js"
 
 dotenv.config()
 
@@ -21,8 +22,9 @@ UserModel(sequelize)
 EventModel(sequelize)
 TripModel(sequelize)
 TicketModel(sequelize)
+BookingModel(sequelize)
 
-export const { User, Event, Trip, Ticket} = sequelize.models
+export const { User, Event, Trip, Ticket, Booking} = sequelize.models
 
 
 export const conn = sequelize
