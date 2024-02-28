@@ -1,4 +1,9 @@
-import { createNewBooking, getBookings } from "../controllers/bookings.controller.js";
+import {
+  createNewBooking,
+  getBookingById,
+  getBookings,
+} from "../controllers/bookings.controller.js";
+import { validate as validateUuid } from "uuid";
 
 export const postBookingHandler = async (req, res) => {
   const { tripId } = req.body;
@@ -30,5 +35,25 @@ export const getBookingsHandler = async (req, res) => {
   } catch (error) {
     console.error(error.message);
     res.status(500).json({ ok: false, message: "Internal server error" });
+  }
+};
+
+export const getBookingByIdHandler = async (req, res) => {
+  const bookingId = req.params.id;
+
+  if (!validateUuid(bookingId)) {
+    return res
+      .status(400)
+      .json({ ok: false, message: "Invalid bookingId format" });
+  }
+
+  try {
+    const {booking, statusCode, message} = await getBookingById(bookingId);
+    return res.status(statusCode).json({ booking, message });
+  } catch (error) {
+    console.error("Error in getBookingByIdHandler:", error.message);
+    return res
+      .status(500)
+      .json({ ok: false, message: "Internal server error" });
   }
 };

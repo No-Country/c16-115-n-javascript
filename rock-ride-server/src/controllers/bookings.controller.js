@@ -79,3 +79,19 @@ export const getBookings = async () => {
     };
   }
 };
+
+export const getBookingById = async (bookingId) => {
+  try {
+    const booking = await Booking.findByPk(bookingId);
+    if (!booking) {
+      return {
+        message: "Booking not found",
+        statusCode: 404,
+      };
+    }
+    return { booking, statusCode: 200 };
+  } catch (error) {
+    console.error("Error in getBookingById:", error.message);
+    throw new Error("Error fetching booking by ID");
+  }
+};
