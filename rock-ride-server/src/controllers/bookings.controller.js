@@ -95,3 +95,99 @@ export const getBookingById = async (bookingId) => {
     throw new Error("Error fetching booking by ID");
   }
 };
+
+export const updateBooking = async (status, userId, userRole, bookingId) => {
+  try {
+    const user = await User.findByPk(userId);
+    if (!user || !user.isDriver) {
+      return {
+        ok: false,
+        message: "Invalid user for updating this booking",
+        statusCode: 403,
+      };
+    }
+
+    const booking = await Booking.findByPk(bookingId);
+    if (!booking)
+      return { ok: false, message: "Booking not found", statusCode: 404 };
+
+    const trip = await Trip.findByPk(booking.tripId);
+    if (!trip) return { ok: false, message: "Trip not found", statusCode: 404 };
+
+    if (userRole === "user" && trip.userId !== userId) {
+      return {
+        ok: false,
+        message: "Invalid user for update this booking",
+        statusCode: 403,
+      };
+    }
+
+    const [rowsUpdated, [updatedBooking]] = await Booking.update(
+      {
+        eventId: booking.eventId,
+        userId: booking.userId,
+        status,
+      },
+      {
+        where: { id: bookingId },
+        returning: true,
+      }
+    );
+
+    if (
+      status === "accepted" &&
+      !trip.occupants.includes(booking.userId) &&
+      trip.occupants.length < trip.places
+    ) {
+      await Trip.update(
+        {
+          occupants: [...trip.occupants, booking.userId],
+        },
+        {
+          where: { id: booking.tripId },
+          returning: true,
+        }
+      );
+    } else if (
+      status === "rejected" &&
+      trip.occupants.includes(booking.userId)
+    ) {
+      await Trip.update(
+        {
+          occupants: trip.occupants.filter(
+            (occupantId) => occupantId !== booking.userId
+          ),
+        },
+        {
+          where: { id: booking.tripId },
+          returning: true,
+        }
+      );
+    }
+
+    const updatedTrip = await Trip.findByPk(booking.tripId);
+
+    if (rowsUpdated > 0) {
+      return {
+        ok: true,
+        booking: updatedBooking,
+        trip: updatedTrip,
+        message: "Booking updated in trip",
+        statusCode: 200,
+      };
+    } else {
+      return {
+        ok: false,
+        message: "Booking not found",
+        statusCode: 404,
+      };
+    }
+  } catch (error) {
+    console.error("Error in updateBooking:", error.message);
+    return {
+      ok: false,
+      message: "Error updating booking",
+      statusCode: 500,
+    };
+  }
+};

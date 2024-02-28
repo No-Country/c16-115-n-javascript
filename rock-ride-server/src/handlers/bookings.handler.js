@@ -2,6 +2,7 @@ import {
   createNewBooking,
   getBookingById,
   getBookings,
+  updateBooking,
 } from "../controllers/bookings.controller.js";
 import { validate as validateUuid } from "uuid";
 
@@ -55,5 +56,38 @@ export const getBookingByIdHandler = async (req, res) => {
     return res
       .status(500)
       .json({ ok: false, message: "Internal server error" });
+  }
+};
+
+export const putBookingHandler = async (req, res) => {
+  const bookingId = req.params.id;
+  const { role: userRole, id: userId } = req.user;
+
+  if (!validateUuid(bookingId)) {
+    return res
+      .status(400)
+      .json({ ok: false, message: "Invalid bookingId format" });
+  }
+
+  const { status } = req.body;
+  if (!status|| !bookingId || !userId || !userRole) {
+    return res
+      .status(400)
+      .json({ ok: false, message: "All fields are required" });
+  }
+
+  try {
+    const { ok, booking, trip, statusCode, message} = await updateBooking(
+      status,
+      userId,
+      userRole,
+      bookingId
+    );
+
+    res.status(statusCode).json({ ok, booking, trip, message });
+    
+  } catch (error) {
+    console.error("Error in putBookingHandler:", error.message);
+    res.status(500).json({ ok: false, message: "Internal server error" });
   }
 };
