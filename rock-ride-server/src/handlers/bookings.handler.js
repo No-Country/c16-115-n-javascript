@@ -1,8 +1,8 @@
-import { createNewBooking } from "../controllers/bookings.controller.js";
+import { createNewBooking, getBookings } from "../controllers/bookings.controller.js";
 
 export const postBookingHandler = async (req, res) => {
   const { tripId } = req.body;
-  const { id: userId} = req.user;
+  const { id: userId } = req.user;
 
   if (!tripId || !userId) {
     return res
@@ -13,12 +13,22 @@ export const postBookingHandler = async (req, res) => {
   try {
     const { ok, booking, message, statusCode } = await createNewBooking(
       tripId,
-      userId,
+      userId
     );
 
     res.status(statusCode).json({ ok, booking, message });
   } catch (error) {
     console.error("Error in postBookingHandler:", error.message);
+    res.status(500).json({ ok: false, message: "Internal server error" });
+  }
+};
+
+export const getBookingsHandler = async (req, res) => {
+  try {
+    const { ok, bookings, message, statusCode } = await getBookings();
+    res.status(statusCode).json({ ok, bookings, message });
+  } catch (error) {
+    console.error(error.message);
     res.status(500).json({ ok: false, message: "Internal server error" });
   }
 };
