@@ -1,5 +1,6 @@
 import {
   createNewBooking,
+  deleteBooking,
   getBookingById,
   getBookings,
   updateBooking,
@@ -91,3 +92,24 @@ export const putBookingHandler = async (req, res) => {
     res.status(500).json({ ok: false, message: "Internal server error" });
   }
 };
+
+export const deleteBookingHandler = async (req, res) => {
+  const bookingId = req.params.id;
+  const { role: userRole, id: userId } = req.user;
+  
+  if (!validateUuid(bookingId)) {
+    return res
+      .status(400)
+      .json({ ok: false, message: "Invalid bookingId format" });
+  }
+
+  try {
+    const {ok, message, statusCode} = await deleteBooking(bookingId, userRole, userId);
+
+    res.status(statusCode).json({ ok, message });
+  } catch (error) {
+    console.error("Error in deleteEventHandler:", error.message);
+    res.status(500).json({ ok: false, message: "Internal server error" });
+  }
+};
+

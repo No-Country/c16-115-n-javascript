@@ -191,3 +191,47 @@ export const updateBooking = async (status, userId, userRole, bookingId) => {
     };
   }
 };
+
+export const deleteBooking = async (bookingId, userRole, userId) => {
+  try {
+    const booking = await Booking.findByPk(bookingId);
+    if (!booking) return { ok: false, message: "Booking not found", statusCode: 404 };
+
+    if (userRole === "user" && booking.userId !== userId) {
+      return {
+        ok: false,
+        message: "Invalid user for delete this booking",
+        statusCode: 403
+      };
+    }
+
+    const trip = await Trip.findByPk(booking.tripId);
+    if (!trip) return { ok: false, message: "Trip not found", statusCode: 404 };
+
+    if (
+      trip.occupants.includes(booking.userId)
+    ) {
+      await Trip.update(
+        {
+          occupants: trip.occupants.filter(
+            (occupantId) => occupantId !== booking.userId
+          ),
+        },
+        {
+          where: { id: booking.tripId },
+          returning: true,
+        }
+      );
+    }
+
+    await Booking.destroy({ where: { id: bookingId } });
+    return {
+      ok: true,
+      message: "Booking deleted successfully",
+      statusCode: 200
+    };
+  } catch (error) {
+    console.error("Error in deletetBookingById:", error.message);
+    throw new Error("Error deleting trip by ID");
+  }
+};
