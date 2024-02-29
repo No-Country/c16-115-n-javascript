@@ -13,11 +13,11 @@ export const createNewTrip = async (datetime, places, occupants, eventId, userId
     }
 
     const event = await Event.findByPk(eventId);
-    if (!event) {
+    if (!event || event.deleted) {
       return {
         ok: false,
         message: "Event does not exist",
-        statusCode: 404,
+        statusCode: 404
       };
     }
 
@@ -101,7 +101,7 @@ export const updateTrip = async (tripId, datetime, places, occupants, eventId, u
     }
 
     const event = await Event.findByPk(eventId);
-    if (!event) {
+    if (!event || event.deleted) {
       return {
         ok: false,
         message: "Event does not exist",
@@ -119,7 +119,7 @@ export const updateTrip = async (tripId, datetime, places, occupants, eventId, u
     }
 
     const trip = await Trip.findByPk(tripId);
-    if (!trip) return { ok: false, message: "Trip not found", statusCode: 404 };
+    if (!trip || trip.deleted) return { ok: false, message: "Trip not found", statusCode: 404 };
 
     if (userRole === "user" && trip.userId !== userId) {
       return {
@@ -172,7 +172,7 @@ export const deleteTrip = async (tripId, userRole, userId) => {
   try {
     const trip = await Trip.findByPk(tripId);
 
-    if (!trip) return { ok: false, message: "Trip not found", statusCode: 404 };
+    if (!trip || trip.deleted) return { ok: false, message: "Trip not found", statusCode: 404 };
 
     if (userRole === "user" && trip.userId !== userId) {
       return {
@@ -182,12 +182,29 @@ export const deleteTrip = async (tripId, userRole, userId) => {
       };
     }
 
-    await Trip.destroy({ where: { id: tripId } });
-    return {
-      ok: true,
-      message: "Trip deleted successfully",
-      statusCode: 200
-    };
+    const [rowsUpdated, [updatedTrip]] = await Trip.update(
+      {
+        deleted: true
+      },
+      {
+        where: { id: tripId },
+        returning: true,
+      }
+    );
+
+    if (rowsUpdated > 0) {
+      return {
+        ok: true,
+        message: "Trip Deleted",
+        statusCode: 200
+      };
+    } else {
+      return {
+        ok: false,
+        message: "Trip not found",
+        statusCode: 404
+      };
+    }
   } catch (error) {
     console.error("Error in deletetTripById:", error.message);
     throw new Error("Error deleting trip by ID");

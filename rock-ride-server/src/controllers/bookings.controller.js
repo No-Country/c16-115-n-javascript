@@ -3,7 +3,7 @@ import { Trip, User, Ticket, Booking } from "../database.js";
 export const createNewBooking = async (tripId, userId) => {
   try {
     const trip = await Trip.findByPk(tripId);
-    if (!trip) {
+    if (!trip || trip.deleted) {
       return {
         ok: false,
         message: "Trip does not exist",
@@ -12,10 +12,10 @@ export const createNewBooking = async (tripId, userId) => {
     }
 
     const user = await User.findByPk(userId);
-    if (!user || user.isDriver) {
+    if (!user || trip.userId === userId) {
       return {
         ok: false,
-        message: "Invalid user for creating a booking",
+        message: "Invalid user for creating a booking in this trip",
         statusCode: 403,
       };
     }
@@ -109,10 +109,14 @@ export const updateBooking = async (status, userId, userRole, bookingId) => {
 
     const booking = await Booking.findByPk(bookingId);
     if (!booking)
-      return { ok: false, message: "Booking not found", statusCode: 404 };
+    return { ok: false, message: "Booking not found", statusCode: 404 };
+
+    if(booking.status === "canceled"){
+      return { ok: false, message: "Booking canceled", statusCode: 404 };
+    }
 
     const trip = await Trip.findByPk(booking.tripId);
-    if (!trip) return { ok: false, message: "Trip not found", statusCode: 404 };
+    if (!trip || trip.deleted) return { ok: false, message: "Trip not found", statusCode: 404 };
 
     if (userRole === "user" && trip.userId !== userId) {
       return {
@@ -224,12 +228,32 @@ export const deleteBooking = async (bookingId, userRole, userId) => {
       );
     }
 
-    await Booking.destroy({ where: { id: bookingId } });
-    return {
-      ok: true,
-      message: "Booking deleted successfully",
-      statusCode: 200
-    };
+    const [rowsUpdated, [deletedBooking]] = await Booking.update(
+      {
+        eventId: booking.eventId,
+        userId: booking.userId,
+        status: "canceled",
+      },
+      {
+        where: { id: bookingId },
+        returning: true,
+      }
+    );
+
+    if (rowsUpdated > 0) {
+      return {
+        ok: true,
+        booking: deletedBooking,
+        message: "Booking deleted in trip",
+        statusCode: 200,
+      };
+    } else {
+      return {
+        ok: false,
+        message: "Booking not found",
+        statusCode: 404,
+      };
+    }
   } catch (error) {
     console.error("Error in deletetBookingById:", error.message);
     throw new Error("Error deleting trip by ID");

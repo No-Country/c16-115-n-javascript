@@ -24,6 +24,11 @@ export const TripModel = (sequelize) => {
     occupants: {
       type: DataTypes.ARRAY(DataTypes.UUID),
       allowNull: false,
+    },
+    deleted: {
+      type: DataTypes.BOOLEAN,
+      allowNull: true,
+      defaultValue: false,
     }
   });
 
