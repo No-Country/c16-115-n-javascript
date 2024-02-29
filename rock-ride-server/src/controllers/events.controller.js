@@ -1,5 +1,5 @@
 import { Op } from "sequelize";
-import { Event } from "../database.js";
+import { Event, Trip } from "../database.js";
 import { useLocation } from "../helpers/useLocation.js";
 import { uploadImage } from "../../config/cloudinary.js";
 /* import { cleaner } from "../helpers/cleanerUploads.js"; */
@@ -44,7 +44,25 @@ export const getEvents = async (name) => {
 export const getEventById = async (eventId) => {
   try {
     const event = await Event.findByPk(eventId);
-    return event;
+
+    const trips =  await Trip.findAll({ where: { eventId: eventId }})
+    if(!trips){
+      return {
+        ok: false,
+        message: "The user does not have a ticket",
+        statusCode: 404,
+      };
+    }
+    
+    const tickets =  await Trip.findAll({ where: { eventId: eventId }})
+    if(!tickets){
+      return {
+        ok: false,
+        message: "The user does not have a ticket",
+        statusCode: 404,
+      };
+    }
+    return {event, trips, tickets};
   } catch (error) {
     console.error("Error in getEventById:", error.message);
     throw new Error("Error fetching event by ID");
