@@ -1,13 +1,19 @@
-import React, { useState } from "react";
-import { IoIosArrowBack } from "react-icons/io";
-import { NavLink, useNavigate } from "react-router-dom";
+import { useState } from "react";
+//import { IoIosArrowBack } from "react-icons/io";
+import { NavLink } from "react-router-dom";
 import logo from "../../../public/drive-rock-simple-v2.ico";
 import DrowpDownMenu from "../Ui/DropdownMenu";
-import { useJwt } from "react-jwt";
+//import { useJwt } from "react-jwt";
 import { useEffect } from "react";
+import { useScrollBgColor } from "@/hooks/useScrollBgColor";
+import clsx from "clsx";
+
 
 const NavBar = () => {
-  const navigate = useNavigate();
+
+  const { navbarBackground } = useScrollBgColor()
+
+  // const navigate = useNavigate();
   const [selectedOption, setSelectedOption] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
   const [decodedToken, setDecodeToken] = useState();
@@ -31,7 +37,14 @@ const NavBar = () => {
     setIsOpen(false);
   };
   return (
-    <div className="flex relative  w-[100%] items-center justify-center">
+    <div className={
+      clsx(
+        "flex fixed z-50 relative  w-[100%] items-center justify-center transition-colors",
+        {
+          "bg-[#fff] shadow-lg": navbarBackground,
+        }
+      )
+    }>
       <div className=" flex items-center justify-between w-[90%]">
         <div className="flex w-[40%] items-center justify-between">
           <div className="flex items-center justify-between  text-[#222222] font-['monserrat']">
