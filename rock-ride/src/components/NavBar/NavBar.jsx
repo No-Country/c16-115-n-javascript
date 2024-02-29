@@ -3,11 +3,27 @@ import { IoIosArrowBack } from "react-icons/io";
 import { NavLink, useNavigate } from "react-router-dom";
 import logo from "../../../public/drive-rock-simple-v2.ico";
 import DrowpDownMenu from "../Ui/DropdownMenu";
+import { useJwt } from "react-jwt";
+import { useEffect } from "react";
 
 const NavBar = () => {
   const navigate = useNavigate();
   const [selectedOption, setSelectedOption] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
+  const [decodedToken, setDecodeToken] = useState();
+  const [isExpired, setIsExpired] = useState();
+  const [token, setToken] = useState();
+
+  console.log({ decodedToken, isExpired });
+
+  useEffect(() => {
+    const token = localStorage.getItem("auth-token");
+    if (token) {
+      const { decodedToken, isExpired } = useJwt(token);
+      setDecodeToken(decodedToken);
+      setIsExpired(isExpired);
+    }
+  }, []);
 
   const handleSelect = (option) => {
     setSelectedOption(option);
@@ -37,20 +53,22 @@ const NavBar = () => {
             </ul>
           </div>
         </div>
-
-        {/* <div className="flex justify-between w-[17rem]">
-          <NavLink to={"/auth/sign-in"}>
-            <button className="btn-secondary  ">Iniciar sesion</button>
-          </NavLink>
-          <NavLink to={"/auth/sign-up"}>
-            <button className="btn-primary">Registrate</button>
-          </NavLink>
-        </div> */}
-        <DrowpDownMenu
-          handleSelect={handleSelect}
-          setIsOpen={setIsOpen}
-          isOpen={isOpen}
-        ></DrowpDownMenu>
+        {decodedToken ? (
+          <DrowpDownMenu
+            handleSelect={handleSelect}
+            setIsOpen={setIsOpen}
+            isOpen={isOpen}
+          ></DrowpDownMenu>
+        ) : (
+          <div className="flex justify-between w-[17rem]">
+            <NavLink to={"/auth/sign-in"}>
+              <button className="btn-secondary">Iniciar sesion</button>
+            </NavLink>
+            <NavLink to={"/auth/sign-up"}>
+              <button className="btn-primary">Registrate</button>
+            </NavLink>
+          </div>
+        )}
       </div>
     </div>
   );
