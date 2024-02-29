@@ -80,7 +80,7 @@ export const createNewUser = async (
         role: user.role,
       }
       const token = jwt.sign(payload, process.env.SECRET_KEY, {
-        expiresIn: '30d',
+        expiresIn: '24h',
       })
 
 
@@ -133,6 +133,7 @@ export const verifiedEmail = async (token) => {
     return { ok: false, message: "error code" }
   } else {
     user.emailVerified = true
+    user.code = null
 
     await user.save()
 
@@ -253,24 +254,35 @@ export const resetPassword = async (token, password) => {
       return { ok: false, message: "The user doesn't exist" }
     }
 
+    const { code } = data
+  // Verificar el código
+
+  if (code !== user.code) {
+    return { ok: false, message: "error code" }
+  } else {
+
     user.password = bcryptjs.hashSync(password)
-
+    user.code = null
+  
     await user.save()
-
+  
     const payload = {
       id: user.id,
       role: user.role,
     }
-
+  
     const newToken = jwt.sign(payload, process.env.SECRET_KEY, {
       expiresIn: '30d',
     })
-
-
+  
+  
     return {
       ok: true,
       newToken,
     }
+
+  }
+
 
   } catch (error) {
     console.log(error.message);

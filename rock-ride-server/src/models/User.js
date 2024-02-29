@@ -60,8 +60,7 @@ export const UserModel =  (sequelize) => {
     },
     code: {
       type: DataTypes.STRING,
-      allowNull: false,
-      defaultValue: ''
+      allowNull: true,
     },
     emailVerified: {
       type: DataTypes.BOOLEAN,
