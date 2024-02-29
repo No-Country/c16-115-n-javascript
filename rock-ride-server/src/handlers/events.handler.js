@@ -28,13 +28,13 @@ export const getEventByIdHandler = async (req, res) => {
   }
 
   try {
-    const event = await getEventById(eventId);
+    const {event, trips, tickets} = await getEventById(eventId);
 
     if (!event) {
       return res.status(404).json({ ok: false, message: "Event not found" });
     }
 
-    return res.status(200).json({ ok: true, event });
+    return res.status(200).json({ ok: true, event, trips, tickets });
   } catch (error) {
     console.error("Error in getEventByIdHandler:", error.message);
     return res
