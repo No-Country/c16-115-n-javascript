@@ -11,7 +11,7 @@ export const BookingModel = (sequelize) => {
       primaryKey: true,
     },
     status: {
-      type: DataTypes.ENUM("pending", "accepted", "rejected"),
+      type: DataTypes.ENUM("pending", "accepted", "rejected", "canceled"),
       allowNull: false,
       defaultValue: "pending",
     },

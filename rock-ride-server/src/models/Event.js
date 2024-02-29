@@ -42,6 +42,11 @@ export const EventModel = (sequelize) => {
     img: {
       type: DataTypes.STRING,
       allowNull: false,
+    },
+    deleted: {
+      type: DataTypes.BOOLEAN,
+      allowNull: true,
+      defaultValue: false,
     }
   });
 
