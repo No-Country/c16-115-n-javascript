@@ -1,9 +1,9 @@
-import { NavLink } from "react-router-dom";
+// import { NavLink } from "react-router-dom";
 import {
   Carousel,
-  EventCard,
+  // EventCard,
   InfoItem,
-  NavBar,
+  // NavBar,
   SearchInput,
 } from "../components";
 import { MdOutlineSavings } from "react-icons/md";
@@ -19,7 +19,7 @@ export default function HomePage() {
         <div
           className={` w-[100%] backdrop-brightness-[1.4] bg-[#ffda8b]/[.13]  flex flex-col items-center h-[25rem]`}
         >
-          <NavBar />
+          {/* <NavBar /> */}
         </div>
       </div>
       <div className="flex items-center absolute top-[21.5rem] w-[100%] justify-center z-40">
