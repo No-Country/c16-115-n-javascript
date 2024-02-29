@@ -12,19 +12,20 @@ const NavBar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [decodedToken, setDecodeToken] = useState();
   const [isExpired, setIsExpired] = useState();
-  const [token, setToken] = useState();
+  //const [token, setToken] = useState();
+
+
 
   console.log({ decodedToken, isExpired });
 
+  const token = localStorage.getItem("auth-token");
+  /* if (token) {
+    const { decodedToken, isExpired } = useJwt(token);
+    setDecodeToken(decodedToken);
+    setIsExpired(isExpired);
+  } */
   useEffect(() => {
-    const token = localStorage.getItem("auth-token");
-    if (token) {
-      const { decodedToken, isExpired } = useJwt(token);
-      setDecodeToken(decodedToken);
-      setIsExpired(isExpired);
-    }
   }, []);
-
   const handleSelect = (option) => {
     setSelectedOption(option);
     setIsOpen(false);
@@ -53,7 +54,7 @@ const NavBar = () => {
             </ul>
           </div>
         </div>
-        {decodedToken ? (
+        {token ? (
           <DrowpDownMenu
             handleSelect={handleSelect}
             setIsOpen={setIsOpen}

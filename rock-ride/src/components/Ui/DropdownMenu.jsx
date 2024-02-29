@@ -37,7 +37,7 @@ const DrowpDownMenu = () => {
         finalFocusRef={btnRef}
       >
         <DrawerOverlay />
-        <DrawerContent className="p-[2rem]" backgroundColor="#f2f2f2">
+        <DrawerContent className="p-[2rem] " backgroundColor="#f2f2f2">
           <div className="flex items-center justify-end">
             <DrawerCloseButton />
           </div>
