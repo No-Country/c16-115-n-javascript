@@ -1,4 +1,5 @@
-import { Trip, User, Event, Ticket} from "../database.js";
+import { Op } from "sequelize";
+import { Trip, User, Event, Ticket, Booking} from "../database.js";
 
 export const createNewTrip = async (datetime, places, occupants, eventId, userId) => {
   try {
@@ -81,7 +82,10 @@ export const getTripById = async (tripId) => {
         statusCode: 404,
       };
     }
-    return {trip, statusCode:200};
+
+    const bookings = await Booking.findAll({ where: { tripId, status: {[Op.not]: "canceled"}, }})
+
+    return {trip, statusCode:200, bookings};
   } catch (error) {
     console.error("Error in getTripById:", error.message);
     throw new Error("Error fetching trip by ID");

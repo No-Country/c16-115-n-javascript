@@ -42,7 +42,11 @@ export const createNewTicket = async (eventId, userId) => {
 
 export const getTickets = async () => {
   try {
-    const tickets = await Ticket.findAll();
+    const tickets = await Ticket.findAll({
+      where: {
+        deleted: false,
+      }
+    });
     return {
       ok: true,
       tickets,
