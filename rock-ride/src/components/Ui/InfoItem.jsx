@@ -2,7 +2,7 @@ import React from 'react'
 
 const InfoItem = ({icon,title,content}) => {
     return (
-        <div className={` flex flex-col w-[25%] justify-between text-center h-[14rem] items-center`}>
+        <div className={` flex flex-col w-[90%] md:w-[25%] justify-between text-center h-[14rem] items-center`}>
           <div className="  flex flex-col items-center justify-between  ">
             <div className="text-[4rem]">
             {icon}
