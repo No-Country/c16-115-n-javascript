@@ -13,21 +13,15 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/scrollbar";
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchEvents } from "../../redux/features/event-slice";
+
+import { useEventStore } from "../../hooks/useEventStore";
+import { useSelector } from "react-redux";
 
 
 const Carousel = () => {
-  const events = useSelector(
-    (state) => state.eventReducer?.allEvents.events
-  );
-  const dispatch = useDispatch()
+  const {setActiveEvent} = useEventStore();
 
-
-  useEffect(() => {
-    if(!events?.lenght)dispatch(fetchEvents())
-  }, []);
+  const { events} = useSelector((state) => state.event);
 
   return (
     <Swiper
@@ -53,7 +47,7 @@ const Carousel = () => {
       {events?.map((e, index) => {
         return (
           <SwiperSlide key={index}>
-            <EventCard Name={e.name} img={e.img} id={e.id} />
+            <EventCard name={e.name} img={e.img} id={e.id} setActiveEvent={setActiveEvent} />
           </SwiperSlide>
         );
       })}

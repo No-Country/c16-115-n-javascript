@@ -1,7 +1,6 @@
-import React from "react";
 import { NavLink } from "react-router-dom";
 
-const EventCard = ({ Name = "Apple Worldwide", TripAmount = 10, id = 1, img }) => {
+const EventCard = ({ Name = "Apple Worldwide", TripAmount = 10, id = 1, img, setActiveEvent }) => {
   return (
     <>
       <NavLink className={"flex lg:hidden"} to={`/event/${id}`}>
@@ -19,7 +18,7 @@ const EventCard = ({ Name = "Apple Worldwide", TripAmount = 10, id = 1, img }) =
           <h3 className="text-[2.5rem] ">{Name}</h3>
           <div className="flex justify-between items-end">
             <NavLink to={`/event/${id}`}>
-              <button className="rounded-3xl bg-[#18A0FB] text-white h-[3rem] w-auto px-[2rem]">
+              <button className="rounded-3xl bg-[#18A0FB] text-white h-[3rem] w-auto px-[2rem]" onClick={()=> setActiveEvent(id)}>
                 Ver viajes
               </button>
             </NavLink>

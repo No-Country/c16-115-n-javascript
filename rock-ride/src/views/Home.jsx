@@ -8,8 +8,22 @@ import {
 import { MdOutlineSavings } from "react-icons/md";
 import { IoPlayForward } from "react-icons/io5";
 import { FaUserFriends } from "react-icons/fa";
+import { useTripStore } from "../hooks/useTripStore";
+import { useEffect } from "react";
+import { useEventStore } from "../hooks/useEventStore";
+
 
 export default function HomePage() {
+
+  const {trips, startLoadingTrips } = useTripStore();
+  const {events, startLoadingEvents} = useEventStore();
+
+  useEffect(() => {
+    startLoadingEvents();
+    startLoadingTrips();
+  }, [startLoadingEvents,startLoadingTrips])
+
+  console.log(events,trips)
   return (
     <div className="flex flex-col items-center ">
       <div
