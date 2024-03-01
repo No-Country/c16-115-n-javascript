@@ -27,7 +27,11 @@ export const getEvents = async (name) => {
       }
     }
 
-    const events = await Event.findAll();
+    const events = await Event.findAll({
+      where: {
+        deleted: false,
+      }
+    });
     return {
       ok: true,
       events,

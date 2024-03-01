@@ -1,3 +1,4 @@
+import { Op } from "sequelize";
 import { Trip, User, Ticket, Booking } from "../database.js";
 
 export const createNewBooking = async (tripId, userId) => {
@@ -64,7 +65,11 @@ export const createNewBooking = async (tripId, userId) => {
 
 export const getBookings = async () => {
   try {
-    const bookings = await Booking.findAll();
+    const bookings = await Booking.findAll({
+      where: {
+        status: {[Op.not]: "canceled"},
+      }
+    });
     return {
       ok: true,
       bookings,
