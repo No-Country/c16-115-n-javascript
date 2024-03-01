@@ -11,6 +11,7 @@ import { FaRegEye } from "react-icons/fa";
 
 import { loginSchema } from "@/schemas/validationSchema";
 import { login } from "@/fetch/auth";
+import { useAuthStore } from "../../../hooks/useAuthStore";
 
 export const LoginForm = () => {
 
@@ -19,6 +20,8 @@ export const LoginForm = () => {
   const [loader, setLoader] = useState(false)
 
   const [saveLocalData, setSaveLocalData] = useState(false);
+
+  const {startLogin} = useAuthStore();
 
   const navigate = useNavigate()
 
@@ -63,7 +66,8 @@ export const LoginForm = () => {
       email !== undefined && localStorage.removeItem('email')
     }
     const result = await login(data)
-
+    
+    startLogin({email: data.email, password: data.password});
 
     console.log(result);
 
@@ -84,6 +88,7 @@ export const LoginForm = () => {
       result.ok && navigate('/')
     }
 
+    
   }
 
   return (

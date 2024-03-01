@@ -1,12 +1,13 @@
 import { useState } from "react";
 //import { IoIosArrowBack } from "react-icons/io";
 import { NavLink } from "react-router-dom";
-import logo from "../../../public/drive-rock-simple-v2.ico";
+/* import logo from "../../../public/drive-rock-simple-v2.ico"; */
 import DrowpDownMenu from "../Ui/DropdownMenu";
 //import { useJwt } from "react-jwt";
 import { useEffect } from "react";
 import { useScrollBgColor } from "@/hooks/useScrollBgColor";
 import clsx from "clsx";
+import { useAuthStore } from "../../hooks/useAuthStore";
 
 
 const NavBar = () => {
@@ -14,28 +15,22 @@ const NavBar = () => {
   const { navbarBackground } = useScrollBgColor()
 
   // const navigate = useNavigate();
-  const [selectedOption, setSelectedOption] = useState(null);
+  const [/* selectedOption */, setSelectedOption] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
-  const [decodedToken, setDecodeToken] = useState();
-  const [isExpired, setIsExpired] = useState();
   //const [token, setToken] = useState();
 
-
-
-  console.log({ decodedToken, isExpired });
-
-  const token = localStorage.getItem("auth-token");
-  /* if (token) {
-    const { decodedToken, isExpired } = useJwt(token);
-    setDecodeToken(decodedToken);
-    setIsExpired(isExpired);
-  } */
+  const { status, checkAuthToken } = useAuthStore();
+ 
   useEffect(() => {
+    checkAuthToken();
   }, []);
+
+
   const handleSelect = (option) => {
     setSelectedOption(option);
     setIsOpen(false);
   };
+
   return (
     <div className={
       clsx(
@@ -67,7 +62,7 @@ const NavBar = () => {
             </ul>
           </div>
         </div>
-        {token ? (
+        {status === "authenticated" ? (
           <DrowpDownMenu
             handleSelect={handleSelect}
             setIsOpen={setIsOpen}
