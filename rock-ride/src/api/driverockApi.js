@@ -7,7 +7,7 @@ const driveRockApi = axios.create({
 driveRockApi.interceptors.request.use(config => {
     config.headers = {
         ...config.headers,
-        'x-token': localStorage.getItem('token')
+        'Authorization': `Bearer ${localStorage.getItem('auth-token')}`
     }
     return config;
 })
