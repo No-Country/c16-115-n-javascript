@@ -18,8 +18,8 @@ const DrowpDownMenu = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = useRef();
   return (
-    <div className="flex cursor-pointer text-[#222222] ">
-      <div className="flex items-center justify-end">
+    <div className="flex cursor-pointer  text-[#222222] ">
+      <div className="flex items-center z-[10] justify-end">
         <div
           ref={btnRef}
           onClick={onOpen}
@@ -37,8 +37,9 @@ const DrowpDownMenu = () => {
         finalFocusRef={btnRef}
       >
         <DrawerOverlay />
-        <DrawerContent className="p-[2rem] " backgroundColor="#f2f2f2">
-          <div className="flex items-center justify-end">
+        <DrawerContent className="p-[2rem] max-w-[350px] " backgroundColor="#f2f2f2">
+          <div className="h-[5rem] z-50 bg-"></div>
+          <div className="flex items-center  justify-end">
             <DrawerCloseButton />
           </div>
           <DrawerHeader>Create your account</DrawerHeader>

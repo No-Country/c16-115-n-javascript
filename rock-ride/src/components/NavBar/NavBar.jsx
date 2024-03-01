@@ -39,7 +39,7 @@ const NavBar = () => {
   return (
     <div className={
       clsx(
-        "flex fixed z-50 relative  w-[100%] items-center justify-center transition-colors",
+        "flex fixed z-50  w-[100%] items-center justify-center transition-colors",
         {
           "bg-[#fff] shadow-lg": navbarBackground,
         }
