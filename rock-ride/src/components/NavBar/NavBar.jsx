@@ -8,20 +8,17 @@ import clsx from "clsx";
 import { useAuthStore } from "../../hooks/useAuthStore";
 import { IoMenuOutline } from "react-icons/io5";
 import { FaCircleUser } from "react-icons/fa6";
+import { useDisclosure } from "@chakra-ui/react";
+import { SideBarMenu } from "../sidebar-menu/SidebarMenu";
 
 
 const NavBar = () => {
 
   const { navbarBackground } = useScrollBgColor()
-
-  // const navigate = useNavigate();
-  // const [/* selectedOption */, setSelectedOption] = useState(null);
-  // const [isOpen, setIsOpen] = useState(false);
-  //const [token, setToken] = useState();
-
+  
   const { status, checkAuthToken, user } = useAuthStore();
- 
-
+  
+  
   useEffect(() => {
     if ( status === 'checking' ) {
       checkAuthToken();
@@ -29,11 +26,11 @@ const NavBar = () => {
   }, [status, checkAuthToken]);
 
   const currentUser = user.user;
-  // const handleSelect = (option) => {
-  //   setSelectedOption(option);
-  //   setIsOpen(false);
-  // };
 
+  const userData = currentUser && { profileImg: currentUser.profileImg, name: currentUser.fullName, role: currentUser.role } 
+  
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  
   return (
     <div className={
       clsx(
@@ -43,6 +40,8 @@ const NavBar = () => {
         }
       )
     }>
+      <SideBarMenu isOpen={ isOpen } onClose={ onClose } userData={ userData } />
+
       <div className=" flex items-center justify-between w-[90%]">
         <div className="flex items-center justify-center">
           <div className="flex items-center justify-between gap-2 text-[#222222] font-['monserrat']">
@@ -79,7 +78,7 @@ const NavBar = () => {
               // Muestra Avatar Menu
               <div className="flex items-center z-[10] justify-end">
               <div
-                //  onClick={onOpen}
+                 onClick={onOpen}
                 className="flex  w-[7rem] h-[3rem] items-center justify-between px-[0.8rem] rounded-3xl border-solid border-[1px] border-[#c5c5c5]"
               >
                 <IoMenuOutline className="h-[2rem] w-[2rem]" />
