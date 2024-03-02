@@ -2,7 +2,7 @@
 import { NavLink } from "react-router-dom";
 import logo from "../../assets/imgs/drive-rock-v4.webp"
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useScrollBgColor } from "@/hooks/useScrollBgColor";
 import clsx from "clsx";
 import { useAuthStore } from "../../hooks/useAuthStore";
@@ -10,6 +10,8 @@ import { IoMenuOutline } from "react-icons/io5";
 import { FaCircleUser } from "react-icons/fa6";
 import { useDisclosure } from "@chakra-ui/react";
 import { SideBarMenu } from "../sidebar-menu/SidebarMenu";
+import { useTripStore } from "../../hooks/useTripStore";
+import { useEventStore } from "../../hooks/useEventStore";
 
 
 const NavBar = () => {
@@ -17,8 +19,20 @@ const NavBar = () => {
   const { navbarBackground } = useScrollBgColor()
   
   const { status, checkAuthToken, user } = useAuthStore();
-  
-  
+
+  const { startLoadingTrips } = useTripStore();
+  const { startLoadingEvents } = useEventStore();  
+
+  const [dataLoaded, setDataLoaded] = useState(false);
+
+  useEffect(() => {
+    if (!dataLoaded) {
+      startLoadingEvents();
+      startLoadingTrips();
+      setDataLoaded(true);
+    }
+  }, []);
+    
   useEffect(() => {
     if ( status === 'checking' ) {
       checkAuthToken();

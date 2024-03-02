@@ -4,13 +4,19 @@ import { useForm } from "react-hook-form";
 import { newTripSchema } from "../../../../schemas/validationSchema";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useTripStore } from "../../../../hooks/useTripStore";
-import { useToast } from '@chakra-ui/react'
+import { useToast } from "@chakra-ui/react";
+import { useAuthStore } from "../../../../hooks/useAuthStore";
+import { useSelector } from "react-redux";
+import moment from "moment";
 
 export const NewTrip = () => {
-  const toast = useToast();
   const [isModalOpen, setModalOpen] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const [ /* loading */ ,setLoading] = useState(false);
+  const [, /* loading */ setLoading] = useState(false);
+  const { checkAuthToken } = useAuthStore();
+  const toast = useToast();
+  const { activeEvent } = useSelector((state) => state.event);
+
   const { startNewTrip } = useTripStore();
 
   const handleOpenModal = () => {
@@ -19,7 +25,7 @@ export const NewTrip = () => {
 
   const handleCloseModal = () => {
     setModalOpen(false);
-    setErrorMessage('');
+    setErrorMessage("");
   };
 
   const {
@@ -37,7 +43,7 @@ export const NewTrip = () => {
 
   const onSubmit = async (data) => {
     setLoading(true);
-    
+
     const formData = new FormData();
     formData.append("datetime", data.datetime);
     formData.append("places", data.places);
@@ -49,15 +55,16 @@ export const NewTrip = () => {
       return;
     }
 
-    setLoading(false);
     toast({
-      title: 'Viaje creado.',
+      title: "Viaje creado.",
       description: "Tu viaje fue creado",
-      status: 'success',
+      status: "success",
       duration: 9000,
       isClosable: true,
     });
     handleCloseModal();
+    setLoading(false);
+    checkAuthToken();
     reset();
   };
 
@@ -67,9 +74,21 @@ export const NewTrip = () => {
         className="bg-[#18A0FB] text-white p-2 rounded"
         onClick={handleOpenModal}
       >
-        Crear viaje
+        Crear Trip
       </button>
       <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
+        {/* <img src={activeEvent.img} alt={activeEvent.name} /> */}
+        {activeEvent ? (
+          <div>
+            <h1 className="text-center font-semibold">{activeEvent.name}</h1>
+            <img src={activeEvent.img} alt={activeEvent.name} />
+            <h3 className="text-gray-400 text-center">
+              {moment(activeEvent.date).format("YYYY-MM-DD")}
+            </h3>
+          </div>
+        ) : (
+          <div className="text-gray-400 text-center">Selecciona un evento</div>
+        )}
         <form
           onSubmit={handleSubmit(onSubmit)}
           className="grid px-5 grid-cols-1"
@@ -82,6 +101,12 @@ export const NewTrip = () => {
                 type="datetime-local"
                 className="p-2 border rounded-md bg-gray-200"
                 {...register("datetime", { required: true })}
+                max={
+                  activeEvent
+                    ? moment(activeEvent.date).format("YYYY-MM-DDTHH:mm")
+                    : undefined
+                }
+                min={moment().format("YYYY-MM-DDTHH:mm")}
               />
               {errors.datetime?.type !== undefined && (
                 <p className="text-red-500">{errors.datetime.message}</p>

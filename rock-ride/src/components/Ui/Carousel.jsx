@@ -47,7 +47,7 @@ const Carousel = () => {
       {events?.map((e, index) => {
         return (
           <SwiperSlide key={index}>
-            <EventCard name={e.name} img={e.img} id={e.id} setActiveEvent={setActiveEvent} />
+            <EventCard event={e} setActiveEvent={setActiveEvent} />
           </SwiperSlide>
         );
       })}
