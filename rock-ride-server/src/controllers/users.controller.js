@@ -1,5 +1,5 @@
 import { Op } from "sequelize";
-import { Booking, Trip, User } from "../database.js";
+import { Booking, Ticket, Trip, User } from "../database.js";
 import { validate as validateUuid } from "uuid";
 
 export const getUserById = async (id) => {
@@ -20,12 +20,14 @@ export const getUserById = async (id) => {
       where: { userId: id, status: { [Op.not]: "canceled" } },
     });
     const trips = await Trip.findAll({ where: { userId: id, deleted: false } });
+    const tickets = await Ticket.findAll({ where: { userId: id } });
 
     return {
       ok: true,
       user,
       bookings,
       trips,
+      tickets,
     };
   } catch (error) {
     console.log(error.message);

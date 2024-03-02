@@ -34,10 +34,6 @@ export const useTripStore = () => {
   const startLoadingTrips = async () => {
     try {
       const { data } = await driveRockApi.get("/trips");
-      /* const tripsforUser = data.trips.filter(
-        (trip) => trips.userId == user.uid
-      ); */
-
       dispatch(onLoadTrips(data.trips));
     } catch (error) {
       console.log("Error cargando viajes", error);
@@ -50,7 +46,6 @@ export const useTripStore = () => {
       dispatch(onDeleteTrip());
     } catch (error) {
       console.log(error);
-      /*  Swal.fire("Error al eliminar", error.response.data.msg, "error"); */
     }
   };
 

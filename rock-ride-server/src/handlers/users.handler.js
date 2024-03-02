@@ -16,8 +16,8 @@ export const getUserByIdHandler = async (req, res) => {
 
   try {
 
-    const {ok, user, bookings, trips} = await getUserById(id)
-    res.status(200).json({ ok, user, bookings, trips });
+    const {ok, user, bookings, trips, tickets} = await getUserById(id)
+    res.status(200).json({ ok, user, bookings, trips, tickets });
 
   } catch (error) {
     console.log(error.message);

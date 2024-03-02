@@ -9,6 +9,7 @@ import { MdOutlineSavings } from "react-icons/md";
 import { IoPlayForward } from "react-icons/io5";
 import { FaUserFriends } from "react-icons/fa";
 import { NewTrip } from "./driver/trips/new-trip/NewTrip";
+import { NewTicket } from "./driver/tickets/new-ticket/NewTicket";
 
 
 export default function HomePage() {
@@ -33,6 +34,7 @@ export default function HomePage() {
       </div>
 
       <NewTrip/>
+      <NewTicket/>
 
       <div className="flex flex-col justify-between  md:h-[24rem] mb-[5rem] text-[#272727] w-[100%]">
         <div className="flex flex-col text-center items-center justify-center ">
