@@ -11,6 +11,7 @@ import { FaUserFriends } from "react-icons/fa";
 import { useTripStore } from "../hooks/useTripStore";
 import { useEffect } from "react";
 import { useEventStore } from "../hooks/useEventStore";
+import { NewTrip } from "./driver/trips/new-trip/NewTrip";
 
 
 export default function HomePage() {
@@ -42,6 +43,8 @@ export default function HomePage() {
           </div>
         </div>
       </div>
+
+      <NewTrip/>
 
       <div className="flex flex-col justify-between  md:h-[24rem] mb-[5rem] text-[#272727] w-[100%]">
         <div className="flex flex-col text-center items-center justify-center ">

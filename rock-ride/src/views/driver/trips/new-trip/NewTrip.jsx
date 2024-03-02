@@ -4,13 +4,14 @@ import { useForm } from "react-hook-form";
 import { newTripSchema } from "../../../../schemas/validationSchema";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useTripStore } from "../../../../hooks/useTripStore";
+import { useToast } from '@chakra-ui/react'
 
 export const NewTrip = () => {
+  const toast = useToast();
   const [isModalOpen, setModalOpen] = useState(false);
-  const [/* errorMessage */, setErrorMessage] = useState('')
-  const [/* loading */, setLoading] = useState(false);
-
-  const { startSavingPlan } = useTripStore();
+  const [errorMessage, setErrorMessage] = useState("");
+  const [ /* loading */ ,setLoading] = useState(false);
+  const { startNewTrip } = useTripStore();
 
   const handleOpenModal = () => {
     setModalOpen(true);
@@ -18,6 +19,7 @@ export const NewTrip = () => {
 
   const handleCloseModal = () => {
     setModalOpen(false);
+    setErrorMessage('');
   };
 
   const {
@@ -27,7 +29,7 @@ export const NewTrip = () => {
     reset,
   } = useForm({
     defaultValues: {
-      date: Date.now(),
+      datetime: Date.now(),
       places: 0,
     },
     resolver: yupResolver(newTripSchema),
@@ -35,20 +37,27 @@ export const NewTrip = () => {
 
   const onSubmit = async (data) => {
     setLoading(true);
-   
+    
     const formData = new FormData();
-    formData.append("date", data.date);
+    formData.append("datetime", data.datetime);
     formData.append("places", data.places);
 
-    console.log(data);
-    const result = await startSavingPlan(formData);
+    const result = await startNewTrip(data);
     if (!result.ok) {
-      setErrorMessage(result.message);
+      setErrorMessage(result.error);
       setLoading(false);
       return;
     }
 
     setLoading(false);
+    toast({
+      title: 'Viaje creado.',
+      description: "Tu viaje fue creado",
+      status: 'success',
+      duration: 9000,
+      isClosable: true,
+    });
+    handleCloseModal();
     reset();
   };
 
@@ -58,7 +67,7 @@ export const NewTrip = () => {
         className="bg-[#18A0FB] text-white p-2 rounded"
         onClick={handleOpenModal}
       >
-        Abrir Modal
+        Crear viaje
       </button>
       <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
         <form
@@ -72,10 +81,10 @@ export const NewTrip = () => {
               <input
                 type="datetime-local"
                 className="p-2 border rounded-md bg-gray-200"
-                {...register("date", { required: true })}
+                {...register("datetime", { required: true })}
               />
-              {errors.date?.type !== undefined && (
-                <p className="text-red-500">{errors.date.message}</p>
+              {errors.datetime?.type !== undefined && (
+                <p className="text-red-500">{errors.datetime.message}</p>
               )}
             </div>
 
@@ -106,6 +115,8 @@ export const NewTrip = () => {
                 </span>
               </button>
             </div>
+
+            <span className="text-red-500 text-center">{errorMessage}</span>
           </div>
         </form>
       </Modal>
