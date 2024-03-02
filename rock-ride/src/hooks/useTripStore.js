@@ -21,7 +21,7 @@ export const useTripStore = () => {
       const { data } = await driveRockApi.post("/trips/create", {
         ...trip,
         occupants: [],
-        eventId: activeEvent,
+        eventId: activeEvent.id,
       });
       dispatch(onAddNewTrip({ ...data.trip }));
       return { ok: true, data };
