@@ -1,4 +1,4 @@
-import React from "react";
+import PropTypes from "prop-types";
 
 export const Modal = ({ isOpen, onClose, children }) => {
   const modalClasses = isOpen ? "flex" : "hidden";
@@ -10,7 +10,7 @@ export const Modal = ({ isOpen, onClose, children }) => {
     >
       <div className={`${contentClasses}`}>
         <button
-          className="p-1 bg-none text-black hover:bg-[#84ceff] rounded self-end"
+          className="px-2 py-1 bg-none text-black hover:bg-[#e4e4e4] rounded self-end"
           onClick={onClose}
         >
           <span className="text-2xl text-center font-semibold">x</span>
@@ -19,4 +19,10 @@ export const Modal = ({ isOpen, onClose, children }) => {
       </div>
     </div>
   );
+};
+
+Modal.propTypes = {
+  isOpen: PropTypes.bool.isRequired,
+  onClose: PropTypes.func.isRequired,
+  children: PropTypes.node.isRequired,
 };
