@@ -44,7 +44,12 @@ const NavBar = () => {
 
   const currentUser = user.user;
 
-  const userData = currentUser && { profileImg: currentUser.profileImg, name: currentUser.fullName, role: currentUser.role } 
+  const userData = currentUser && { 
+    id: currentUser.id,
+    profileImg: currentUser.profileImg, 
+    name: currentUser.fullName, 
+    role: currentUser.role 
+  } 
   
   const { isOpen, onOpen, onClose } = useDisclosure();
   
@@ -75,8 +80,8 @@ const NavBar = () => {
           </div>
         </div>
 
-          <div className=" flex items-center">
-            <ul className=" w-[15rem] sm:flex justify-between">
+          <div className=" sm:flex items-center hidden">
+            <ul className="flex justify-center gap-6">
                 <li>
                   <NavLink to="">Nosotros</NavLink>
                 </li>
@@ -95,10 +100,10 @@ const NavBar = () => {
             {status === "authenticated" ? (
 
               // Muestra Avatar Menu
-              <div className="flex items-center z-[10] justify-end">
+              <div className="flex items-center z-[10] cursor-pointer">
               <div
                  onClick={onOpen}
-                className="flex  w-[7rem] h-[3rem] items-center justify-between px-[0.8rem] rounded-3xl border-solid border-[1px] border-[#c5c5c5]"
+                className="flex w-[7rem] h-[3rem] items-center justify-between px-[0.8rem] rounded-3xl border-solid border-[1px] border-[#c5c5c5]"
               >
                 <IoMenuOutline className="h-[2rem] w-[2rem]" />
                 {

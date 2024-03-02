@@ -11,6 +11,7 @@ import AdminEventsPage from "../views/admin/events/AdminEvents"
 import { NavBar } from "../components"
 import EditEventPage from "../views/admin/events/update-event/AdminEditEvent"
 import NewEventPage from "../views/admin/events/new-event/NewEvent"
+import ProfilePage from "../views/profile/Profile"
 
 
 
@@ -42,8 +43,8 @@ export default function Navigation() {
             <Route path="/auth/reset-password/:token" element={<ResetPassword />}/>
             <Route path="/auth/sign-up" element={<RegisterPage />} />
             <Route path="/auth/sign-in" element={<LoginPage />} />
-            <Route path="/error-verified" element={ <ErrorVerifiedPage /> } />
-            <Route path="/pending-verified" element={ <PendingVerifiedPage /> } />
+            <Route path="/auth/error-verified" element={ <ErrorVerifiedPage /> } />
+            <Route path="/auth/pending-verified" element={ <PendingVerifiedPage /> } />
             
             <Route path="*" element={
               <div className="pt-32">
@@ -52,6 +53,8 @@ export default function Navigation() {
                   <Route path="/admin/events" element={ <AdminEventsPage /> } />
                   <Route path="/admin/event/:id" element={ <EditEventPage /> } />
                   <Route path="/admin/event/new" element={ <NewEventPage /> } />
+
+                  <Route path="/profile" element={ <ProfilePage />} />
 
                 </Routes>
               </div>
