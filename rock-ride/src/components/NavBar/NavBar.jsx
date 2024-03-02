@@ -1,13 +1,13 @@
-import { useState } from "react";
-//import { IoIosArrowBack } from "react-icons/io";
+
 import { NavLink } from "react-router-dom";
-/* import logo from "../../../public/drive-rock-simple-v2.ico"; */
-import DrowpDownMenu from "../Ui/DropdownMenu";
-//import { useJwt } from "react-jwt";
+import logo from "../../assets/imgs/drive-rock-v4.webp"
+
 import { useEffect } from "react";
 import { useScrollBgColor } from "@/hooks/useScrollBgColor";
 import clsx from "clsx";
 import { useAuthStore } from "../../hooks/useAuthStore";
+import { IoMenuOutline } from "react-icons/io5";
+import { FaCircleUser } from "react-icons/fa6";
 
 
 const NavBar = () => {
@@ -15,69 +15,95 @@ const NavBar = () => {
   const { navbarBackground } = useScrollBgColor()
 
   // const navigate = useNavigate();
-  const [/* selectedOption */, setSelectedOption] = useState(null);
-  const [isOpen, setIsOpen] = useState(false);
+  // const [/* selectedOption */, setSelectedOption] = useState(null);
+  // const [isOpen, setIsOpen] = useState(false);
   //const [token, setToken] = useState();
 
-  const { status, checkAuthToken } = useAuthStore();
+  const { status, checkAuthToken, user } = useAuthStore();
  
+
   useEffect(() => {
-    checkAuthToken();
-  }, []);
+    if ( status === 'checking' ) {
+      checkAuthToken();
+    }
+  }, [status, checkAuthToken]);
 
-
-  const handleSelect = (option) => {
-    setSelectedOption(option);
-    setIsOpen(false);
-  };
+  const currentUser = user.user;
+  // const handleSelect = (option) => {
+  //   setSelectedOption(option);
+  //   setIsOpen(false);
+  // };
 
   return (
     <div className={
       clsx(
-        "flex fixed z-50  w-[100%] items-center justify-center transition-colors",
+        "flex fixed z-30  w-[100%] h-[5rem] items-center justify-center transition-colors",
         {
           "bg-[#fff] shadow-lg": navbarBackground,
         }
       )
     }>
       <div className=" flex items-center justify-between w-[90%]">
-        <div className="flex w-[40%] items-center justify-between">
-          <div className="flex items-center justify-between  text-[#222222] font-['monserrat']">
-            {/* <img
-              width={50}
-              height={50}
+        <div className="flex items-center justify-center">
+          <div className="flex items-center justify-between gap-2 text-[#222222] font-['monserrat']">
+            <img
+              width={45}
+              height={45}
               src={logo}
               alt="logo"
               className="drop-shadow-2xl-light"
-            /> */}
-            <h2 className="text-4xl  font-['Barbaro'] tracking-wide">
+            />
+            <h2 className="text-2xl sm:text-3xl italic font-['Barbaro'] tracking-wide text-blue-500">
               Drive Rock
             </h2>
           </div>
-          <div className=" flex items-center h-[5rem]">
-            <ul className=" w-[15rem] hidden sm:flex justify-between">
-              <li>Nosotros</li>
-              <li>Viajes</li>
-              <li>Eventos</li>
+        </div>
+
+          <div className=" flex items-center">
+            <ul className=" w-[15rem] sm:flex justify-between">
+              <NavLink to="">
+                <li>Nosotros</li>
+              </NavLink>
+              <NavLink to="to">
+                <li>Viajes</li>
+              </NavLink>             
+              <NavLink to="">
+                <li>Eventos</li>
+              </NavLink>            
             </ul>
           </div>
-        </div>
-        {status === "authenticated" ? (
-          <DrowpDownMenu
-            handleSelect={handleSelect}
-            setIsOpen={setIsOpen}
-            isOpen={isOpen}
-          ></DrowpDownMenu>
-        ) : (
-          <div className="flex justify-between w-[17rem]">
-            <NavLink to={"/auth/sign-in"}>
-              <button className="btn-secondary">Iniciar sesion</button>
-            </NavLink>
-            <NavLink to={"/auth/sign-up"}>
-              <button className="btn-primary">Registrate</button>
-            </NavLink>
+
+          <div>
+            {status === "authenticated" ? (
+
+              // Muestra Avatar Menu
+              <div className="flex items-center z-[10] justify-end">
+              <div
+                //  onClick={onOpen}
+                className="flex  w-[7rem] h-[3rem] items-center justify-between px-[0.8rem] rounded-3xl border-solid border-[1px] border-[#c5c5c5]"
+              >
+                <IoMenuOutline className="h-[2rem] w-[2rem]" />
+                {
+                  currentUser.profileImg 
+                  ? <img width={50} height={50} className="h-[2rem] w-[2rem] rounded-full" src={currentUser.profileImg} alt="profile-image" />
+                  : <FaCircleUser className="h-[2rem] w-[2rem]" />
+                }
+                
+              </div>
+            </div>
+            ) : (
+
+              // Muestra Botones de inicio de sesion
+              <div className="flex justify-between w-[17rem]">
+                <NavLink to={"/auth/sign-in"}>
+                  <button className="btn-secondary">Iniciar sesion</button>
+                </NavLink>
+                <NavLink to={"/auth/sign-up"}>
+                  <button className="btn-primary">Registrate</button>
+                </NavLink>
+              </div>
+            )}
           </div>
-        )}
       </div>
     </div>
   );
