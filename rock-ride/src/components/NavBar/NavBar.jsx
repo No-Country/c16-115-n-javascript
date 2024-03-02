@@ -60,15 +60,17 @@ const NavBar = () => {
 
           <div className=" flex items-center">
             <ul className=" w-[15rem] sm:flex justify-between">
-              <NavLink to="">
-                <li>Nosotros</li>
-              </NavLink>
-              <NavLink to="to">
-                <li>Viajes</li>
-              </NavLink>             
-              <NavLink to="">
-                <li>Eventos</li>
-              </NavLink>            
+                <li>
+                  <NavLink to="">Nosotros</NavLink>
+                </li>
+              
+                <li>
+                  <NavLink to="to">Viajes</NavLink>
+                </li>
+                           
+                <li>
+                  <NavLink to="">Eventos</NavLink> 
+                </li>         
             </ul>
           </div>
 
