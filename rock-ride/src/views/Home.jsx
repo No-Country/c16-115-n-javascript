@@ -11,6 +11,7 @@ import { FaUserFriends } from "react-icons/fa";
 import { useTripStore } from "../hooks/useTripStore";
 import { useEffect } from "react";
 import { useEventStore } from "../hooks/useEventStore";
+import { NewTrip } from "./driver/trips/new-trip/NewTrip";
 
 
 export default function HomePage() {
@@ -19,11 +20,15 @@ export default function HomePage() {
   const {events, startLoadingEvents} = useEventStore();
 
   useEffect(() => {
-    startLoadingEvents();
-    startLoadingTrips();
-  }, [startLoadingEvents,startLoadingTrips])
+    if (trips.lenght === 0 || events.lenght === 0) {
+      startLoadingTrips();
+      startLoadingEvents();
+    }
+
+  }, [trips, events, startLoadingEvents, startLoadingTrips])
 
   console.log(events,trips)
+
   return (
     <div className="flex flex-col items-center ">
       <div
@@ -42,6 +47,8 @@ export default function HomePage() {
           </div>
         </div>
       </div>
+
+      <NewTrip/>
 
       <div className="flex flex-col justify-between  md:h-[24rem] mb-[5rem] text-[#272727] w-[100%]">
         <div className="flex flex-col text-center items-center justify-center ">

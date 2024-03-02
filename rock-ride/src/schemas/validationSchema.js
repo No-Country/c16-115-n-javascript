@@ -58,11 +58,11 @@ export const newEventSchema = yup.object().shape({
 })
 
 export const newTripSchema = yup.object().shape({
-  date: yup.date().required('La fecha es obligatoria'),
+  datetime: yup.date().required('La fecha es obligatoria'),
   places: yup
     .number('Debe ser un número')
     .required('El número de lugares es obligatorio')
     .integer('Debe ser un número entero')
     .min(1, 'El número de lugares debe ser mayor o igual a 1')
-    .max(9, 'El número de lugares debe ser menor que 9'),
+    .max(4, 'El número máximo de lugares es 4'),
 });
