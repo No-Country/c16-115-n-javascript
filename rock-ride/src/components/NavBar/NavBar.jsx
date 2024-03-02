@@ -25,19 +25,22 @@ const NavBar = () => {
 
   const [dataLoaded, setDataLoaded] = useState(false);
 
+
   useEffect(() => {
     if (!dataLoaded) {
       startLoadingEvents();
       startLoadingTrips();
       setDataLoaded(true);
     }
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dataLoaded]);
     
   useEffect(() => {
     if ( status === 'checking' ) {
       checkAuthToken();
     }
-  }, [status, checkAuthToken]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [status]);
 
   const currentUser = user.user;
 
