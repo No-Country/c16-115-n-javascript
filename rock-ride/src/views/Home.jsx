@@ -20,11 +20,15 @@ export default function HomePage() {
   const {events, startLoadingEvents} = useEventStore();
 
   useEffect(() => {
-    startLoadingEvents();
-    startLoadingTrips();
-  }, [startLoadingEvents,startLoadingTrips])
+    if (trips.lenght === 0 || events.lenght === 0) {
+      startLoadingTrips();
+      startLoadingEvents();
+    }
+
+  }, [trips, events, startLoadingEvents, startLoadingTrips])
 
   console.log(events,trips)
+
   return (
     <div className="flex flex-col items-center ">
       <div
