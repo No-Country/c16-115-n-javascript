@@ -12,10 +12,11 @@ export default function DetailEventPage() {
     <section className="text-gray-600 body-font">
       <div className="flex flex-col items-center">
         <div
-          className="flex bg-cover bg-center z-0 mt-[5rem] h-[300px] relative"
+          className="flex bg-cover bg-center z-0 h-[450px] relative"
           style={{
             backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("${activeEvent.img}")`,
             width: "100%",
+            backgroundPosition: "top"
           }}
         >
           <div className="absolute inset-0 flex flex-col items-center justify-center">

@@ -1,6 +1,15 @@
+import { PropTypes } from 'prop-types';
 import { NavLink } from "react-router-dom";
 
 const EventCard = ({ event, setActiveEvent }) => {
+
+  const scrollToTop = () => window.scrollTo(0, 0);
+
+  const handleClick = (eventData) => {
+    setActiveEvent(eventData);
+    scrollToTop();
+  };
+
   return (
     <>
       <NavLink className={"flex lg:hidden"} to={`/event/${event.id}`}>
@@ -18,7 +27,7 @@ const EventCard = ({ event, setActiveEvent }) => {
           <h3 className="text-[2.5rem] ">{event.name}</h3>
           <div className="flex justify-between items-end">
             <NavLink to={`/event/${event.id}`}>
-              <button className="rounded-3xl bg-[#18A0FB] text-white h-[3rem] w-auto px-[2rem]" onClick={()=> setActiveEvent(event)}>
+              <button className="rounded-3xl bg-[#18A0FB] text-white h-[3rem] w-auto px-[2rem]" onClick={() => handleClick(event)}>
                 Ver viajes
               </button>
             </NavLink>
@@ -31,3 +40,8 @@ const EventCard = ({ event, setActiveEvent }) => {
 };
 
 export default EventCard;
+
+EventCard.propTypes = {
+  event: PropTypes.object,
+  setActiveEvent: PropTypes.func,
+};
