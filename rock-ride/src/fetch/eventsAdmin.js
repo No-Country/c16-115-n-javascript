@@ -60,3 +60,24 @@ export const getEventById = async (id) => {
   return data
 
 }
+
+
+export const updateEvent = async (formData, id) => {
+  try {
+    const response = await fetch(`${baseUrl}/events/update/${id}`, {
+      method: 'PUT',
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+    },
+      body: formData
+    })
+
+    const data = await response.json();
+    console.log(data);
+    return data
+    
+  } catch (error) {
+    console.log(error.message);
+  }
+  
+}

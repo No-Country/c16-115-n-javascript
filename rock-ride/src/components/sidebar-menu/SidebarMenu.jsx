@@ -37,9 +37,10 @@ export const SideBarMenu = ({ isOpen, onClose, userData }) => {
         isOpen={isOpen}
         placement="right"
         onClose={onClose}
+        size="sm"
       >
         <DrawerOverlay />
-        <DrawerContent className="p-4 max-w-[350px] " backgroundColor="#f2f2f2">
+        <DrawerContent className="p-2 sm:p-8" backgroundColor="#f2f2f2">
           <div className="flex items-center  justify-end">
             <DrawerCloseButton />
           </div>
@@ -111,7 +112,7 @@ export const SideBarMenu = ({ isOpen, onClose, userData }) => {
               
               <div>
                 <Divider spaceY="4" />
-                <DrawerHeader>Administrador</DrawerHeader>
+                <DrawerHeader textAlign='center' >Administrador</DrawerHeader>
                 <div className="flex flex-col gap-2">
                   <NavLink to="/admin/users" onClick={onClose} className='flex items-center gap-2'>
                     <IoPeopleOutline />

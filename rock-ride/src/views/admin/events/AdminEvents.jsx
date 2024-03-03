@@ -1,34 +1,37 @@
 import { IoPlayBack } from "react-icons/io5";
 import { GiClick } from "react-icons/gi";
 import { NavLink } from "react-router-dom";
-import { useEffect, useState } from "react";
-import { getAllEvents } from "../../../fetch/eventsAdmin";
+import { useState } from "react";
 import { formateDate } from "../../../utils/formateDate";
+import { useEventStore } from "../../../hooks/useEventStore";
+import { EditEventModal } from "./update-event/ui/EditEventCard";
+import { Tooltip } from '@chakra-ui/react'
+import { UpdateEventImage } from "./update-event/ui/UpdateEventImage";
+import { useSelector } from "react-redux";
 
 
 
 export default function AdminEventsPage() {
 
-  const [events, setEvents] = useState([])
-  const [loading, setLoading] = useState(false)
+  const [isModalOpen, setModalOpen] = useState(false);
+  const [modalImageOpen, setModalImageOpen] = useState(false)
+
+  const { setActiveEvent, startLoadingEvents } = useEventStore()
+
+    const handleOpenModal = ( event ) => {
+      setActiveEvent(event);
+      setModalOpen(true);
+  };
+
+  const [succcesUpdated, setSuccessUpdated] = useState(false)
 
 
-  useEffect(() => {
+  const { events, isLoadingEvents } = useSelector((state) => state.event);
 
-    getEvents()
+  if (succcesUpdated) {
     
-  }, [])
-
-  const getEvents = async () => {
-
-    setLoading(true)
-    const events = await getAllEvents()
-
-    setEvents(events)
-
-    setLoading(false)
+    startLoadingEvents()
   }
-
 
   return (
     <div className="w-full max-w-[1200px] mx-auto min-h-screen">
@@ -95,7 +98,7 @@ export default function AdminEventsPage() {
           </thead>
 
           {
-            loading 
+            isLoadingEvents 
             ? <tbody>
                 <tr>
                   <td>
@@ -133,23 +136,27 @@ export default function AdminEventsPage() {
                     className="bg-white bproduct-b transition duration-300 ease-in-out hover:bg-gray-100"
                   >
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                      <NavLink to={`/event/${event.id}`}>
+                      <Tooltip hasArrow label='Ver detalle' bg='gray.900'>
+                        <NavLink to={`/event/${event.id}`}>
 
-                        <img
-                          width={80}
-                          height={80}
-                          src={event.img}
-                          alt={event.name} />
+                          <img
+                            width={80}
+                            height={80}
+                            src={event.img}
+                            alt={event.name} />
 
-                      </NavLink>
+                        </NavLink>
+                      </Tooltip>
                     </td>
                     <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                      <NavLink
-                        to={`/admin/event/${event.id}`}
-                        className="hover:underline"
-                      >
-                        {event.name}
-                      </NavLink>
+                      <Tooltip hasArrow label='Editar evento' bg='gray.900'>
+                        <button
+                          onClick={() => { handleOpenModal(event) }}
+                          className="hover:underline"
+                        >
+                          {event.name}
+                        </button>
+                      </Tooltip>
                     </td>
                     <td className="text-sm text-gray-900 font-bold px-6 py-4 whitespace-nowrap">
                       {formateDate(event.date)}
@@ -169,6 +176,18 @@ export default function AdminEventsPage() {
           }
         </table>
       </div>
+      <EditEventModal 
+        isModalOpen={ isModalOpen } 
+        setModalOpen={ setModalOpen } 
+        setModalImageOpen={ setModalImageOpen } 
+      />
+
+      <UpdateEventImage
+        modalImageOpen={ modalImageOpen }
+        setModalImageOpen={ setModalImageOpen }
+        setModalOpen={ setModalOpen }
+        setSuccessUpdated={ setSuccessUpdated }
+      /> 
     </div>
   );
 }

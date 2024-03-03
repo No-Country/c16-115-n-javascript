@@ -66,3 +66,7 @@ export const newTripSchema = yup.object().shape({
     .min(1, 'El número de lugares debe ser mayor o igual a 1')
     .max(4, 'El número máximo de lugares es 4'),
 });
+
+export const updateImageSchema = yup.object().shape({
+  img: yup.mixed().required('La imagen es obligatoria'),
+});
