@@ -55,7 +55,7 @@ export const NewTicket = () => {
   };
 
   return (
-    <div className="p-8">
+    <div className="p-2">
       <button
         className="bg-[#18A0FB] text-white p-2 rounded"
         onClick={handleOpenModal}
