@@ -9,3 +9,4 @@ export { default as Carousel } from './Ui/Carousel';
 export * from './Ui/Divider';
 export { default as InfoItem } from './Ui/InfoItem';
 export * from './sidebar-menu/SidebarMenu'
+export * from './Buttons/EditButton'

@@ -1,5 +1,5 @@
 
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import logo from "../../assets/imgs/drive-rock-v4.webp"
 
 import { useEffect, useState } from "react";
@@ -17,6 +17,7 @@ import { useEventStore } from "../../hooks/useEventStore";
 const NavBar = () => {
 
   const { navbarBackground } = useScrollBgColor()
+  const location = useLocation()
   
   const { status, checkAuthToken, user } = useAuthStore();
 
@@ -44,23 +45,31 @@ const NavBar = () => {
 
   const currentUser = user.user;
 
-  const userData = currentUser && { profileImg: currentUser.profileImg, name: currentUser.fullName, role: currentUser.role } 
+  const userData = currentUser && { 
+    id: currentUser.id,
+    profileImg: currentUser.profileImg, 
+    name: currentUser.fullName, 
+    role: currentUser.role 
+  } 
   
   const { isOpen, onOpen, onClose } = useDisclosure();
   
+  const detailEventLocation = location.pathname.includes('/event/')
+
   return (
     <div className={
       clsx(
         "flex fixed z-30  w-[100%] h-[5rem] items-center justify-center transition-colors",
         {
           "bg-[#fff] shadow-lg": navbarBackground,
+          "bg-[#fff] bg-opacity-30 shadow-lg": detailEventLocation,
         }
       )
     }>
       <SideBarMenu isOpen={ isOpen } onClose={ onClose } userData={ userData } />
 
       <div className=" flex items-center justify-between w-[90%]">
-        <div className="flex items-center justify-center">
+        <NavLink to="/" className="flex items-center justify-center">
           <div className="flex items-center justify-between gap-2 text-[#222222] font-['monserrat']">
             <img
               width={45}
@@ -73,10 +82,10 @@ const NavBar = () => {
               Drive Rock
             </h2>
           </div>
-        </div>
+        </NavLink>
 
-          <div className=" flex items-center">
-            <ul className=" w-[15rem] sm:flex justify-between">
+          <div className=" sm:flex items-center hidden">
+            <ul className="flex justify-center gap-6 font-semibold">
                 <li>
                   <NavLink to="">Nosotros</NavLink>
                 </li>
@@ -95,10 +104,10 @@ const NavBar = () => {
             {status === "authenticated" ? (
 
               // Muestra Avatar Menu
-              <div className="flex items-center z-[10] justify-end">
+              <div className="flex items-center z-[10] cursor-pointer">
               <div
                  onClick={onOpen}
-                className="flex  w-[7rem] h-[3rem] items-center justify-between px-[0.8rem] rounded-3xl border-solid border-[1px] border-[#c5c5c5]"
+                className="flex bg-white bg-opacity-80 w-[7rem] h-[3rem] items-center justify-between px-[0.8rem] rounded-3xl border-solid border-[1px] border-[#c5c5c5]"
               >
                 <IoMenuOutline className="h-[2rem] w-[2rem]" />
                 {

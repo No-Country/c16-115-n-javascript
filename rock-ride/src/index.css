@@ -47,7 +47,7 @@
 
 
 .btn-danger {
-  @apply bg-red-500 hover:bg-red-700 text-white py-2 px-4 transition-all;
+  @apply bg-red-600 hover:bg-red-700 text-white py-2 px-4 transition-all rounded;
 }
 
 .btn-danger-disabled {

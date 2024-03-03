@@ -13,6 +13,7 @@ export default function EditEventPage() {
 
         <h1 className="text-xl sm:text-2xl font-semibold">Nuevo evento</h1>
       </div>
+      
       <UpdateEventForm />
     </div>
   );
