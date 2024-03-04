@@ -7,7 +7,7 @@ export const useScrollBgColor = () => {
 
   const handleScroll = useCallback(() => {
     const scrollY = window.scrollY;
-    const threshold = 200;
+    const threshold = 100;
 
     if (scrollY > threshold) {
       setNavbarBackground(true);

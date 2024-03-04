@@ -59,10 +59,11 @@ const NavBar = () => {
   return (
     <div className={
       clsx(
-        "flex fixed z-30  w-[100%] h-[5rem] items-center justify-center transition-colors",
+        "flex fixed z-10 w-[100%] h-[5rem] items-center justify-center transition-colors",
         {
           "bg-[#fff] shadow-lg": navbarBackground,
-          "bg-[#fff] bg-opacity-30 shadow-lg": detailEventLocation,
+          "bg-slate-900 shadow-lg text-slate-200": detailEventLocation,
+
         }
       )
     }>
@@ -76,7 +77,7 @@ const NavBar = () => {
               height={45}
               src={logo}
               alt="logo"
-              className="drop-shadow-2xl-light"
+              className="drop-shadow-2xl-light w-[40px] sm:w-[45px]"
             />
             <h2 className="text-2xl sm:text-3xl italic font-['Barbaro'] tracking-wide text-blue-500">
               Drive Rock
@@ -85,7 +86,7 @@ const NavBar = () => {
         </NavLink>
 
           <div className=" sm:flex items-center hidden">
-            <ul className="flex justify-center gap-6 font-semibold">
+            <ul className="flex justify-center gap-10 font-semibold">
                 <li>
                   <NavLink to="">Nosotros</NavLink>
                 </li>
@@ -104,12 +105,19 @@ const NavBar = () => {
             {status === "authenticated" ? (
 
               // Muestra Avatar Menu
-              <div className="flex items-center z-[10] cursor-pointer">
+              <div className="flex items-center cursor-pointer">
               <div
                  onClick={onOpen}
-                className="flex bg-white bg-opacity-80 w-[7rem] h-[3rem] items-center justify-between px-[0.8rem] rounded-3xl border-solid border-[1px] border-[#c5c5c5]"
+                className={
+                  clsx(
+                    "flex w-[5.7rem] h-[2.6rem]  sm:w-[7rem] sm:h-[3rem] items-center justify-between pl-[0.5rem] pr-[0.3rem] sm:px-[0.8rem] rounded-3xl border-solid border-[1px] border-slate-400",
+                    {
+                      "bg-slate-700": detailEventLocation,
+                      "bg-slate-100": !detailEventLocation,
+                    }
+                  )}
               >
-                <IoMenuOutline className="h-[2rem] w-[2rem]" />
+                <IoMenuOutline className="h-[2rem] w-[2rem] text-slate-400" />
                 {
                   currentUser.profileImg 
                   ? <img width={50} height={50} className="h-[2rem] w-[2rem] rounded-full" src={currentUser.profileImg} alt="profile-image" />
