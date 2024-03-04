@@ -28,10 +28,6 @@ const Carousel = () => {
       className=""
       modules={[Navigation, Pagination, Scrollbar, Autoplay, A11y]}
       spaceBetween={20}
-      autoplay={{
-        delay: 5000,
-        disableOnInteraction: false,
-      }}
       slidesPerView={1.1}
       breakpoints={{
         640: {
@@ -42,6 +38,10 @@ const Carousel = () => {
           slidesPerView: 1.5,
           spaceBetween: 0,
         },
+        1200: {
+          slidesPerView: 2.5,
+          spaceBetween: 0,
+        }
       }}
     >
       {events?.map((e, index) => {
