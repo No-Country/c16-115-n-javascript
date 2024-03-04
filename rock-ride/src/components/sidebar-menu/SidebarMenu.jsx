@@ -17,19 +17,17 @@ import { IoCarOutline, IoLogOutOutline, IoMapOutline, IoPeopleOutline, IoPersonO
 import { PiHeadset } from "react-icons/pi";
 import { MdOutlineEvent } from "react-icons/md";
 import DriveRockIcon from '../../assets/imgs/icono-drive-rock.png'
+import { useUsersStore } from "../../hooks/useUsersStore";
 
 export const SideBarMenu = ({ isOpen, onClose, userData }) => {
 
-  SideBarMenu.propTypes = {
-    isOpen: PropTypes.bool.isRequired,
-    onClose: PropTypes.func.isRequired,
-    userData: PropTypes.shape({
-      id: PropTypes.string.isRequired,
-      profileImg: PropTypes.string,
-      name: PropTypes.string.isRequired,
-      role: PropTypes.string.isRequired,
-    }),
-  };
+  const { setActiveUser } = useUsersStore()
+
+
+  const handleClose = () => {
+    setActiveUser(userData)
+    onClose()
+  }
 
 
   return (
@@ -55,7 +53,7 @@ export const SideBarMenu = ({ isOpen, onClose, userData }) => {
                 ? <img width={50} height={50} className="h-[3.rem] w-[3.5rem] rounded-full shadow-2xl" src={userData.profileImg} alt="profile-image" />
                 : <FaCircleUser className="h-[2rem] w-[2rem]" />
               }
-              <span>{userData?.name}</span>
+              <span>{userData?.fullName}</span>
             </div>
           </DrawerHeader>
 
@@ -63,11 +61,11 @@ export const SideBarMenu = ({ isOpen, onClose, userData }) => {
 
           <DrawerBody>
             <div className="flex flex-col gap-2 justify-start">
-              <NavLink to="/profile" onClick={onClose} className='flex items-center gap-2'>
+              <NavLink to="/profile" onClick={handleClose} className='flex items-center gap-2'>
                 <IoPersonOutline />
                 <p>Perfil</p>
               </NavLink>
-              <NavLink to="/profile/trips" onClick={onClose} className='flex items-center gap-2'>
+              <NavLink to="/profile/trips" onClick={handleClose} className='flex items-center gap-2'>
                 <IoCarOutline />
                 <p>Mis viajes</p>
               </NavLink>
@@ -140,3 +138,14 @@ export const SideBarMenu = ({ isOpen, onClose, userData }) => {
   );
 };
 
+
+SideBarMenu.propTypes = {
+  isOpen: PropTypes.bool.isRequired,
+  onClose: PropTypes.func.isRequired,
+  userData: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    profileImg: PropTypes.string,
+    fullName: PropTypes.string.isRequired,
+    role: PropTypes.string.isRequired,
+  }),
+};

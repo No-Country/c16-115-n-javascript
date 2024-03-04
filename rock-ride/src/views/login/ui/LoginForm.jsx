@@ -69,11 +69,6 @@ export const LoginForm = () => {
     
     startLogin({email: data.email, password: data.password});
 
-    console.log(result);
-
-    result.token && localStorage.setItem('auth-token', result.token)
-
-
     setLoader(false)
 
     if (result.ok === false) {

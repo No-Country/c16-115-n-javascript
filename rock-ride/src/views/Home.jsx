@@ -47,7 +47,7 @@ export default function HomePage() {
           </p>
         </div>
 
-        <asaid className="flex flex-col md:flex-row items-center justify-center gap-2 lg:gap-4 my-14">
+        <aside className="flex flex-col md:flex-row items-center justify-center gap-2 lg:gap-4 my-14">
           <InfoItem
             icon={<IoPlayForward />}
             title={"Encuentra tu Sintonía"}
@@ -67,7 +67,7 @@ export default function HomePage() {
             title={"Construyendo amistad"}
             content={"Convierte compañeros de viaje en amistades duraderas."}
           />
-        </asaid>
+        </aside>
 
       </section>
 

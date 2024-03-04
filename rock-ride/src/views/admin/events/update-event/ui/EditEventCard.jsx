@@ -8,6 +8,7 @@ import { capitalizeString } from '@/utils/capitalizeString';
 import { EditButton } from '@/components';
 import { ModalUpdate } from './ModalUpdate';
 import { useEventStore } from '@/hooks/useEventStore';
+import { formateLocation } from '../../../../../utils/formateLocation';
 
 
 
@@ -44,12 +45,8 @@ export const EditEventModal = ({ isModalOpen, setModalOpen, setModalImageOpen })
     console.log('Editar Location');
   }
 
-  const locationText = () => { 
-    if ( activeEvent.city !== activeEvent.stateOrProvince ) {
-      return `${activeEvent.city}, ${activeEvent.stateOrProvince}, ${activeEvent.country}`;
-    } 
-    return `${activeEvent.city}, ${activeEvent.country}`;
-  }
+  const { country, stateOrProvince, city } = activeEvent
+
 
   return (
     <>
@@ -87,7 +84,7 @@ export const EditEventModal = ({ isModalOpen, setModalOpen, setModalImageOpen })
               </div>
               <div className='flex items-center justify-end w-[55%] gap-2'>
                 <IoLocationOutline size={24} color='#4B5563' />
-                <p>{locationText()}</p>
+                <p>{formateLocation({ country, stateOrProvince, city })}</p>
                 <EditButton handleClick={ handleEditLocation } />
               </div>
             </div>

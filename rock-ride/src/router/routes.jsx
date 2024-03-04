@@ -13,6 +13,7 @@ import EditEventPage from "../views/admin/events/update-event/AdminEditEvent"
 import NewEventPage from "../views/admin/events/new-event/NewEvent"
 import ProfilePage from "../views/profile/Profile"
 import DetailEventPage from "../views/user/events/detail-event/DetailEvent"
+import UsersPage from "../views/users/Users"
 
 
 
@@ -59,7 +60,7 @@ export default function Navigation() {
                   <Route path="/admin/event/new" element={ <NewEventPage /> } />
 
                   <Route path="/profile" element={ <ProfilePage />} />
-
+                  <Route path="/admin/users" element={ <UsersPage /> } />
                 </Routes>
               </div>
             }/>

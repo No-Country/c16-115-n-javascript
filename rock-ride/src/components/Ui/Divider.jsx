@@ -1,14 +1,17 @@
 import { PropTypes } from 'prop-types'
 
 
-export const Divider = ({ spaceY = '2'}) => {
+export const Divider = ({ spaceY = '2', h = 'px', bg = 'slate-400'}) => {
 
-  Divider.propTypes = {
-    spaceY: PropTypes.string
-
-  }
 
   return (
-    <div className={`w-full border-solid h-px bg-slate-400 my-${spaceY}`}></div>
+    <div className={`w-full border-solid h-${ h } bg-${ bg } my-${spaceY}`}></div>
   )
+}
+
+
+Divider.propTypes = {
+  spaceY: PropTypes.string,
+  h: PropTypes.string,
+  bg: PropTypes.string,
 }

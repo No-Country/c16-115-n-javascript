@@ -8,6 +8,7 @@ export default function DetailEventPage() {
   const { activeEvent } = useSelector((state) => state.event);
   const { user } = useSelector((state) => state.auth);
   const { trips } = useSelector((state) => state.trip);
+
   return (
     <section className="text-gray-600 body-font pt-[5rem]">
  

@@ -12,6 +12,7 @@ import { useDisclosure } from "@chakra-ui/react";
 import { SideBarMenu } from "../sidebar-menu/SidebarMenu";
 import { useTripStore } from "../../hooks/useTripStore";
 import { useEventStore } from "../../hooks/useEventStore";
+import { useUsersStore } from "../../hooks/useUsersStore";
 
 
 const NavBar = () => {
@@ -23,6 +24,7 @@ const NavBar = () => {
 
   const { startLoadingTrips } = useTripStore();
   const { startLoadingEvents } = useEventStore();  
+  const { startLoadingUsers } = useUsersStore()
 
   const [dataLoaded, setDataLoaded] = useState(false);
 
@@ -31,6 +33,7 @@ const NavBar = () => {
     if (!dataLoaded) {
       startLoadingEvents();
       startLoadingTrips();
+      startLoadingUsers();
       setDataLoaded(true);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -45,12 +48,7 @@ const NavBar = () => {
 
   const currentUser = user.user;
 
-  const userData = currentUser && { 
-    id: currentUser.id,
-    profileImg: currentUser.profileImg, 
-    name: currentUser.fullName, 
-    role: currentUser.role 
-  } 
+
   
   const { isOpen, onOpen, onClose } = useDisclosure();
   
@@ -67,7 +65,7 @@ const NavBar = () => {
         }
       )
     }>
-      <SideBarMenu isOpen={ isOpen } onClose={ onClose } userData={ userData } />
+      <SideBarMenu isOpen={ isOpen } onClose={ onClose } userData={ currentUser } />
 
       <div className=" flex items-center justify-between w-[90%]">
         <NavLink to="/" className="flex items-center justify-center">
