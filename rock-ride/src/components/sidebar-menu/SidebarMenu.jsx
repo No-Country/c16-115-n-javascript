@@ -18,15 +18,21 @@ import { PiHeadset } from "react-icons/pi";
 import { MdOutlineEvent } from "react-icons/md";
 import DriveRockIcon from '../../assets/imgs/icono-drive-rock.png'
 import { useUsersStore } from "../../hooks/useUsersStore";
+import { useAuthStore } from "../../hooks/useAuthStore";
 
 export const SideBarMenu = ({ isOpen, onClose, userData }) => {
 
   const { setActiveUser } = useUsersStore()
-
+  const { startLogout } = useAuthStore();
 
   const handleClose = () => {
     setActiveUser(userData)
     onClose()
+  }
+
+  const handleLogout = () => {
+    startLogout();
+    onClose();
   }
 
 
@@ -100,7 +106,7 @@ export const SideBarMenu = ({ isOpen, onClose, userData }) => {
                 </ul>
             </div>
 
-              <button className="w-fit flex items-center gap-2">
+              <button className="w-fit flex items-center gap-2" onClick={handleLogout}>
                 <IoLogOutOutline />
                  <p>Log out</p> 
               </button>
