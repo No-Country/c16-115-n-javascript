@@ -103,7 +103,7 @@ export const UpdateEventImage = ({ modalImageOpen, setModalImageOpen, setModalOp
   }
 
   return (
-    <ModalUpdate isOpen={modalImageOpen} onClose={handleCloseModal} z={'50'}>
+    <ModalUpdate isOpen={modalImageOpen} onClose={handleCloseModal}>
       <div className="flex flex-col my-6 p-4">
         <span className='mb-2'>Cambiar Portada</span>
 

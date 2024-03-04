@@ -137,9 +137,9 @@ export const NewEventForm = () => {
         </div>
 
         <div className="flex flex-col mb-5">
-          <span>Fecha</span>
+          <span>Fecha y Hora</span>
           <input
-            type="date"
+            type="datetime-local"
             className="p-2 border rounded-md bg-gray-200"
             {...register("date", { required: true })}
           />

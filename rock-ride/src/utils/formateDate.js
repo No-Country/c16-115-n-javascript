@@ -2,7 +2,7 @@ import moment from 'moment'
 
 export const formateDate = (date) => {
   
-  const dateNow = moment(date).format('LL')
+  const dateNow = moment(date).format('LL - HH:mm')
 
   return dateNow
 

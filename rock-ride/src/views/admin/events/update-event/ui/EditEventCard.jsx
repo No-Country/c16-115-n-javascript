@@ -2,15 +2,12 @@ import { PropTypes } from 'prop-types'
 
 import { useSelector } from 'react-redux';
 
-import { formateDate } from '../../../../../utils/formateDate';
+import { formateDate } from '@/utils/formateDate';
 import { IoCalendarOutline, IoLocationOutline } from 'react-icons/io5';
-import { capitalizeString } from '../../../../../utils/capitalizeString';
+import { capitalizeString } from '@/utils/capitalizeString';
 import { EditButton } from '@/components';
 import { ModalUpdate } from './ModalUpdate';
-import { useEventStore } from '../../../../../hooks/useEventStore';
-// import { UpdateEventImage } from './UpdateEventImage';
-// import { useState } from 'react';
-
+import { useEventStore } from '@/hooks/useEventStore';
 
 
 
@@ -69,7 +66,7 @@ export const EditEventModal = ({ isModalOpen, setModalOpen, setModalImageOpen })
             <img className="min-h-full object-cover object-top" src={activeEvent.img} alt="" />
           </div>
 
-          <div className='p-2 space-y-4'>
+          <div className='p-2 space-y-8'>
             <div className='p-2 flex items-center justify-between'>
 
               <div className='flex items-center gap-2'>
@@ -82,10 +79,10 @@ export const EditEventModal = ({ isModalOpen, setModalOpen, setModalImageOpen })
                 <EditButton handleClick={ handleEditCategory } />
               </div>
             </div>
-            <div className="flex items-center justify-between px-2">
+            <div className="flex items-center justify-between px-2 text-sm">
               <div className='flex items-center gap-2'>
                 <IoCalendarOutline size={24} color='#4B5563' />
-                <p>{formateDate(activeEvent.date)}</p>
+                <p>{formateDate(activeEvent.date)}hs</p>
                 <EditButton handleClick={ handleEditDate } />
               </div>
               <div className='flex items-center justify-end w-[55%] gap-2'>
@@ -114,5 +111,5 @@ export const EditEventModal = ({ isModalOpen, setModalOpen, setModalImageOpen })
 EditEventModal.propTypes = {
   isModalOpen: PropTypes.bool.isRequired,
   setModalOpen: PropTypes.func.isRequired,
-  setIsModalImageOpen: PropTypes.func
+  setModalImageOpen: PropTypes.func
 }

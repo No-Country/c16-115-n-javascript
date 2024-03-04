@@ -9,28 +9,34 @@ export default function DetailEventPage() {
   const { user } = useSelector((state) => state.auth);
   const { trips } = useSelector((state) => state.trip);
   return (
-    <section className="text-gray-600 body-font">
-      <div className="flex flex-col items-center">
+    <section className="text-gray-600 body-font pt-[5rem]">
+ 
         <div
-          className="flex bg-cover bg-center z-0 h-[450px] relative"
+          className="flex flex-col lg:flex-row bg-cover items-center justify-evenly h-[450px]"
           style={{
-            backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("${activeEvent.img}")`,
+            backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.8)), url("${activeEvent.img}")`,
             width: "100%",
-            backgroundPosition: "top"
+            backgroundPosition: "50% 40%"
           }}
         >
-          <div className="absolute inset-0 flex flex-col items-center justify-center">
-            <h1 className="text-white font-semibold text-6xl text-center mb-2">
-              {activeEvent.name}
-            </h1>
-            <h2 className="text-xs text-[#c0c0c0] tracking-widest font-medium title-font mb-1">
-              {moment(activeEvent.date).format("YYYY-MM-DD hh:mm")}
-            </h2>
-          </div>
-        </div>
-      </div>
 
-      <div className="container mx-auto flex flex-wrap p-2 flex-col justify-between md:flex-row items-center">
+            <div className="aspect-video w-[90%] sm:w-[600px] overflow-hidden rounded-xl shadow-2xl border-2 sm:border-4 border-slate-200">
+              <img src={activeEvent.img} alt="event-image" className="object-cover h-full w-full" />
+            </div>
+
+            <div className="flex flex-col items-center justify-center">
+              <h1 className="text-white font-semibold text-4xl sm:text-6xl text-center mb-2">
+                {activeEvent.name}
+              </h1>
+              <h2 className="text-xs text-[#c0c0c0] tracking-widest font-medium title-font mb-1">
+                {moment(activeEvent.date).format("YYYY-MM-DD hh:mm")}
+              </h2>
+            </div>
+          </div>
+     
+
+
+      <div className="container mx-auto flex p-2 justify-between flex-row items-center">
         {user.user && user.user.isDriver && <NewTrip />}
         {user.user && <NewTicket />}
       </div>

@@ -159,7 +159,7 @@ export default function AdminEventsPage() {
                       </Tooltip>
                     </td>
                     <td className="text-sm text-gray-900 font-bold px-6 py-4 whitespace-nowrap">
-                      {formateDate(event.date)}
+                      {formateDate(event.date)}hs
                     </td>
                     <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
                       {event.address}
