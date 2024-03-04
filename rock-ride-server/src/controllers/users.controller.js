@@ -14,6 +14,9 @@ export const getUserById = async (id) => {
       where: {
         deleted: false,
       },
+      attributes: {
+        exclude: ['deleted','password', 'createdAt', 'updatedAt', 'code', 'emailVerified'],
+      },
     });
 
     const bookings = await Booking.findAll({
