@@ -46,7 +46,10 @@ export const getUsers = async (name) => {
           deleted: false,
           fullName: {
             [Op.iLike]: `%${name.toLowerCase()}%`,
-          },
+          }
+        },
+        attributes: {
+          exclude: ['deleted','password', 'createdAt', 'updatedAt', 'code', 'emailVerified'],
         },
       });
       if (!users.length) {
@@ -55,7 +58,7 @@ export const getUsers = async (name) => {
           message: "User not found",
         };
       } else {
-        console.log(users);
+  
         return {
           ok: true,
           users,
@@ -67,11 +70,16 @@ export const getUsers = async (name) => {
       where: {
         deleted: false,
       },
+      attributes: {
+        exclude: ['deleted','password', 'createdAt', 'updatedAt', 'code', 'emailVerified'],
+      },
     });
+
+    
     return {
       ok: true,
-      users,
-    };
+      users
+    }
   } catch (error) {
     console.log(error.message);
     return {
