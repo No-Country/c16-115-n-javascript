@@ -33,7 +33,7 @@ export default function ProfilePage() {
   );
 
   return (
-    <div className="w-full px-10 max-w-[1200px] flex flex-col items-center mx-auto border-x-2 border-slate-300 min-h-screenContent">
+    <div className="w-full px-10 max-w-[1200px] flex flex-col items-center mx-auto min-h-screenContent">
       <header className="flex w-full h-[200px]">
         <div className="flex items-center gap-6 font-semibold">
           <div className="flex flex-col items-center gap-2">
@@ -54,7 +54,7 @@ export default function ProfilePage() {
               <button className="btn-secondary">Editar perfil</button>
             }
           </div>
-          <div>
+          <div className="space-y-2">
             <aside className="flex gap-2">
               <div className="flex items-center gap-1 py-1 px-2 bg-black text-white  bg-opacity-70 rounded-md w-fit">
                 { userTripsDriver.length } <p className="font-light">Viajes como conductor</p>
