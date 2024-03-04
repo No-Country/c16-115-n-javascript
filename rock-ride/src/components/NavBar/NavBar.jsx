@@ -79,7 +79,7 @@ const NavBar = () => {
               alt="logo"
               className="drop-shadow-2xl-light w-[40px] sm:w-[45px]"
             />
-            <h2 className="text-2xl sm:text-3xl italic font-['Barbaro'] tracking-wide text-blue-500">
+            <h2 className="text-2xl sm:text-3xl italic font-['Barbaro'] tracking-wide text-[#18A0FB]">
               Drive Rock
             </h2>
           </div>
