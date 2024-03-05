@@ -1,10 +1,13 @@
-import { IoCarOutline, IoLocationOutline, IoMapOutline } from "react-icons/io5";
+
 import { useAuthStore } from "../../hooks/useAuthStore";
-import { formateLocation } from "../../utils/formateLocation";
+
 import { useTripStore } from "../../hooks/useTripStore";
 import { Divider } from "../../components";
 import { useUsersStore } from "../../hooks/useUsersStore";
-import { FaCircleUser } from "react-icons/fa6";
+
+import { HeaderProfile } from "./ui/HeaderProfile";
+// import { useSelector } from "react-redux";
+import { UserTrips } from "./ui/UserTrips";
 
 
 export default function ProfilePage() {
@@ -12,17 +15,19 @@ export default function ProfilePage() {
   const { user, status } = useAuthStore();
   const { activeUser } = useUsersStore()
   const { trips } = useTripStore()
+  // const { events } = useSelector(state => state.event)
 
 
   if (status !== 'authenticated') return
 
   const userData = user.user
 
-  const privateProfile = user.user.id === activeUser.id;
+  const privateProfile = userData.id === activeUser.id;
 
-  const { country, stateOrProvince, city } = userData
+  // const { country, stateOrProvince, city } = userData
 
-  const userTripsDriver = trips.filter(trip => trip.driverId === activeUser.id)
+  const userTripsDriver = trips.filter(trip => trip.userId === activeUser.id)
+
 
   const isUserOccupant = (trip, userId) =>
     trip.occupants.some(occupant => occupant.id === userId);
@@ -32,64 +37,27 @@ export default function ProfilePage() {
     isUserOccupant(trip, activeUser.id)
   );
 
+
+
+
   return (
     <div className="w-full px-10 max-w-[1200px] flex flex-col items-center mx-auto min-h-screenContent">
-      <header className="flex w-full h-[200px]">
-        <div className="flex items-center gap-6 font-semibold">
-          <div className="flex flex-col items-center gap-2">
-            {
-              activeUser.profileImg
-                ? <img
-                  width={150}
-                  height={150}
-                  src={activeUser.profileImg}
-                  alt="imagen de perfil de usuario"
-                  className="rounded-full h-[110px] w-[110px]"
-                />
-                : <FaCircleUser className="h-[110px] w-[110px] text-slate-400" />
-            }
 
-            {
-              privateProfile &&
-              <button className="btn-secondary">Editar perfil</button>
-            }
-          </div>
-          <div className="space-y-2">
-            <aside className="flex gap-2">
-              {
-                activeUser.isDriver &&
-                <div className="flex items-center gap-1 py-1 px-2 bg-black text-white  bg-opacity-70 rounded-md w-fit">
-                  {userTripsDriver.length} <p className="font-light">Viajes como conductor</p>
-                </div>
-              }
-              <div className="flex items-center gap-1 py-1 px-2 bg-black text-white  bg-opacity-70 rounded-md w-fit">
-                {userTripsAsOccupant.length} <p className="font-light">Viajes como Pasajero</p>
-              </div>
-            </aside>
-            <h1 className="text-2xl">{activeUser.fullName}</h1>
-            <span className="flex items-center gap-2"><IoLocationOutline size={20} color="#18A0FB" /><p>{formateLocation({ country, stateOrProvince, city })}</p></span>
-            {
-              activeUser.isDriver
-              ? ( <span className="flex items-center gap-2">
-                  <IoCarOutline size={20} color="#18A0FB" />
-                  <p>{ privateProfile ? 'Eres' :'Es' } conductor</p>
-                </span>
-              ) : (
-                <span className="flex items-center gap-2">
-                <IoMapOutline size={20} color="#18A0FB" />
-                <p>{ privateProfile ? 'Eres' :'Es' } Viajero</p>
-              </span>
-              )
-            }
-          </div>
-        </div>
-      </header>
+      <HeaderProfile
+        activeUser={activeUser}
+        privateProfile={privateProfile}
+        userTripsDriver={userTripsDriver}
+        userTripsAsOccupant={userTripsAsOccupant}
+      />
 
       <Divider h={'1'} bg={'slate-300'} />
 
-      <section>
-
-      </section>
+      <UserTrips 
+        activeUser={activeUser}
+        userTripsDriver={userTripsDriver}
+        privateProfile={privateProfile}
+      />
+      
     </div>
   );
 }

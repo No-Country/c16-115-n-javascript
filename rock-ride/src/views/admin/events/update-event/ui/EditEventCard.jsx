@@ -45,6 +45,7 @@ export const EditEventModal = ({ isModalOpen, setModalOpen, setModalImageOpen })
     console.log('Editar Location');
   }
 
+  if (!activeEvent) return null;
   const { country, stateOrProvince, city } = activeEvent
 
 
