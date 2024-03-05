@@ -29,6 +29,7 @@ export const userSlice = createSlice({
     },
     onLoadUsers: (state, {payload =[]}) => {
       state.isLoadingUsers = false;
+      state.users = [];
       payload.forEach(user => {
           const exists = state.users.some(dbUser => dbUser.id === user.id);
           if(!exists){

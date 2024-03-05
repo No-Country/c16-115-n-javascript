@@ -32,6 +32,7 @@ export const eventSlice = createSlice({
     },
     onLoadEvents: (state, {payload =[]}) => {
         state.isLoadingEvents = false;
+        state.events = [];
         payload.forEach(event => {
             const exists = state.events.some(dbEvent => dbEvent.id === event.id);
             if(!exists){
