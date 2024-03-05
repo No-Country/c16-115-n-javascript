@@ -37,8 +37,17 @@
   @apply bg-blue-600 hover:bg-blue-800 text-white py-2 px-4 rounded transition-all;
 }
 
+.btn-primary-small {
+  @apply bg-blue-600 hover:bg-blue-800 text-white py-[5px] px-[10px]  rounded transition-all text-sm;
+}
+
+
 .btn-secondary {
   @apply bg-gray-200 hover:bg-gray-300 text-black py-2 px-4 rounded transition-all;
+}
+
+.btn-secondary-small {
+  @apply bg-gray-200 hover:bg-gray-300 text-black py-[5px] px-[10px] rounded transition-all text-sm;
 }
 
 .btn-disabled {

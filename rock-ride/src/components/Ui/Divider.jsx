@@ -5,7 +5,7 @@ export const Divider = ({ spaceY = '2', h = 'px', bg = 'slate-400'}) => {
 
 
   return (
-    <div className={`w-full border-solid h-${ h } bg-${ bg } my-${spaceY}`}></div>
+    <div className={`w-full border-solid h-${h} bg-${ bg } my-${spaceY}`}></div>
   )
 }
 
