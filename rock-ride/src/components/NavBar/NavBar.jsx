@@ -92,11 +92,11 @@ const NavBar = () => {
                 </li>
               
                 <li>
-                  <NavLink to="to">Viajes</NavLink>
+                  <NavLink to="/trips">Viajes</NavLink>
                 </li>
                            
                 <li>
-                  <NavLink to="">Eventos</NavLink> 
+                  <NavLink to="/events">Eventos</NavLink> 
                 </li>         
             </ul>
           </div>

@@ -8,22 +8,24 @@ import { useBookingStore } from "../../../../hooks/useBookingStore";
 import PropTypes from "prop-types";
 import { useTripStore } from "../../../../hooks/useTripStore";
 import logo from "../../../../assets/imgs/drive-rock-v4.webp";
+import { useEventStore } from "../../../../hooks/useEventStore";
 
-export const NewBooking = ({ trip }) => {
+export const NewBooking = ({ trip, event }) => {
   const [isModalOpen, setModalOpen] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const { checkAuthToken } = useAuthStore();
   const toast = useToast();
-  const { activeEvent } = useSelector((state) => state.event);
   const { users } = useSelector((state) => state.user);
 
   const { startNewBooking } = useBookingStore();
   const { setActiveTrip } = useTripStore();
+  const { setActiveEvent } = useEventStore();
 
   const handleOpenModal = () => {
     setModalOpen(true);
     setActiveTrip(trip);
+    setActiveEvent(event);
   };
 
   const handleCloseModal = () => {
@@ -31,11 +33,11 @@ export const NewBooking = ({ trip }) => {
     setErrorMessage("");
   };
 
-  const onSubmit = async () => {
-    event.preventDefault();
+  const onSubmit = async (e) => {
+    e.preventDefault();
     setLoading(true);
 
-    if (!activeEvent) {
+    if (!event) {
       setErrorMessage("Selecciona un evento");
       setLoading(false);
       return;
@@ -76,19 +78,19 @@ export const NewBooking = ({ trip }) => {
       </button>
       <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
         <h1 className="text-xl font-semibold mb-4">¡Únete a este viaje!</h1>
-        {activeEvent ? (
+        {event ? (
           <div>
-            <h1 className="text-center font-semibold">{activeEvent.name}</h1>
-            <img src={activeEvent.img} alt={activeEvent.name} />
+            <h1 className="text-center font-semibold">{event.name}</h1>
+            <img src={event.img} alt={event.name} />
             <h3 className="text-gray-400 text-center">
-              {moment(activeEvent.date).format("YYYY-MM-DD")}
+              {moment(event.date).format("YYYY-MM-DD")}
             </h3>
           </div>
         ) : (
           <div className="text-gray-400 text-center">Selecciona un evento</div>
         )}
         {trip ? (
-          <div className="bg-[#fdfdfd] p-2 rounded flex flex-row flex-wrap">
+          <div className="bg-[#fdfdfd7a] p-2 rounded flex flex-row flex-wrap">
             <div className="flex w-1/3">
               <div
                 className="w-12 h-12 m-auto inline-flex items-center justify-center bg-[#18A0FB] bg-cover rounded"
@@ -174,5 +176,10 @@ NewBooking.propTypes = {
     datetime: PropTypes.string.isRequired,
     places: PropTypes.number.isRequired,
     occupants: PropTypes.array.isRequired,
+  }).isRequired,
+  event: PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    img: PropTypes.string.isRequired,
+    date: PropTypes.string.isRequired,
   }).isRequired,
 };

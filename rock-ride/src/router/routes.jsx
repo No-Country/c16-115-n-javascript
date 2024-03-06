@@ -14,6 +14,8 @@ import NewEventPage from "../views/admin/events/new-event/NewEvent"
 import ProfilePage from "../views/profile/Profile"
 import DetailEventPage from "../views/user/events/detail-event/DetailEvent"
 import UsersPage from "../views/users/Users"
+import { EventsPage } from "../views/nav-links/EventsPage"
+import { TripsPage } from "../views/nav-links/TripsPage"
 
 
 
@@ -50,6 +52,8 @@ export default function Navigation() {
             <Route path="/auth/pending-verified" element={ <PendingVerifiedPage /> } />
 
             <Route path="/event/:id" element={ <DetailEventPage/> } />
+            <Route path="/events" element={ <EventsPage/> } />
+            <Route path="/trips" element={ <TripsPage/> } />
 
             <Route path="*" element={
               <div className="pt-20">

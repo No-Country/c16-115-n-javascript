@@ -108,7 +108,7 @@ export default function DetailEventPage() {
                   </div>
                   <div className="flex justify-end">
                     {user.user && (
-                      <NewBooking trip={eventTrip}/>
+                      <NewBooking trip={eventTrip} event={activeEvent}/>
                     )}
                   </div>
                 </div>
