@@ -5,7 +5,7 @@ import moment from "moment";
 import { Link } from "react-router-dom";
 import logo from "../../../../assets/imgs/drive-rock-v4.webp";
 import { useUsersStore } from "../../../../hooks/useUsersStore";
-import { useTripStore } from "../../../../hooks/useTripStore";
+import { NewBooking } from "../../bookings/new-booking/NewBooking";
 
 export default function DetailEventPage() {
   const { activeEvent } = useSelector((state) => state.event);
@@ -13,7 +13,7 @@ export default function DetailEventPage() {
   const { trips } = useSelector((state) => state.trip);
   const { users } = useSelector((state) => state.user);
   const { setActiveUser } = useUsersStore();
-  const { setActiveTrip } = useTripStore();
+
 
   return (
     <section className="text-gray-600 body-font pt-[5rem]">
@@ -57,7 +57,7 @@ export default function DetailEventPage() {
             Viajes
           </h1>
         </div>
-        <div className="flex flex-wrap -m-4">
+        <div className="flex flex-wrap justify-center">
           {trips
             .filter((trip) => trip.eventId === activeEvent.id)
             .map((eventTrip) => (
@@ -108,12 +108,7 @@ export default function DetailEventPage() {
                   </div>
                   <div className="flex justify-end">
                     {user.user && (
-                      <button
-                        onClick={() => setActiveTrip(eventTrip)}
-                        className="mt-3 inline-flex justify-center items-center bg-none text-[#18A0FB] border-spacing-1 font-semibold py-1 px-2 border border-[#18A0FB] rounded"
-                      >
-                        Unirte al viaje
-                      </button>
+                      <NewBooking trip={eventTrip}/>
                     )}
                   </div>
                 </div>

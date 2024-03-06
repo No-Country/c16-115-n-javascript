@@ -6,6 +6,7 @@ import { tripSlice } from "./features/tripSlice";
 import { authSlice } from "./features/authSlice";
 import { ticketSlice } from "./features/ticketSlice";
 import { userSlice } from "./features/userSlice"
+import { bookingSlice } from "./features/bookingSlice";
 import { persistStore, persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 
@@ -21,6 +22,7 @@ const rootReducer = combineReducers({
   auth: authSlice.reducer,
   ticket: ticketSlice.reducer,
   user: userSlice.reducer,
+  booking: bookingSlice.reducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

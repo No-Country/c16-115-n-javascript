@@ -26,6 +26,7 @@ export const ticketSlice = createSlice({
     },
     onLoadTickets: (state, {payload =[]}) => {
         state.isLoadingTickets = false;
+        state.tickets = [];
         payload.forEach(ticket => {
             const exists = state.tickets.some(dbTicket => dbTicket.id === ticket.id);
             if(!exists){

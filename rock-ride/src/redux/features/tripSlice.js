@@ -32,8 +32,9 @@ export const tripSlice = createSlice({
     },
     onLoadTrips: (state, {payload =[]}) => {
         state.isLoadingTrips = false;
+        state.trips = [];
         payload.forEach(trip => {
-            const exists = state.trips.some(dbEvent => dbEvent.id === trip.id);
+            const exists = state.trips.some(dbTrip => dbTrip.id === trip.id);
             if(!exists){
                 state.trips.push(trip);
             }
