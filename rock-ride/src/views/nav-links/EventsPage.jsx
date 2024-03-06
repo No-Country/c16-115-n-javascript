@@ -1,12 +1,19 @@
+import { PropTypes } from 'prop-types';
 import { useSelector } from "react-redux";
 import moment from "moment";
 import { Link } from "react-router-dom";
 import { useEventStore } from "../../hooks/useEventStore";
+import { usePagination } from "../../hooks/usePagination";
+import { Pagination } from "../../components/Ui/Pagination";
 
-export const EventsPage = () => {
+export const EventsPage = ({ tripsPerPage = 12, paginated = true }) => {
   const { events } = useSelector((state) => state.event);
   const { trips } = useSelector((state) => state.trip);
   const { setActiveEvent } = useEventStore();
+
+  const { startIndex, endIndex, currentPage, setCurrentPage, totalPages } = usePagination(events.length, tripsPerPage)
+  const paginatedEvents = events.slice(startIndex, endIndex);
+
   return (
     <div className="container px-5 py-[6rem] mx-auto">
       <div className="flex flex-col text-center w-full mb-20">
@@ -18,7 +25,7 @@ export const EventsPage = () => {
         </h1>
       </div>
       <div className="flex flex-wrap justify-center">
-        {events.map((event) => (
+        {paginatedEvents.map((event) => (
           <div key={event.id} className="p-4 md:w-1/3">
             <div className="h-full border-2 bg-gray-100 border-opacity-60 rounded-lg overflow-hidden">
               <img
@@ -79,6 +86,22 @@ export const EventsPage = () => {
           </div>
         ))}
       </div>
+      {paginated && (
+        <div className="px-4 lg:px-10 flex justify-end">
+          <Pagination
+            endIndex={endIndex}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+            totalItems={events.length}
+            totalPages={totalPages}
+          />
+        </div>
+      )}
     </div>
   );
+};
+
+EventsPage.propTypes = {
+  tripsPerPage: PropTypes.number,
+  paginated: PropTypes.bool,
 };
