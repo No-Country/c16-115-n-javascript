@@ -29,9 +29,9 @@ export const TripsPage = ({ tripsPerPage = 12, paginated = true }) => {
           Viajes
         </h1>
       </div>
-      <div className="flex flex-wrap justify-center">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 justify-center">
         {paginatedTrips.map((eventTrip) => (
-          <div key={eventTrip.id} className="p-4 md:w-1/3">
+          <div key={eventTrip.id} className="p-4">
             <div className="flex rounded-lg h-full bg-gray-100 p-8 flex-col">
               <img
                 className="lg:h-48 md:h-36 w-full object-cover object-center"
