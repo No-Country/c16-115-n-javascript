@@ -41,7 +41,11 @@ export default function ProfilePage() {
 
 
   return (
-    <div className="w-full px-10 max-w-[1200px] flex flex-col items-center mx-auto min-h-screenContent">
+    <div 
+      className="bg-[url('/svg/bg-profile-gray.svg')] bg-cover bg-center w-full bg-fixed min-h-screenContent px-2 py-10">
+        <div className="w-full px-4 sm:px-10 max-w-[1200px] flex flex-col items-center mx-auto rounded-md bg-slate-50 bg-opacity-85 shadow-xl">
+
+        
 
       <HeaderProfile
         activeUser={activeUser}
@@ -57,7 +61,7 @@ export default function ProfilePage() {
         userTripsDriver={userTripsDriver}
         privateProfile={privateProfile}
       />
-      
+      </div>
     </div>
   );
 }

@@ -53,6 +53,7 @@ const NavBar = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   
   const detailEventLocation = location.pathname.includes('/event/')
+  const profileLocation = location.pathname === '/profile'
 
   return (
     <div className={
@@ -61,6 +62,7 @@ const NavBar = () => {
         {
           "bg-[#fff] shadow-lg": navbarBackground,
           "bg-slate-900 shadow-lg text-slate-200": detailEventLocation,
+          "bg-white shadow-lg": profileLocation
 
         }
       )
