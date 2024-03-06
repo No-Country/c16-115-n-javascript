@@ -52,7 +52,7 @@ export default function Navigation() {
             <Route path="/event/:id" element={ <DetailEventPage/> } />
 
             <Route path="*" element={
-              <div className="pt-32">
+              <div className="pt-20">
                 <Routes>
 
                   <Route path="/admin/events" element={ <AdminEventsPage /> } />

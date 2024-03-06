@@ -34,11 +34,11 @@
 
 
 .btn-primary {
-  @apply bg-blue-600 hover:bg-blue-800 text-white py-2 px-4 rounded transition-all;
+  @apply bg-blue-600 hover:bg-blue-800 text-white py-[5px] px-[10px] text-sm sm:py-2 sm:px-4 sm:text-base rounded transition-all;
 }
 
 .btn-primary-small {
-  @apply bg-blue-600 hover:bg-blue-800 text-white py-[5px] px-[10px]  rounded transition-all text-sm;
+  @apply bg-blue-600 hover:bg-blue-800 text-white py-[5px] px-[10px]  rounded transition-all text-xs sm:text-sm;
 }
 
 
@@ -47,11 +47,11 @@
 }
 
 .btn-secondary-small {
-  @apply bg-gray-200 hover:bg-gray-300 text-black py-[5px] px-[10px] rounded transition-all text-sm;
+  @apply bg-gray-200 hover:bg-gray-300 text-black py-[5px] px-[10px] rounded transition-all text-xs sm:text-sm;
 }
 
 .btn-disabled {
-  @apply bg-gray-300 text-gray-200 py-2 px-4 rounded;
+  @apply bg-gray-300 text-gray-200 py-[5px] px-[10px] text-sm sm:py-2 sm:px-4 sm:text-base rounded ;
 }
 
 
@@ -63,3 +63,6 @@
   @apply bg-gray-300 text-gray-200 py-2 px-4;
 }
 
+.btn-disabled-small {
+  @apply bg-gray-300 text-gray-200 rounded py-[5px] px-[10px] text-sm;
+}

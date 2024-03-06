@@ -30,10 +30,10 @@ export const UserTrips = ({ privateProfile, userTripsDriver, activeUser }) => {
 
 
   return (
-    <section className="mt-6 pb-16">
+    <section className="mt-6 pb-16 w-[600px] max-w-full">
       {
         privateProfile
-          ? <h1 className="text-xl font-semibold">Mis Viajes</h1>
+          ? <h1 className="text-base sm:text-xl font-semibold">Mis Viajes</h1>
           : <h1 className="text-xl font-semibold">Viajes de {activeUser.fullName.split(' ').at(0)}</h1>
       }
 
@@ -44,17 +44,17 @@ export const UserTrips = ({ privateProfile, userTripsDriver, activeUser }) => {
             (paginatedUserTripsDriver.map(trip => (
               <div
                 key={trip.id}
-                className="flex flex-col gap-4 w-[600px] bg-slate-100 p-4 rounded shadow-md">
+                className="flex flex-col gap-4 w-full bg-slate-100 p-4 rounded shadow-md">
                 <section className="flex justify-between font-semibold text-right">
                   <img
                     height={100}
                     width={200}
                     src={currentEvent(trip.eventId)?.img}
                     alt="Imagen del evento"
-                    className="rounded object-cover aspect-video"
+                    className="rounded object-cover aspect-video w-[120px] sm:w-[200px]"
                   />
                   <div>
-                    <h2 className="text-2xl">{currentEvent(trip.eventId)?.name}</h2>
+                    <h2 className="text-xl sm:text-2xl">{currentEvent(trip.eventId)?.name}</h2>
                     <p>{currentEvent(trip.eventId)?.city}</p>
 
 
@@ -75,10 +75,10 @@ export const UserTrips = ({ privateProfile, userTripsDriver, activeUser }) => {
         }
 
         <div className="flex justify-between items-center mt-4">
-          <div>
-            <p>Página <strong>{currentPage}</strong> de {totalPages}</p>
+          <div className='ml-0 sm:ml-2'>
+            <p className='text-xs sm:text-base'>Página <strong>{currentPage}</strong> de {totalPages}</p>
           </div>
-          <div className="flex">
+          <div className="flex items-center">
             <button
               onClick={() => handlePageChange(Math.max(currentPage - 1, 1))}
               disabled={currentPage === 1}
