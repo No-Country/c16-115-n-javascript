@@ -42,7 +42,7 @@ export default function ProfilePage() {
 
   return (
     <div 
-      className="bg-[url('/svg/bg-profile-gray.svg')] bg-cover bg-center w-full bg-fixed min-h-screenContent px-2 py-10">
+      className="bg-[url('/bg-profile-gray.png')] bg-cover bg-center w-full bg-fixed min-h-screenContent px-2 py-10">
         <div className="w-full px-4 sm:px-10 max-w-[1200px] flex flex-col items-center mx-auto rounded-md bg-slate-50 bg-opacity-85 shadow-xl">
 
         
