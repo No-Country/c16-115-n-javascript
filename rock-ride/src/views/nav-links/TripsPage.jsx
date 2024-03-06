@@ -1,28 +1,36 @@
+import { PropTypes } from 'prop-types';
 import { useSelector } from "react-redux";
 import moment from "moment";
 import { Link } from "react-router-dom";
 import logo from "../../assets/imgs/drive-rock-v4.webp";
 import { useUsersStore } from "../../hooks/useUsersStore";
 import { NewBooking } from "../user/bookings/new-booking/NewBooking";
+import { usePagination } from '../../hooks/usePagination';
+import { Pagination } from '../../components/Ui/Pagination';
 
-export const TripsPage = () => {
+export const TripsPage = ({ tripsPerPage = 12, paginated = true }) => {
   const { user } = useSelector((state) => state.auth);
   const { trips } = useSelector((state) => state.trip);
   const { events } = useSelector((state) => state.event);
   const { users } = useSelector((state) => state.user);
   const { setActiveUser } = useUsersStore();
+
+  const { startIndex, endIndex, currentPage, setCurrentPage, totalPages } = usePagination(trips.length, tripsPerPage)
+  
+  const paginatedTrips = trips.slice(startIndex, endIndex);
+  
   return (
     <div className="container px-5 py-[6rem] mx-auto">
       <div className="flex flex-col text-center w-full mb-20">
         <h2 className="text-sm text-[#18A0FB] tracking-widest font-medium title-font mb-1">
-          ¡únete a la aventura de tu vida!
+          ¡Únete a la aventura de tu vida!
         </h2>
         <h1 className="sm:text-3xl text-2xl font-medium title-font text-gray-900">
           Viajes
         </h1>
       </div>
       <div className="flex flex-wrap justify-center">
-        {trips.slice(0, 12).map((eventTrip) => (
+        {paginatedTrips.map((eventTrip) => (
           <div key={eventTrip.id} className="p-4 md:w-1/3">
             <div className="flex rounded-lg h-full bg-gray-100 p-8 flex-col">
               <img
@@ -90,6 +98,24 @@ export const TripsPage = () => {
           </div>
         ))}
       </div>
+      {
+        paginated && 
+        <div className='px-4 lg:px-10 flex justify-end'>
+          <Pagination 
+            endIndex={endIndex} 
+            currentPage={currentPage} 
+            setCurrentPage={setCurrentPage} 
+            totalItems={trips.length}
+            totalPages={totalPages}
+          />
+        </div>
+      }
     </div>
   );
+};
+
+
+TripsPage.propTypes = {
+  tripsPerPage: PropTypes.number,
+  paginated: PropTypes.bool,
 };

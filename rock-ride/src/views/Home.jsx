@@ -8,6 +8,9 @@ import {
 import { MdOutlineSavings } from "react-icons/md";
 import { IoPlayForward } from "react-icons/io5";
 import { FaUserFriends } from "react-icons/fa";
+import { TripsPage } from "./nav-links/TripsPage";
+import { NavLink } from "react-router-dom";
+import { scrollToTop } from "../helpers/functions";
 
 
 export default function HomePage() {
@@ -86,6 +89,14 @@ export default function HomePage() {
             <Carousel />
           </div>
         </div>
+      </div>
+
+        <NavLink to="/events" onClick={ scrollToTop } className="btn-primary w-fit mx-auto mt-2">Ver todos</NavLink>
+
+      
+      <div className="flex flex-col gap-0 pb-20">
+        <TripsPage tripsPerPage={ 6 } paginated={ false } />
+        <NavLink to="/trips" onClick={ scrollToTop } className="btn-primary w-fit mx-auto -translate-y-20">Ver todos</NavLink>
       </div>
     </div>
   );
