@@ -88,7 +88,7 @@ const NavBar = () => {
           <div className=" sm:flex items-center hidden">
             <ul className="flex justify-center gap-10 font-semibold">
                 <li>
-                  <NavLink to="">Nosotros</NavLink>
+                  <NavLink to="/about-us">Nosotros</NavLink>
                 </li>
               
                 <li>
