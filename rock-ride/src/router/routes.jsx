@@ -15,6 +15,7 @@ import DetailEventPage from "../views/user/events/detail-event/DetailEvent"
 import UsersPage from "../views/users/Users"
 import { EventsPage } from "../views/nav-links/EventsPage"
 import { TripsPage } from "../views/nav-links/TripsPage"
+import { AboutUsPage } from "../views/nav-links/AboutUsPage"
 
 
 
@@ -53,6 +54,7 @@ export default function Navigation() {
             <Route path="/event/:id" element={ <DetailEventPage/> } />
             <Route path="/events" element={ <EventsPage/> } />
             <Route path="/trips" element={ <TripsPage/> } />
+            <Route path="/about-us" element={ <AboutUsPage/> } />
 
             <Route path="*" element={
               <div className="pt-20">
