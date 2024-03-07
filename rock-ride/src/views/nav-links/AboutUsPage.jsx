@@ -24,9 +24,9 @@ export const AboutUsPage = () => {
         </div>
       </article>
 
-      <article className="container px-4 md:px-20 rounded-md py-12 mx-auto bg-slate-100 mt-10 shadow-xl">
-        <div className="-my-8 divide-y-2 divide-slate-300">
-          <div className="py-8 flex flex-wrap md:flex-nowrap">
+      <article className="container px-4 md:px-20 rounded-md py-12 mx-auto bg-slate-100 my-20 shadow-xl">
+        <div className="my-4 divide-y-2 divide-slate-300">
+          <div className="py-8 flex flex-wrap md:flex-nowrap mb-4">
             <div className="md:w-64 md:mb-0 mb-6 flex-shrink-0 flex flex-col">
               <span className="font-semibold title-font text-gray-700 text-xl smtext-2xl">
                 Conéctate y Ahorra
@@ -42,7 +42,7 @@ export const AboutUsPage = () => {
               </p>
             </div>
           </div>
-          <div className="py-8 flex flex-wrap md:flex-nowrap">
+          <div className="py-8 flex flex-wrap md:flex-nowrap pt-8">
             <div className="md:w-64 md:mb-0 mb-6 flex-shrink-0 flex flex-col">
               <span className="font-semibold title-font text-gray-700 text-base sm:text-xl">
                 Economiza Gastos, Haz nuevos Amigos
