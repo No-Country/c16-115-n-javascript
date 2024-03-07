@@ -73,7 +73,7 @@ export const updateEvent = async (formData, id) => {
     })
 
     const data = await response.json();
-    console.log(data);
+    
     return data
     
   } catch (error) {

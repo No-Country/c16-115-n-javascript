@@ -12,8 +12,11 @@ export default {
       dropShadow: {
         "2xl-light": "0 0 20px rgba(93, 144, 247, 0.1)",
       },
+      boxShadow: {
+        "2xl-light": "0 0 20px rgba(93, 144, 247, 0.1)",
+      },
       minHeight: {
-        screenContent: "calc(100vh - 8.1rem)",
+        screenContent: "calc(100vh - 5rem)",
       }
     },
   },

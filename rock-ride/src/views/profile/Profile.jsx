@@ -54,7 +54,7 @@ export default function ProfilePage() {
         userTripsAsOccupant={userTripsAsOccupant}
       />
 
-      <Divider h={'1'} bg={'slate-300'} />
+      <Divider bold={ true } bg={'slate-300'} />
 
       <UserTrips 
         activeUser={activeUser}
