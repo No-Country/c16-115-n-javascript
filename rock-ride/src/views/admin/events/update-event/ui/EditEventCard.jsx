@@ -12,7 +12,16 @@ import { formateLocation } from '../../../../../utils/formateLocation';
 
 
 
-export const EditEventModal = ({ isModalOpen, setModalOpen, setModalImageOpen }) => {
+export const EditEventModal = ({ 
+  isModalOpen, 
+  setModalOpen, 
+  setModalImageOpen, 
+  setModalNameOpen, 
+  setModalCategoryOpen,
+  setModalDateOpen,
+  setModalLocationOpen,
+  setModalCancelOpen,
+}) => {
 
   const { setActiveEvent } = useEventStore()
 
@@ -30,19 +39,19 @@ export const EditEventModal = ({ isModalOpen, setModalOpen, setModalImageOpen })
   }
 
   const handleEditName = () => {
-    console.log('Editar Name');
+    setModalNameOpen(true)
   }
 
   const handleEditCategory = () => {
-    console.log('Editar Category');
+    setModalCategoryOpen(true)
   }
 
   const handleEditDate = () => {
-    console.log('Editar Date');
+    setModalDateOpen(true)
   }
 
   const handleEditLocation = () => {
-    console.log('Editar Location');
+    setModalLocationOpen(true)
   }
 
   if (!activeEvent) return null;
@@ -61,11 +70,11 @@ export const EditEventModal = ({ isModalOpen, setModalOpen, setModalImageOpen })
       activeEvent && 
         <>
           <div className='w-full h-[70%] overflow-hidden'>
-            <img className="min-h-full object-cover object-top" src={activeEvent.img} alt="" />
+            <img className="h-full w-full object-cover object-top aspect-video" src={activeEvent.img} alt="" />
           </div>
 
-          <div className='p-2 space-y-8'>
-            <div className='p-2 flex items-center justify-between'>
+          <div className='p-2 space-y-4 mb-2'>
+            <div className='px-2 flex items-center justify-between'>
 
               <div className='flex items-center gap-2'>
                 <h3 className='text-2xl'>{activeEvent.name}</h3>
@@ -91,6 +100,9 @@ export const EditEventModal = ({ isModalOpen, setModalOpen, setModalImageOpen })
             </div>
           </div>
 
+          <div className='flex justify-end mr-6'>
+            <button onClick={ ()=> setModalCancelOpen(true)} className='btn-danger-small'>Cancelar evento</button>
+          </div>
         </>
 
     }
@@ -109,5 +121,10 @@ export const EditEventModal = ({ isModalOpen, setModalOpen, setModalImageOpen })
 EditEventModal.propTypes = {
   isModalOpen: PropTypes.bool.isRequired,
   setModalOpen: PropTypes.func.isRequired,
-  setModalImageOpen: PropTypes.func
+  setModalImageOpen: PropTypes.func,
+  setModalNameOpen: PropTypes.func,
+  setModalCategoryOpen: PropTypes.func,
+  setModalDateOpen: PropTypes.func,
+  setModalLocationOpen: PropTypes.func,
+  setModalCancelOpen: PropTypes.func,
 }

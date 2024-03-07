@@ -8,6 +8,11 @@ import { EditEventModal } from "./update-event/ui/EditEventCard";
 import { Tooltip } from '@chakra-ui/react'
 import { UpdateEventImage } from "./update-event/ui/UpdateEventImage";
 import { useSelector } from "react-redux";
+import { UpdateEventName } from "./update-event/ui/UpdateEventName";
+import { UpdateEventCategory } from "./update-event/ui/UpdateEventCategory";
+import { UpdateEventDate } from "./update-event/ui/UpdateEventDate";
+import { UpdateEventLocation } from "./update-event/ui/UpdateEventLocation";
+import { CancelEvent } from "./update-event/ui/CancelEvent";
 
 
 
@@ -15,6 +20,11 @@ export default function AdminEventsPage() {
 
   const [isModalOpen, setModalOpen] = useState(false);
   const [modalImageOpen, setModalImageOpen] = useState(false)
+  const [modalNameOpen, setModalNameOpen] = useState(false)
+  const [modalCategoryOpen, setModalCategoryOpen] = useState(false)
+  const [modalDateOpen, setModalDateOpen] = useState(false)
+  const [modalLocationOpen, setModalLocationOpen] = useState(false)
+  const [modalCancelOpen, setModalCancelOpen] = useState(false)
 
   const { setActiveEvent, startLoadingEvents } = useEventStore()
 
@@ -34,7 +44,7 @@ export default function AdminEventsPage() {
   }
 
   return (
-    <div className="w-full max-w-[1200px] mx-auto min-h-screen">
+    <div className="w-full max-w-[1200px] mx-auto h-screenContent mt-32">
 
       <div className="px-4 w-full">
         <NavLink to={-1} className="mb-4 flex items-center gap-2 hover:text-blue-500 transition-colors w-fit">
@@ -180,6 +190,11 @@ export default function AdminEventsPage() {
         isModalOpen={ isModalOpen } 
         setModalOpen={ setModalOpen } 
         setModalImageOpen={ setModalImageOpen } 
+        setModalNameOpen={ setModalNameOpen }
+        setModalCategoryOpen={ setModalCategoryOpen }
+        setModalDateOpen={ setModalDateOpen }
+        setModalLocationOpen={ setModalLocationOpen }
+        setModalCancelOpen={ setModalCancelOpen }
       />
 
       <UpdateEventImage
@@ -188,6 +203,41 @@ export default function AdminEventsPage() {
         setModalOpen={ setModalOpen }
         setSuccessUpdated={ setSuccessUpdated }
       /> 
+
+      <UpdateEventName 
+        modalNameOpen={ modalNameOpen } 
+        setModalNameOpen={ setModalNameOpen} 
+        setModalOpen={ setModalOpen} 
+        setSuccessUpdated={ setSuccessUpdated }
+      />
+
+      <UpdateEventCategory 
+        modalCategoryOpen={ modalCategoryOpen }
+        setModalCategoryOpen={ setModalCategoryOpen }
+        setModalOpen={ setModalOpen }
+        setSuccessUpdated={ setSuccessUpdated }
+      />
+
+      <UpdateEventDate 
+        modalDateOpen={ modalDateOpen }
+        setModalDateOpen={ setModalDateOpen }
+        setModalOpen={ setModalOpen }
+        setSuccessUpdated={ setSuccessUpdated }
+      />
+
+      <UpdateEventLocation 
+        modalLocationOpen={ modalLocationOpen }
+        setModalLocationOpen={ setModalLocationOpen }
+        setModalOpen={ setModalOpen }
+        setSuccessUpdated={ setSuccessUpdated }
+      />
+
+      <CancelEvent 
+        modalCancelOpen={ modalCancelOpen }
+        setModalCancelOpen={ setModalCancelOpen }
+        setModalOpen={ setModalOpen }
+        setSuccessUpdated={ setSuccessUpdated }
+      />
     </div>
   );
 }

@@ -10,7 +10,7 @@ export const formateDate = (date) => {
 }
 
 export const formateDateUpdate = (date) => {
-  const updateDate = moment(date).format("YYYY-MM-DD");
+  const updateDate = moment(date).format("YYYY-MM-DDTHH:mm");
 
   return updateDate
 

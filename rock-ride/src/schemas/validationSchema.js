@@ -70,3 +70,22 @@ export const newTripSchema = yup.object().shape({
 export const updateImageSchema = yup.object().shape({
   img: yup.mixed().required('La imagen es obligatoria'),
 });
+
+export const updateNameEventSchema = yup.object().shape({
+  name: yup.string().required('El nombre es obligatorio'),
+});
+export const updateCategoryEventSchema = yup.object().shape({
+  category: yup.string().required('El nombre es obligatorio'),
+});
+
+export const updateDateEventSchema = yup.object().shape({
+  date: yup.date('Debe ser de tipo date').required('La fecha es obligatoria'),
+});
+
+export const updateLocationEventSchema = yup.object().shape({
+  country: yup.string().required('El país es obligatorio'),
+  province: yup.string().required('La provincia es obligatoria'),
+  city: yup.string().required('La ciudad es obligatoria'),
+  streetName: yup.string().required('La calle es obligatoria'),
+  streetNumber: yup.string(),
+})

@@ -266,6 +266,7 @@ export const NewEventForm = () => {
             <option value="pop">Pop</option>
             <option value="reggae">Reaggae</option>
             <option value="metal">Metal</option>
+            <option value="punk">Punk</option>
             <option value="jazz">Jazz</option>
             <option value="techno">Electrónica</option>
           </select>

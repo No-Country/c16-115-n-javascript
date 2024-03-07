@@ -34,24 +34,24 @@
 
 
 .btn-primary {
-  @apply bg-blue-600 hover:bg-blue-800 text-white py-[5px] px-[10px] text-sm sm:py-2 sm:px-4 sm:text-base rounded transition-all;
+  @apply bg-blue-600 hover:bg-blue-800 text-white py-[5px] px-[10px] text-sm sm:py-2 sm:px-4 sm:text-base rounded transition-all shadow-md;
 }
 
 .btn-primary-small {
-  @apply bg-blue-600 hover:bg-blue-800 text-white py-[5px] px-[10px]  rounded transition-all text-xs sm:text-sm;
+  @apply bg-blue-600 hover:bg-blue-800 text-white py-[5px] px-[10px]  rounded transition-all text-xs sm:text-sm shadow-md;
 }
 
 .btn-follow {
-  @apply bg-blue-600 hover:bg-blue-800 text-white py-[5px] px-[15px]  rounded-full transition-all text-xs sm:text-sm
+  @apply bg-blue-600 hover:bg-blue-800 text-white py-[5px] px-[15px]  rounded-full transition-all text-xs sm:text-sm shadow-md
 }
 
 
 .btn-secondary {
-  @apply bg-gray-200 hover:bg-gray-300 text-black py-2 px-4 rounded transition-all;
+  @apply bg-gray-200 hover:bg-gray-300 text-black py-2 px-4 rounded transition-all shadow-md;
 }
 
 .btn-secondary-small {
-  @apply bg-gray-200 hover:bg-gray-300 text-black py-[5px] px-[10px] rounded transition-all text-xs sm:text-sm;
+  @apply bg-gray-200 hover:bg-gray-300 text-black py-[5px] px-[10px] rounded transition-all text-xs sm:text-sm shadow-md;
 }
 
 .btn-disabled {
@@ -60,7 +60,10 @@
 
 
 .btn-danger {
-  @apply bg-red-600 hover:bg-red-700 text-white py-2 px-4 transition-all rounded;
+  @apply bg-red-600 hover:bg-red-700 text-white py-2 px-4 transition-all rounded shadow-md;
+}
+.btn-danger-small {
+  @apply bg-red-600 hover:bg-red-700 text-white py-[5px] px-[10px] text-sm transition-all rounded shadow-md;
 }
 
 .btn-danger-disabled {

@@ -9,7 +9,6 @@ import LoginPage from "../views/login/Login"
 import RegisterPage from "../views/register/Register"
 import AdminEventsPage from "../views/admin/events/AdminEvents"
 import { NavBar } from "../components"
-import EditEventPage from "../views/admin/events/update-event/AdminEditEvent"
 import NewEventPage from "../views/admin/events/new-event/NewEvent"
 import ProfilePage from "../views/profile/Profile"
 import DetailEventPage from "../views/user/events/detail-event/DetailEvent"
@@ -60,7 +59,7 @@ export default function Navigation() {
                 <Routes>
 
                   <Route path="/admin/events" element={ <AdminEventsPage /> } />
-                  <Route path="/admin/event/:id" element={ <EditEventPage /> } />
+
                   <Route path="/admin/event/new" element={ <NewEventPage /> } />
 
                   <Route path="/profile" element={ <ProfilePage />} />
