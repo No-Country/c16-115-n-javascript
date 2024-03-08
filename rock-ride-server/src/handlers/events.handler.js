@@ -45,6 +45,7 @@ export const getEventByIdHandler = async (req, res) => {
 
 export const postEventHandler = async (req, res) => {
   const { name, date, category, streetName, streetNumber, city, province, country: countryEvent } = req.body;
+
   const { role: userRole } = req.user;
   const  img  = req.files.img.tempFilePath;  
 
@@ -72,7 +73,12 @@ export const postEventHandler = async (req, res) => {
 export const putEventHandler = async (req, res) => {
   const eventId = req.params.id;
   const { role: userRole } = req.user;
-  const  img  = req.files.img.tempFilePath; 
+
+  let img;
+
+  if (req.files !== null){
+    img  = req.files.img.tempFilePath; 
+  }
   
 
   if (userRole !== "admin")
