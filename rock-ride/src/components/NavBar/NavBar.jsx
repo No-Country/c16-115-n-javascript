@@ -57,7 +57,7 @@ const NavBar = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   
   const detailEventLocation = location.pathname.includes('/event/')
-  const profileLocation = location.pathname === '/profile'
+  const profileLocation = location.pathname.includes('/profile')
 
   return (
     <div className={

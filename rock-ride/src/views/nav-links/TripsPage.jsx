@@ -36,6 +36,10 @@ export const TripsPage = ({ tripsPerPage = 12, paginated = true }) => {
     setActiveUser(currentDriver(userId))
     scrollToTop()
   }
+
+  if (!events || !trips) {
+    return
+  } 
   
   return (
     <div className="container px-5 py-[6rem] mx-auto">

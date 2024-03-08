@@ -6,6 +6,9 @@
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
 }
 
+.modal-open {
+  overflow: hidden; /* Evita el desplazamiento de la página */
+}
 
 @font-face {
   font-family: 'Barbaro';

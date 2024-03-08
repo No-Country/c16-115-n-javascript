@@ -4,12 +4,21 @@ import { IoCarOutline, IoLocationOutline, IoMapOutline } from 'react-icons/io5'
 import { formateLocation } from '../../../utils/formateLocation';
 import { Tooltip } from '@chakra-ui/react';
 import { ProfileImg } from '../../../components/Ui/ProfileImg';
+import { ModalUpdateUser } from './ModalUpdateUser';
+import { useState } from 'react';
+import { UpdateUserForm } from './UpdateUserForm';
 
 
 export const HeaderProfile = ({ activeUser, userTripsAsOccupant, userTripsDriver, privateProfile }) => {
 
 
   const { country, stateOrProvince, city } = activeUser
+
+  const [isModalOpen, setModalOpen] = useState(false);
+
+  const handleOpenModal = () => {
+    setModalOpen(true);
+  };
 
   return (
     <header className="flex mx-auto mb-2 w-full min-h-[200px] justify-center items-center jus gap-0 sm:gap-6 font-semibold">
@@ -65,11 +74,17 @@ export const HeaderProfile = ({ activeUser, userTripsAsOccupant, userTripsDriver
                 </div>
             ) : (
               <div className='flex justify-end my-4'>
-                <button className="btn-secondary-small w-fit h-fit">Editar perfil</button>
+                <button className="btn-secondary-small w-fit h-fit" onClick={handleOpenModal}>Editar perfil</button>
               </div>
             )
         }
 
+        <ModalUpdateUser 
+          isOpen={isModalOpen}
+          onClose={ () => setModalOpen(false) }
+        >
+          <UpdateUserForm isOpen={ isModalOpen } />
+        </ModalUpdateUser>
 
       </div>
     </header>

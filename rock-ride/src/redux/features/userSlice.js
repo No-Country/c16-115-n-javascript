@@ -7,7 +7,7 @@ const initialState = {
     activeUser: null,
 }
 
-
+//  Revisar porque no esta actualizando correctamente el slice [[ LLega un id diferente al del usuario ]]
 export const userSlice = createSlice({
   name: 'user',
   initialState,
@@ -16,6 +16,7 @@ export const userSlice = createSlice({
       state.activeUser = payload
     },
     onUpdateUser: (state, { payload }) => {
+      console.log(payload);
       state.users = state.users.map(user => {
           if(user.id === payload.id) return payload;
           return user
