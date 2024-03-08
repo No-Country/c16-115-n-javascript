@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import logo from "../../../../assets/imgs/drive-rock-v4.webp";
 import { useUsersStore } from "../../../../hooks/useUsersStore";
 import { NewBooking } from "../../bookings/new-booking/NewBooking";
+import { getSlugName } from "../../../../helpers/functions";
 
 export default function DetailEventPage() {
   const { activeEvent } = useSelector((state) => state.event);
@@ -14,6 +15,16 @@ export default function DetailEventPage() {
   const { users } = useSelector((state) => state.user);
   const { setActiveUser } = useUsersStore();
 
+
+  const currentDriver = ( driverId ) => {
+    return users.find(driver => driver.id === driverId)
+  }
+
+
+  const slugName = (userId) => {
+    const user = currentDriver(userId)
+    return getSlugName(user.fullName)
+  }
 
   return (
     <section className="text-gray-600 body-font pt-[5rem]">
@@ -86,10 +97,10 @@ export default function DetailEventPage() {
                     ></div>
                     <Link
                       className="text-gray-900 text-lg title-font font-medium"
-                      to={"/profile"}
+                      to={`/profile/${ slugName(eventTrip.userId) }`}
                       onClick={() =>
                         setActiveUser(
-                          users.find((driver) => driver.id === eventTrip.userId)
+                          currentDriver(eventTrip.userId)
                         )
                       }
                     >

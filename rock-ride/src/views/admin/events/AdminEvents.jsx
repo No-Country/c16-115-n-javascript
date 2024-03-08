@@ -13,6 +13,7 @@ import { UpdateEventCategory } from "./update-event/ui/UpdateEventCategory";
 import { UpdateEventDate } from "./update-event/ui/UpdateEventDate";
 import { UpdateEventLocation } from "./update-event/ui/UpdateEventLocation";
 import { CancelEvent } from "./update-event/ui/CancelEvent";
+import { scrollToTop } from "../../../helpers/functions";
 
 
 
@@ -42,6 +43,11 @@ export default function AdminEventsPage() {
     
   //   startLoadingEvents()
   // }
+
+  const handleActiveEvent = ( event ) => {
+    setActiveEvent(event)
+    scrollToTop()
+  }
 
   return (
     <div className="w-full max-w-[1200px] mx-auto h-screenContent mt-32">
@@ -147,7 +153,7 @@ export default function AdminEventsPage() {
                   >
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                       <Tooltip hasArrow label='Ver detalle' bg='gray.900'>
-                        <NavLink to={`/event/${event.id}`} onClick={() => setActiveEvent(event)}>
+                        <NavLink to={`/event/${event.id}`} onClick={() => handleActiveEvent(event)}>
 
                           <img
                             width={80}

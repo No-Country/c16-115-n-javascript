@@ -4,6 +4,7 @@ import { formateLocation } from '../../../utils/formateLocation'
 import { FaCircleUser } from 'react-icons/fa6';
 import { useUsersStore } from '../../../hooks/useUsersStore';
 import { NavLink } from 'react-router-dom';
+import { getSlugName } from '../../../helpers/functions';
 
 
 export const UserCard = ({ user }) => {
@@ -11,10 +12,13 @@ export const UserCard = ({ user }) => {
   const { setActiveUser } = useUsersStore()
 
   const { country, stateOrProvince, city } = user;
+  
+
+  const slugName = getSlugName(user.fullName)
 
   return (
     <div className='flex flex-col gap-2 w-[360px] max-w-[100%] h-[200px] p-6 rounded-md shadow-xl bg-slate-100'>
-      <NavLink to="/profile" onClick={() => setActiveUser(user)}>
+      <NavLink to={`/profile/${ slugName }`} onClick={() => setActiveUser(user)}>
         <header className='flex items-center gap-2 cursor-pointer'>
           {
             user.profileImg 

@@ -7,6 +7,7 @@ import { useUsersStore } from "../../hooks/useUsersStore";
 import { NewBooking } from "../user/bookings/new-booking/NewBooking";
 import { usePagination } from '../../hooks/usePagination';
 import { Pagination } from '../../components/Ui/Pagination';
+import { getSlugName, scrollToTop } from '../../helpers/functions';
 
 export const TripsPage = ({ tripsPerPage = 12, paginated = true }) => {
   const { user } = useSelector((state) => state.auth);
@@ -18,6 +19,23 @@ export const TripsPage = ({ tripsPerPage = 12, paginated = true }) => {
   const { startIndex, endIndex, currentPage, setCurrentPage, totalPages } = usePagination(trips.length, tripsPerPage)
   
   const paginatedTrips = trips.slice(startIndex, endIndex);
+
+
+  const currentDriver = ( driverId ) => {
+    return users.find(driver => driver.id === driverId)
+  }
+
+
+  const slugName = (userId) => {
+    const user = currentDriver(userId)
+    return getSlugName(user.fullName)
+  }
+
+  const handleUserProfile = (userId) => {
+
+    setActiveUser(currentDriver(userId))
+    scrollToTop()
+  }
   
   return (
     <div className="container px-5 py-[6rem] mx-auto">
@@ -56,12 +74,8 @@ export const TripsPage = ({ tripsPerPage = 12, paginated = true }) => {
                 ></div>
                 <Link
                   className="text-gray-900 text-lg title-font font-medium"
-                  to={"/profile"}
-                  onClick={() =>
-                    setActiveUser(
-                      users.find((driver) => driver.id === eventTrip.userId)
-                    )
-                  }
+                  to={`/profile/${slugName(eventTrip.userId)}`}
+                  onClick={() => handleUserProfile(eventTrip.userId) } 
                 >
                   {
                     users.find((driver) => driver.id === eventTrip.userId)

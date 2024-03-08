@@ -16,10 +16,15 @@ import UsersPage from "../views/users/Users"
 import { EventsPage } from "../views/nav-links/EventsPage"
 import { TripsPage } from "../views/nav-links/TripsPage"
 import { AboutUsPage } from "../views/nav-links/AboutUsPage"
+import { useAuthStore } from "../hooks/useAuthStore"
 
 
 
 export default function Navigation() {
+
+  const { status, user } = useAuthStore()
+  
+  const role = user.user && user.user.role 
 
   const location = useLocation()
 
@@ -56,19 +61,31 @@ export default function Navigation() {
             <Route path="/trips" element={ <TripsPage/> } />
             <Route path="/about-us" element={ <AboutUsPage/> } />
 
-            <Route path="*" element={
-              <div className="pt-20">
-                <Routes>
+            {
+              status === 'authenticated' && 
+              <Route path="*" element={
+                <div className="pt-20">
+                  <Routes>
+  
+  
+                    {
+                      role === 'admin' && (
+                        <>
+                          <Route path="/admin/events" element={ <AdminEventsPage /> } />
+                          <Route path="/admin/event/new" element={ <NewEventPage /> } />
+                          <Route path="/admin/users" element={ <UsersPage /> } />
+                        </>
+                      )
+                    }
+  
+                    <Route path="/profile/:name" element={ <ProfilePage />} />
+                    <Route path="*" element={ <HomePage />} />
+                  </Routes>
+                </div>
+              }/>
+            }
 
-                  <Route path="/admin/events" element={ <AdminEventsPage /> } />
-
-                  <Route path="/admin/event/new" element={ <NewEventPage /> } />
-
-                  <Route path="/profile" element={ <ProfilePage />} />
-                  <Route path="/admin/users" element={ <UsersPage /> } />
-                </Routes>
-              </div>
-            }/>
+            <Route path="*" element={ <HomePage /> } />
           </Routes>
     </>
   )

@@ -1,8 +1,9 @@
 import { PropTypes } from 'prop-types'
-import { FaCircleUser } from 'react-icons/fa6';
+
 import { IoCarOutline, IoLocationOutline, IoMapOutline } from 'react-icons/io5'
 import { formateLocation } from '../../../utils/formateLocation';
 import { Tooltip } from '@chakra-ui/react';
+import { ProfileImg } from '../../../components/Ui/ProfileImg';
 
 
 export const HeaderProfile = ({ activeUser, userTripsAsOccupant, userTripsDriver, privateProfile }) => {
@@ -11,24 +12,14 @@ export const HeaderProfile = ({ activeUser, userTripsAsOccupant, userTripsDriver
   const { country, stateOrProvince, city } = activeUser
 
   return (
-    <header className="flex mx-auto w-full h-[200px] justify-center items-center jus gap-2 sm:gap-6 font-semibold">
+    <header className="flex mx-auto mb-2 w-full min-h-[200px] justify-center items-center jus gap-0 sm:gap-6 font-semibold">
 
-      <div className="flex flex-col items-center gap-2 w-[40%] sm:w-[20%]">
-        {
-          activeUser.profileImg
-            ? <img
-              width={150}
-              height={150}
-              src={activeUser.profileImg}
-              alt="imagen de perfil de usuario"
-              className="rounded-full h-[80px] w-[80px] sm:h-[110px] sm:w-[110px]"
-            />
-            : <FaCircleUser className="h-[80px] w-[80px] sm:h-[110px] sm:w-[110px] text-slate-400" />
-        }
+      <div className="flex flex-col items-center gap-2 w-[35%] sm:w-[20%]">
+        <ProfileImg profileImg={ activeUser.profileImg } />
 
      
       </div>
-      <div className='flex flex-col-reverse sm:flex sm:flex-row w-[60%] sm:w-[80%] justify-between'>
+      <div className='flex flex-col-reverse sm:flex sm:flex-row w-[65%] sm:w-[80%] justify-between'>
         <div className="space-y-2 ">
           <aside className="flex flex-col sm:flex-row gap-2 text-xs sm:text-sm md:text-base">
             {

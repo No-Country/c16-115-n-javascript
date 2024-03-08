@@ -24,7 +24,7 @@ export const useBookingStore = () => {
     }
   };
 
-  const startLoadingTrips = async () => {
+  const startLoadingBookings = async () => {
     try {
       const { data } = await driveRockApi.get("/bookings");
       dispatch(onLoadBookings(data.bookings));
@@ -33,7 +33,7 @@ export const useBookingStore = () => {
     }
   };
 
-  const startDeletingTrip = async () => {
+  const startDeletingBooking = async () => {
     try {
       await driveRockApi.delete(`/bookings/${activeBooking.id}`);
       dispatch(onDeleteBooking());
@@ -49,7 +49,7 @@ export const useBookingStore = () => {
 
     setActiveBooking,
     startNewBooking,
-    startDeletingTrip,
-    startLoadingTrips,
+    startDeletingBooking,
+    startLoadingBookings,
   };
 };
