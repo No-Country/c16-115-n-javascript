@@ -9,7 +9,6 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { ModalUpdate } from './ModalUpdate';
 import { useSelector } from 'react-redux';
 import { useEventStore } from '../../../../../hooks/useEventStore';
-import { updateEvent } from '../../../../../fetch/eventsAdmin';
 import { timeOutMessage } from '../../../../../utils/timeOutMessage';
 
 import clsx from 'clsx';
@@ -17,13 +16,13 @@ import clsx from 'clsx';
 
 
 
-export const UpdateEventName = ({ modalNameOpen, setModalNameOpen, setModalOpen, setSuccessUpdated }) => {
+export const UpdateEventName = ({ modalNameOpen, setModalNameOpen, setModalOpen }) => {
 
   const [errorMessage, setErrorMessage] = useState('')
   const [loading, setLoading] = useState(false)
 
   const { activeEvent } = useSelector((state) => state.event);
-  const { setActiveEvent } = useEventStore()
+  const { setActiveEvent, startEditEvent } = useEventStore()
 
   const {
     handleSubmit,
@@ -70,13 +69,10 @@ export const UpdateEventName = ({ modalNameOpen, setModalNameOpen, setModalOpen,
       }
       const formData = new FormData();
       formData.append("name", name);
-      const response = await updateEvent(formData, activeEvent.id)
-
+      const response = await startEditEvent(formData, activeEvent.id)
       if (response.ok) {
         setLoading(false)
         reset()
-        setSuccessUpdated(true)
-        window.location.reload()
         setModalNameOpen(false)
         setModalOpen(false)
         setActiveEvent(null)
@@ -137,5 +133,4 @@ UpdateEventName.propTypes = {
   modalNameOpen: PropTypes.bool,
   setModalNameOpen: PropTypes.func,
   setModalOpen: PropTypes.func,
-  setSuccessUpdated: PropTypes.func,
 }

@@ -9,7 +9,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { ModalUpdate } from './ModalUpdate';
 import { useSelector } from 'react-redux';
 import { useEventStore } from '@/hooks/useEventStore';
-import { updateEvent } from '@/fetch/eventsAdmin';
+
 import { timeOutMessage } from '@/utils/timeOutMessage';
 
 import clsx from 'clsx';
@@ -18,13 +18,13 @@ import { formateDateUpdate } from '@/utils/formateDate';
 
 
 
-export const UpdateEventDate = ({ modalDateOpen, setModalDateOpen, setModalOpen, setSuccessUpdated }) => {
+export const UpdateEventDate = ({ modalDateOpen, setModalDateOpen, setModalOpen }) => {
 
   const [errorMessage, setErrorMessage] = useState('')
   const [loading, setLoading] = useState(false)
 
   const { activeEvent } = useSelector((state) => state.event);
-  const { setActiveEvent } = useEventStore()
+  const { setActiveEvent, startEditEvent } = useEventStore()
 
   const {
     handleSubmit,
@@ -71,13 +71,10 @@ export const UpdateEventDate = ({ modalDateOpen, setModalDateOpen, setModalOpen,
       }
       const formData = new FormData();
       formData.append("date", date);
-      const response = await updateEvent(formData, activeEvent.id)
-      console.log(response);
+      const response = await startEditEvent(formData, activeEvent.id)
       if (response.ok) {
         setLoading(false)
         reset()
-        setSuccessUpdated(true)
-        window.location.reload()
         setModalDateOpen(false)
         setModalOpen(false)
         setActiveEvent(null)
@@ -136,5 +133,4 @@ UpdateEventDate.propTypes = {
   modalDateOpen: PropTypes.bool,
   setModalDateOpen: PropTypes.func,
   setModalOpen: PropTypes.func,
-  setSuccessUpdated: PropTypes.func,
 }

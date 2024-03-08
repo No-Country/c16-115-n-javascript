@@ -91,6 +91,8 @@ export const createNewEvent = async (
     cityGoogle,
     stateOrProvince,
     country,
+    ok,
+    message
   } = await useLocation(
     `${streetName} ${streetNumber}`,
     city,
@@ -98,11 +100,21 @@ export const createNewEvent = async (
     countryEvent
   );
 
+  if (!ok) {
+    return {
+      ok: false,
+      statusCode: 404,
+      message,
+    };
+  }
+
+
   const formateAddres =
     streetNumberGoogle === null
       ? `${streetNameGoogle} ${streetNumber}`
       : `${streetNameGoogle} ${streetNumberGoogle}`;
 
+  
   const result = await uploadImage(img);
   const image = result.secure_url;
   /* if(image){
@@ -132,6 +144,7 @@ export const createNewEvent = async (
     return {
       ok: false,
       message: "Error creating event",
+      statusCode: 500,
     };
   }
 };
@@ -148,27 +161,35 @@ export const updateEvent = async (
   countryEvent,
   img
 ) => {
-  const {
-    coordinates,
-    streetNameGoogle,
-    streetNumberGoogle,
-    cityGoogle,
-    stateOrProvince,
-    country,
-  } = await useLocation(
-    `${streetName} ${streetNumber}`,
-    city,
-    province,
-    countryEvent
-  );
+  
+  if (city || province || countryEvent || streetName) {
+    const locationResult = await useLocation(
+      `${streetName} ${streetNumber ? streetNumber : ''}`,
+      city,
+      province,
+      countryEvent
+    );
+    var {
+      coordinates,
+      streetNameGoogle,
+      streetNumberGoogle,
+      cityGoogle,
+      stateOrProvince,
+      country,
+    } = locationResult;
+  }
 
   const formateAddres =
     streetNumberGoogle === null
-      ? `${streetNameGoogle} ${streetNumber}`
+      ? `${streetNameGoogle} ${streetNumber ? streetNumber : ''}`
       : `${streetNameGoogle} ${streetNumberGoogle}`;
 
-  const result = await uploadImage(img);
-  const image = result.secure_url;
+  console.log(formateAddres);
+  let image;
+  if (img) {
+    const result = await uploadImage(img);
+    image = result.secure_url;
+  }
 
   try {
     const event = await Event.findByPk(eventId);

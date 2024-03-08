@@ -8,7 +8,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { ModalUpdate } from './ModalUpdate';
 import { useSelector } from 'react-redux';
 import { useEventStore } from '../../../../../hooks/useEventStore';
-import { updateEvent } from '../../../../../fetch/eventsAdmin';
+
 import { timeOutMessage } from '../../../../../utils/timeOutMessage';
 
 import clsx from 'clsx';
@@ -16,13 +16,13 @@ import clsx from 'clsx';
 
 
 
-export const UpdateEventCategory = ({ modalCategoryOpen, setModalCategoryOpen, setModalOpen, setSuccessUpdated }) => {
+export const UpdateEventCategory = ({ modalCategoryOpen, setModalCategoryOpen, setModalOpen }) => {
 
   const [errorMessage, setErrorMessage] = useState('')
   const [loading, setLoading] = useState(false)
 
   const { activeEvent } = useSelector((state) => state.event);
-  const { setActiveEvent } = useEventStore()
+  const { setActiveEvent, startEditEvent } = useEventStore()
 
   const {
     handleSubmit,
@@ -69,13 +69,10 @@ export const UpdateEventCategory = ({ modalCategoryOpen, setModalCategoryOpen, s
       }
       const formData = new FormData();
       formData.append("category", category);
-      const response = await updateEvent(formData, activeEvent.id)
-      console.log(response);
+      const response = await startEditEvent(formData, activeEvent.id)
       if (response.ok) {
         setLoading(false)
         reset()
-        setSuccessUpdated(true)
-        window.location.reload()
         setModalCategoryOpen(false)
         setModalOpen(false)
         setActiveEvent(null)
@@ -143,5 +140,4 @@ UpdateEventCategory.propTypes = {
   modalCategoryOpen: PropTypes.bool,
   setModalCategoryOpen: PropTypes.func,
   setModalOpen: PropTypes.func,
-  setSuccessUpdated: PropTypes.func,
 }

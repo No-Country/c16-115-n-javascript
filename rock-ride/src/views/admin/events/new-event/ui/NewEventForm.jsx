@@ -5,7 +5,8 @@ import { useDemographic } from "../../../../../hooks/useDemographic"
 import { yupResolver } from "@hookform/resolvers/yup";
 import { newEventSchema } from "../../../../../schemas/validationSchema";
 import { IoCloudUpload } from "react-icons/io5";
-import { createNewEvent } from "../../../../../fetch/eventsAdmin";
+// import { createNewEvent } from "../../../../../fetch/eventsAdmin";
+import { useEventStore } from "../../../../../hooks/useEventStore";
 
 
 
@@ -37,6 +38,9 @@ export const NewEventForm = () => {
     const provinceCode = JSON.parse(province).iso2;
     setSelectedProvince(provinceCode);
   }
+
+
+  const { startNewEvent } = useEventStore()
 
   const [errorMessage, setErrorMessage] = useState('')
   const [loading, setLoading] = useState(false)
@@ -103,7 +107,7 @@ export const NewEventForm = () => {
     console.log(Array.from(formData.entries()));
 
 
-    const result = await createNewEvent(formData)
+    const result = await startNewEvent(formData)
     console.log(result);
     if (!result.ok) {
       setErrorMessage(result.message)
