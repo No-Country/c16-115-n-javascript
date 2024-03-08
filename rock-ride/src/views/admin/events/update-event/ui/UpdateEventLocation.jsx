@@ -9,7 +9,6 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { ModalUpdate } from './ModalUpdate';
 import { useSelector } from 'react-redux';
 import { useEventStore } from '@/hooks/useEventStore';
-import { updateEvent } from '@/fetch/eventsAdmin';
 import { timeOutMessage } from '@/utils/timeOutMessage';
 import { useDemographic } from "@/hooks/useDemographic"
 
@@ -20,13 +19,13 @@ import clsx from 'clsx';
 
 
 
-export const UpdateEventLocation = ({ modalLocationOpen, setModalLocationOpen, setModalOpen, setSuccessUpdated }) => {
+export const UpdateEventLocation = ({ modalLocationOpen, setModalLocationOpen, setModalOpen }) => {
 
   const [errorMessage, setErrorMessage] = useState('')
   const [loading, setLoading] = useState(false)
 
   const { activeEvent } = useSelector((state) => state.event);
-  const { setActiveEvent } = useEventStore()
+  const { setActiveEvent, startEditEvent } = useEventStore()
 
   const {
     handleSubmit,
@@ -134,13 +133,10 @@ export const UpdateEventLocation = ({ modalLocationOpen, setModalLocationOpen, s
       formData.append('streetName', streetName);
       if (streetNumber) formData.append('streetNumber', streetNumber);
 
-      const response = await updateEvent(formData, activeEvent.id)
-      console.log(response);
+      const response = await startEditEvent(formData, activeEvent.id)
       if (response.ok) {
         setLoading(false)
         reset()
-        setSuccessUpdated(true)
-        window.location.reload()
         setModalLocationOpen(false)
         setModalOpen(false)
         setActiveEvent(null)
@@ -288,5 +284,4 @@ UpdateEventLocation.propTypes = {
   modalLocationOpen: PropTypes.bool,
   setModalLocationOpen: PropTypes.func,
   setModalOpen: PropTypes.func,
-  setSuccessUpdated: PropTypes.func,
 }

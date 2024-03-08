@@ -17,7 +17,7 @@ import clsx from 'clsx';
 
 
 
-export const CancelEvent = ({ modalCancelOpen, setModalCancelOpen, setModalOpen, setSuccessUpdated }) => {
+export const CancelEvent = ({ modalCancelOpen, setModalCancelOpen, setModalOpen }) => {
 
   // const [errorMessage, setErrorMessage] = useState('')
   const [loading, setLoading] = useState(false)
@@ -44,7 +44,6 @@ export const CancelEvent = ({ modalCancelOpen, setModalCancelOpen, setModalOpen,
       setLoading(false)
       setModalCancelOpen(false)
       setModalOpen(false)
-      setSuccessUpdated(true)
     }, 2000)
 
   }
@@ -79,5 +78,4 @@ CancelEvent.propTypes = {
   modalCancelOpen: PropTypes.bool,
   setModalCancelOpen: PropTypes.func,
   setModalOpen: PropTypes.func,
-  setSuccessUpdated: PropTypes.func,
 }

@@ -13,6 +13,7 @@ import { SideBarMenu } from "../sidebar-menu/SidebarMenu";
 import { useTripStore } from "../../hooks/useTripStore";
 import { useEventStore } from "../../hooks/useEventStore";
 import { useUsersStore } from "../../hooks/useUsersStore";
+import { scrollToTop } from "../../helpers/functions";
 
 
 const NavBar = () => {
@@ -88,15 +89,15 @@ const NavBar = () => {
           <div className=" sm:flex items-center hidden">
             <ul className="flex justify-center gap-10 font-semibold">
                 <li>
-                  <NavLink to="/about-us">Nosotros</NavLink>
+                  <NavLink to="/about-us" onClick={() => scrollToTop()}>Nosotros</NavLink>
                 </li>
               
                 <li>
-                  <NavLink to="/trips">Viajes</NavLink>
+                  <NavLink to="/trips" onClick={() => scrollToTop()}>Viajes</NavLink>
                 </li>
                            
                 <li>
-                  <NavLink to="/events">Eventos</NavLink> 
+                  <NavLink to="/events" onClick={() => scrollToTop()}>Eventos</NavLink> 
                 </li>         
             </ul>
           </div>

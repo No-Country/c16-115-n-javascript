@@ -9,7 +9,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { ModalUpdate } from './ModalUpdate';
 import { useSelector } from 'react-redux';
 import { useEventStore } from '../../../../../hooks/useEventStore';
-import { updateEvent } from '../../../../../fetch/eventsAdmin';
+
 import { timeOutMessage } from '../../../../../utils/timeOutMessage';
 
 import clsx from 'clsx';
@@ -17,13 +17,13 @@ import clsx from 'clsx';
 
 
 
-export const UpdateEventImage = ({ modalImageOpen, setModalImageOpen, setModalOpen, setSuccessUpdated }) => {
+export const UpdateEventImage = ({ modalImageOpen, setModalImageOpen, setModalOpen }) => {
 
   const [errorMessage, setErrorMessage] = useState('')
   const [loading, setLoading] = useState(false)
 
   const { activeEvent } = useSelector((state) => state.event);
-  const { setActiveEvent } = useEventStore()
+  const { setActiveEvent, startEditEvent } = useEventStore()
 
   const {
     handleSubmit,
@@ -79,12 +79,10 @@ export const UpdateEventImage = ({ modalImageOpen, setModalImageOpen, setModalOp
       }
       const formData = new FormData();
       formData.append("img", img[0]);
-      const response = await updateEvent(formData, activeEvent.id)
+      const response = await startEditEvent(formData, activeEvent.id)
       if (response.ok) {
         setLoading(false)
         reset()
-        setSuccessUpdated(true)
-        window.location.reload()
         setModalImageOpen(false)
         setModalOpen(false)
         setActiveEvent(null)
@@ -166,5 +164,4 @@ UpdateEventImage.propTypes = {
   modalImageOpen: PropTypes.bool,
   setModalImageOpen: PropTypes.func,
   setModalOpen: PropTypes.func,
-  setSuccessUpdated: PropTypes.func,
 }

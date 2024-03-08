@@ -26,22 +26,22 @@ export default function AdminEventsPage() {
   const [modalLocationOpen, setModalLocationOpen] = useState(false)
   const [modalCancelOpen, setModalCancelOpen] = useState(false)
 
-  const { setActiveEvent, startLoadingEvents } = useEventStore()
+  const { setActiveEvent } = useEventStore()
 
     const handleOpenModal = ( event ) => {
       setActiveEvent(event);
       setModalOpen(true);
   };
 
-  const [succcesUpdated, setSuccessUpdated] = useState(false)
+  // const [succcesUpdated, setSuccessUpdated] = useState(false)
 
 
   const { events, isLoadingEvents } = useSelector((state) => state.event);
 
-  if (succcesUpdated) {
+  // if (succcesUpdated) {
     
-    startLoadingEvents()
-  }
+  //   startLoadingEvents()
+  // }
 
   return (
     <div className="w-full max-w-[1200px] mx-auto h-screenContent mt-32">
@@ -147,7 +147,7 @@ export default function AdminEventsPage() {
                   >
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                       <Tooltip hasArrow label='Ver detalle' bg='gray.900'>
-                        <NavLink to={`/event/${event.id}`}>
+                        <NavLink to={`/event/${event.id}`} onClick={() => setActiveEvent(event)}>
 
                           <img
                             width={80}
@@ -201,42 +201,36 @@ export default function AdminEventsPage() {
         modalImageOpen={ modalImageOpen }
         setModalImageOpen={ setModalImageOpen }
         setModalOpen={ setModalOpen }
-        setSuccessUpdated={ setSuccessUpdated }
       /> 
 
       <UpdateEventName 
         modalNameOpen={ modalNameOpen } 
         setModalNameOpen={ setModalNameOpen} 
         setModalOpen={ setModalOpen} 
-        setSuccessUpdated={ setSuccessUpdated }
       />
 
       <UpdateEventCategory 
         modalCategoryOpen={ modalCategoryOpen }
         setModalCategoryOpen={ setModalCategoryOpen }
         setModalOpen={ setModalOpen }
-        setSuccessUpdated={ setSuccessUpdated }
       />
 
       <UpdateEventDate 
         modalDateOpen={ modalDateOpen }
         setModalDateOpen={ setModalDateOpen }
         setModalOpen={ setModalOpen }
-        setSuccessUpdated={ setSuccessUpdated }
       />
 
       <UpdateEventLocation 
         modalLocationOpen={ modalLocationOpen }
         setModalLocationOpen={ setModalLocationOpen }
         setModalOpen={ setModalOpen }
-        setSuccessUpdated={ setSuccessUpdated }
       />
 
       <CancelEvent 
         modalCancelOpen={ modalCancelOpen }
         setModalCancelOpen={ setModalCancelOpen }
         setModalOpen={ setModalOpen }
-        setSuccessUpdated={ setSuccessUpdated }
       />
     </div>
   );

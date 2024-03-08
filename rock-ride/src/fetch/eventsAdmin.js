@@ -23,6 +23,8 @@ export const getAllEvents = async () => {
 }
 
 export const createNewEvent = async (formData) => {
+
+  console.log(Array.from(formData.entries()));
   try {
     const response = await fetch(`${baseUrl}/events/create`, {
       // method: 'POST',
@@ -32,7 +34,7 @@ export const createNewEvent = async (formData) => {
       // },
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${localStorage.getItem('auth-token')}`
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
       },
       body: formData
     });

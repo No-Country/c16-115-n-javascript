@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux"
 import { driveRockApi } from "../api";
-import { onAddNewEvent, onDeleteEvent, onLoadEvents, onSetActiveEvent } from "../redux/features/eventSlice";
+import { onAddNewEvent, onDeleteEvent, onLoadEvents, onSetActiveEvent, onUpdateEvent } from "../redux/features/eventSlice";
 
 
 export const useEventStore = () => {
@@ -13,11 +13,26 @@ export const useEventStore = () => {
 
   const startNewEvent = async (event) => {
     try {
-      const { data } = await driveRockApi.post("/events", event);
-      dispatch(onAddNewEvent({ ...event, id: data.event.id }));
+      const { data } = await driveRockApi.post("/events/create", event);
+
+      dispatch(onAddNewEvent( data.event ));
+
+      return data
     } catch (error) {
       console.log(error);
       /* Swal.fire("Error al guardar", error.response.data.msg, "error"); */
+    }
+  };
+
+  const startEditEvent = async (dataEvent, id) => {
+    try {
+      const { data } = await driveRockApi.put(`/events/update/${id}`, dataEvent);
+      dispatch(onUpdateEvent( data.event ));
+
+      return data
+
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -52,6 +67,7 @@ export const useEventStore = () => {
 
     setActiveEvent,
     startNewEvent,
+    startEditEvent,
     startDeletingEvent,
     startLoadingEvents,
   };
