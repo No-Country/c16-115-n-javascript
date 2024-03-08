@@ -11,7 +11,7 @@ import {
 import PropTypes from 'prop-types';
 
 import { Divider } from "..";
-import { FaCircleUser } from "react-icons/fa6";
+
 import { NavLink } from "react-router-dom";
 import { IoCarOutline, IoLogOutOutline, IoMapOutline, IoPeopleOutline, IoPersonOutline } from "react-icons/io5";
 import { PiHeadset } from "react-icons/pi";
@@ -19,7 +19,8 @@ import { MdOutlineEvent } from "react-icons/md";
 import DriveRockIcon from '../../assets/imgs/icono-drive-rock.png'
 import { useUsersStore } from "../../hooks/useUsersStore";
 import { useAuthStore } from "../../hooks/useAuthStore";
-import { scrollToTop } from "../../helpers/functions";
+import { getSlugName, scrollToTop } from "../../helpers/functions";
+import { ProfileImg } from "../Ui/ProfileImg";
 
 export const SideBarMenu = ({ isOpen, onClose, userData }) => {
 
@@ -36,6 +37,9 @@ export const SideBarMenu = ({ isOpen, onClose, userData }) => {
     startLogout();
     onClose();
   }
+
+  const slugName = userData ? getSlugName(userData.fullName) : '';
+  
 
 
   return (
@@ -56,11 +60,11 @@ export const SideBarMenu = ({ isOpen, onClose, userData }) => {
 
           <DrawerHeader className="w-full">
             <div className="flex items-center gap-2 mt-4">
-              {
-                userData?.profileImg 
-                ? <img width={50} height={50} className="h-[3.rem] w-[3.5rem] rounded-full shadow-2xl" src={userData.profileImg} alt="profile-image" />
-                : <FaCircleUser className="h-[2rem] w-[2rem]" />
-              }
+              
+              <ProfileImg  
+                profileImg={userData?.profileImg}
+                medium
+              />
               <span>{userData?.fullName}</span>
             </div>
           </DrawerHeader>
@@ -69,7 +73,7 @@ export const SideBarMenu = ({ isOpen, onClose, userData }) => {
 
           <DrawerBody>
             <div className="flex flex-col gap-2 justify-start">
-              <NavLink to="/profile" onClick={handleClose} className='flex items-center gap-2'>
+              <NavLink to={`/profile/${ slugName }`} onClick={handleClose} className='flex items-center gap-2'>
                 <IoPersonOutline />
                 <p>Perfil</p>
               </NavLink>

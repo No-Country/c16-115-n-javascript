@@ -22,3 +22,5 @@ export const scrollToTopSmooth = () => {
   });
 };
 
+export const getSlugName = (name) => name.replace(/ /g, "-").toLowerCase();
+

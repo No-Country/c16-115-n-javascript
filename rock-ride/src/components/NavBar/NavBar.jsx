@@ -7,13 +7,14 @@ import { useScrollBgColor } from "@/hooks/useScrollBgColor";
 import clsx from "clsx";
 import { useAuthStore } from "../../hooks/useAuthStore";
 import { IoMenuOutline } from "react-icons/io5";
-import { FaCircleUser } from "react-icons/fa6";
 import { useDisclosure } from "@chakra-ui/react";
 import { SideBarMenu } from "../sidebar-menu/SidebarMenu";
 import { useTripStore } from "../../hooks/useTripStore";
 import { useEventStore } from "../../hooks/useEventStore";
 import { useUsersStore } from "../../hooks/useUsersStore";
 import { scrollToTop } from "../../helpers/functions";
+import { useBookingStore } from "../../hooks/useBookingStore";
+import { ProfileImg } from "../Ui/ProfileImg";
 
 
 const NavBar = () => {
@@ -26,6 +27,7 @@ const NavBar = () => {
   const { startLoadingTrips } = useTripStore();
   const { startLoadingEvents } = useEventStore();  
   const { startLoadingUsers } = useUsersStore()
+  const { startLoadingBookings } = useBookingStore()
 
   const [dataLoaded, setDataLoaded] = useState(false);
 
@@ -35,6 +37,7 @@ const NavBar = () => {
       startLoadingEvents();
       startLoadingTrips();
       startLoadingUsers();
+      startLoadingBookings();
       setDataLoaded(true);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -119,11 +122,10 @@ const NavBar = () => {
                   )}
               >
                 <IoMenuOutline className="h-[2rem] w-[2rem] text-slate-400" />
-                {
-                  currentUser.profileImg 
-                  ? <img width={50} height={50} className="h-[2rem] w-[2rem] rounded-full" src={currentUser.profileImg} alt="profile-image" />
-                  : <FaCircleUser className="h-[2rem] w-[2rem]" />
-                }
+                <ProfileImg 
+                  profileImg={currentUser.profileImg}
+                  small={ true }
+                />
                 
               </div>
             </div>
