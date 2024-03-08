@@ -19,6 +19,7 @@ import { MdOutlineEvent } from "react-icons/md";
 import DriveRockIcon from '../../assets/imgs/icono-drive-rock.png'
 import { useUsersStore } from "../../hooks/useUsersStore";
 import { useAuthStore } from "../../hooks/useAuthStore";
+import { scrollToTop } from "../../helpers/functions";
 
 export const SideBarMenu = ({ isOpen, onClose, userData }) => {
 
@@ -27,6 +28,7 @@ export const SideBarMenu = ({ isOpen, onClose, userData }) => {
 
   const handleClose = () => {
     setActiveUser(userData)
+    scrollToTop()
     onClose()
   }
 
@@ -84,21 +86,21 @@ export const SideBarMenu = ({ isOpen, onClose, userData }) => {
               <Divider spaceY="4" />
               <ul className=" w-[15rem] sm:flex-row sm:justify-between flex flex-col gap-2">
                   <li>
-                    <NavLink to="" className='flex items-center gap-[6px]'>
+                    <NavLink to="/about-us" className='flex items-center gap-[6px]' onClick={handleClose}>
                       <img height={17} width={17} src={DriveRockIcon} alt="icon-drive-rock" />
                       <p>Nosotros</p>
                     </NavLink>
                   </li>
                 
                   <li>
-                    <NavLink to="" className='flex items-center gap-2'>
+                    <NavLink to="/trips" className='flex items-center gap-2' onClick={handleClose}>
                       <IoMapOutline />
                       <p>Viajes</p>
                     </NavLink>
                   </li>
                             
                   <li>
-                    <NavLink to="" className='flex items-center gap-2'>
+                    <NavLink to="/events" className='flex items-center gap-2' onClick={handleClose}>
                       <MdOutlineEvent />
                       <p>Eventos</p>  
                     </NavLink> 
