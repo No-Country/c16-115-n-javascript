@@ -12,9 +12,7 @@ import { TripsPage } from "./nav-links/TripsPage";
 import { NavLink } from "react-router-dom";
 import { scrollToTop } from "../helpers/functions";
 
-
 export default function HomePage() {
-
   return (
     <div className="flex flex-col items-center ">
       <header className="w-full">
@@ -23,8 +21,7 @@ export default function HomePage() {
         >
           <div
             className={` w-[100%] backdrop-brightness-[1.4] bg-[#ffda8b]/[.13]  flex flex-col items-center h-[25rem]`}
-          >
-          </div>
+          ></div>
         </div>
         <div className="flex items-center absolute top-[21.5rem] w-[100%] justify-center z-0 ">
           <div className="flex items-center h-[7rem] rounded-full w-[90%] md:w-[75%] justify-center shadow-md bg-[#f0f0f0]">
@@ -41,7 +38,10 @@ export default function HomePage() {
             <h1 className="text-2xl md:text-[2.5rem] font-bold">
               Comparte Viajes, Vive la
             </h1>
-            <h1 className="text-2xl md:text-[2.5rem] text-[#18A0FB] font-bold ml-[0.5rem]"> Música</h1>
+            <h1 className="text-2xl md:text-[2.5rem] text-[#18A0FB] font-bold ml-[0.5rem]">
+              {" "}
+              Música
+            </h1>
           </div>
           <p className="text-[0.95rem]">
             ¡Creamos experiencias inolvidables! Hemos creado este espacio para
@@ -71,32 +71,33 @@ export default function HomePage() {
             content={"Convierte compañeros de viaje en amistades duraderas."}
           />
         </aside>
-
       </section>
 
-      <section className="flex justify-center  items-center w-[100%]">
-        <div className="flex flex-col justify-around items-start sm:w-[90%] w-[90%] h-[20rem]">
-          <h3 className="text-[1.5rem] font-bold">Rock</h3>
-          <div className="flex w-[105.5%]">
-            <Carousel />
-          </div>
-        </div>
-      </section>
-      <div className="flex justify-center  items-center w-[100%]">
-        <div className="flex flex-col justify-around items-start w-[90%] h-[20rem]">
-          <h3 className="text-[1.5rem] font-bold">Pop</h3>
-          <div className="flex w-[105.5%]">
-            <Carousel />
-          </div>
-        </div>
-      </div>
+      <Carousel category={"rock"} />
+      <Carousel category={"pop"} />
+      <Carousel category={"reggae"} />
+      <Carousel category={"metal"} />
+      <Carousel category={"punk"} />
+      <Carousel category={"jazz"} />
+      <Carousel category={"techno"} />
 
-        <NavLink to="/events" onClick={ scrollToTop } className="btn-primary w-fit mx-auto mt-2">Ver todos</NavLink>
+      <NavLink
+        to="/events"
+        onClick={scrollToTop}
+        className="btn-primary w-fit mx-auto mt-2"
+      >
+        Ver todos
+      </NavLink>
 
-      
       <div className="flex flex-col gap-0 pb-20">
-        <TripsPage tripsPerPage={ 6 } paginated={ false } />
-        <NavLink to="/trips" onClick={ scrollToTop } className="btn-primary w-fit mx-auto -translate-y-20">Ver todos</NavLink>
+        <TripsPage tripsPerPage={6} paginated={false} />
+        <NavLink
+          to="/trips"
+          onClick={scrollToTop}
+          className="btn-primary w-fit mx-auto -translate-y-20"
+        >
+          Ver todos
+        </NavLink>
       </div>
     </div>
   );
