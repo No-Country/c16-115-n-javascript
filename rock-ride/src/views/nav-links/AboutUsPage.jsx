@@ -105,7 +105,6 @@ export const AboutUsPage = () => {
             src={"/about.jpg"}
             alt="step"
           />
-          <div className="h-6 w-full flex bg-[#18A0FB] right-0 -bottom-3 absolute -z-10 -rotate-[2.5deg]"></div>
         </div>
       </div>
 
@@ -186,7 +185,7 @@ export const AboutUsPage = () => {
       </article>
 
       <article className="text-gray-600 body-font">
-        <div className="container px-5 pb-8 mx-auto flex items-center md:flex-row flex-col">
+        <div className="container px-5 pb-8 mx-auto flex items-center justify-center md:flex-row flex-col">
           <div className="flex flex-col text-center">
             <h2 className="text-sm text-[#18A0FB] tracking-widest font-medium title-font mb-1">
               Impulsado por

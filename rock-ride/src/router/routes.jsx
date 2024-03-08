@@ -17,6 +17,7 @@ import { EventsPage } from "../views/nav-links/EventsPage"
 import { TripsPage } from "../views/nav-links/TripsPage"
 import { AboutUsPage } from "../views/nav-links/AboutUsPage"
 import { useAuthStore } from "../hooks/useAuthStore"
+import { Footer } from "../components/Footer/Footer"
 
 
 
@@ -87,6 +88,7 @@ export default function Navigation() {
 
             <Route path="*" element={ <HomePage /> } />
           </Routes>
+      <Footer/>
     </>
   )
 }
