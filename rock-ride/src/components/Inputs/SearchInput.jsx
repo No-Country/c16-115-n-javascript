@@ -6,7 +6,7 @@ import { NavLink } from 'react-router-dom';
 
 const SearchInput = () => {
 
-  const { events, onSetActiveEvent } = useEventStore();
+  const { events, setActiveEvent } = useEventStore();
   const nameData = events.map((event) => event.name);
 
   console.log(nameData);
@@ -49,7 +49,7 @@ const SearchInput = () => {
     const event = findEvent(name)
 
     if (event) {
-      onSetActiveEvent(event)
+      setActiveEvent(event)
     }
     setError("No hay resultados")
     setTimeout(() => {
@@ -61,9 +61,12 @@ const SearchInput = () => {
     if(nameOption) {
       setName("")
       setNameOptions([])
-      onSetActiveEvent(events.find(event => event.name === nameOption))
+      setActiveEvent(events.find(event => event.name === nameOption))
     }
   }
+  
+
+
 
   return (
     <div className='relative flex justify-between items-center w-[100%] h-[5rem] shadow bg-white rounded-full px-[0.5rem]  '>
@@ -76,7 +79,7 @@ const SearchInput = () => {
         />
         <button 
           onClick={handleNameClick}
-          className='hidden sm: absolute right-4 sm:flex sm:w-[3rem] sm:h-[3rem] items-center justify-center text-white rounded-full bg-[#18A0FB] '>
+          className='hidden sm:absolute right-4 sm:flex sm:w-[3rem] sm:h-[3rem] items-center justify-center text-white rounded-full bg-[#18A0FB] '>
           <FaSearch />
         </button>
         {nameOptions.length > 0 && (

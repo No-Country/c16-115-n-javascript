@@ -16,17 +16,23 @@ export const HeaderProfile = ({ activeUser, userTripsAsOccupant, userTripsDriver
 
   const [isModalOpen, setModalOpen] = useState(false);
 
+  const [follow, setFllow] = useState(false)
+
   const handleOpenModal = () => {
     setModalOpen(true);
   };
+
+  const handleFollow = () => {
+    setFllow(!follow)
+  }
 
   return (
     <header className="flex mx-auto mb-2 w-full min-h-[200px] justify-center items-center jus gap-0 sm:gap-6 font-semibold">
 
       <div className="flex flex-col items-center gap-2 w-[35%] sm:w-[20%]">
-        <ProfileImg profileImg={ activeUser.profileImg } />
+        <ProfileImg profileImg={activeUser.profileImg} />
 
-     
+
       </div>
       <div className='flex flex-col-reverse sm:flex sm:flex-row w-[65%] sm:w-[80%] justify-between'>
         <div className="space-y-2 ">
@@ -63,15 +69,24 @@ export const HeaderProfile = ({ activeUser, userTripsAsOccupant, userTripsDriver
         </div>
         {
           !privateProfile
-            ?  (
-                <div className='flex justify-end my-4'>
-                  <Tooltip 
-                    hasArrow 
-                    label={`Sigue ${activeUser.fullName.split(' ').at(0)} para enterarte de sus viajes`} 
-                    bg='gray.500'>
-                    <button className='btn-follow h-fit '>Seguir</button>
-                  </Tooltip>
-                </div>
+            ? (
+              <div className='flex justify-end my-4'>
+                {
+                  !follow
+                    ? (
+                      <Tooltip
+                        hasArrow
+                        label={`Sigue ${activeUser.fullName.split(' ').at(0)} para enterarte de sus viajes`}
+                        bg='gray.500'>
+                        <button className='btn-follow h-fit' onClick={handleFollow}>{follow ? "Dejar de seguir " : "Seguir"}</button>
+                      </Tooltip>
+                    ) : (
+
+                      <button className='btn-follow h-fit' onClick={handleFollow}>{follow ? "Dejar de seguir " : "Seguir"}</button>
+
+                    )
+                }
+              </div>
             ) : (
               <div className='flex justify-end my-4'>
                 <button className="btn-secondary-small w-fit h-fit" onClick={handleOpenModal}>Editar perfil</button>
@@ -79,11 +94,11 @@ export const HeaderProfile = ({ activeUser, userTripsAsOccupant, userTripsDriver
             )
         }
 
-        <ModalUpdateUser 
+        <ModalUpdateUser
           isOpen={isModalOpen}
-          onClose={ () => setModalOpen(false) }
+          onClose={() => setModalOpen(false)}
         >
-          <UpdateUserForm isOpen={ isModalOpen } />
+          <UpdateUserForm isOpen={isModalOpen} />
         </ModalUpdateUser>
 
       </div>
