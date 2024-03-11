@@ -1,10 +1,5 @@
 
 
-
-// import { useFormStatus } from "react-dom";
-
-
-// import { IoInformationCircleSharp } from "react-icons/io5";
 import clsx from "clsx";
 import { useEffect, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
@@ -14,8 +9,9 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { FaRegEyeSlash } from "react-icons/fa";
 import { FaRegEye } from "react-icons/fa";
 
-import { loginSchema } from "../../../schemas/validationSchema";
-import { login } from "../../../fetch/auth";
+import { loginSchema } from "@/schemas/validationSchema";
+import { login } from "@/fetch/auth";
+import { useAuthStore } from "../../../hooks/useAuthStore";
 
 export const LoginForm = () => {
 
@@ -24,6 +20,8 @@ export const LoginForm = () => {
   const [loader, setLoader] = useState(false)
 
   const [saveLocalData, setSaveLocalData] = useState(false);
+
+  const {startLogin} = useAuthStore();
 
   const navigate = useNavigate()
 
@@ -60,7 +58,7 @@ export const LoginForm = () => {
 
   const onSubmit = async (data) => {
     setLoader(true)
-    // console.log(data);
+
     if (saveLocalData) {
       localStorage.setItem('email', JSON.stringify(data.email))
     } else {
@@ -68,12 +66,8 @@ export const LoginForm = () => {
       email !== undefined && localStorage.removeItem('email')
     }
     const result = await login(data)
-
-
-    console.log(result);
-
-    result.token && localStorage.setItem('auth-token', result.token)
-
+    
+    startLogin({email: data.email, password: data.password});
 
     setLoader(false)
 
@@ -89,10 +83,11 @@ export const LoginForm = () => {
       result.ok && navigate('/')
     }
 
+    
   }
 
   return (
-    <div className="w-[400px] max-w-[90%]">
+    <div className="w-[90%] max-w-[400px]">
       <form
         autoComplete="off"
         onSubmit={handleSubmit(onSubmit)}
@@ -156,8 +151,8 @@ export const LoginForm = () => {
           disabled={false}
         >Ingresar</button>
 
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
+        <div className="flex w-full items-center justify-between">
+          <div className="flex items-center sm:gap-2">
             <label
               className="relative flex cursor-pointer items-center rounded-full p-3"
               htmlFor="checkbox"
@@ -186,11 +181,11 @@ export const LoginForm = () => {
                 </svg>
               </div>
             </label>
-            <label htmlFor="driver" className="flex items-center gap-2">Recordar datos</label>
+            <label htmlFor="driver" className="flex items-center gap-2 text-xs sm:text-base">Recordar datos</label>
           </div>
           {/* divisor l ine */}
           <div className="flex items-center my-5">|</div>
-          <NavLink to="/auth/reset-password" className="text-md"> Olvidé mi contraseña</NavLink>
+          <NavLink to="/auth/reset-password" className="text-xs sm:text-base"> Olvidé mi contraseña</NavLink>
         </div>
 
         {/* divisor l ine */}

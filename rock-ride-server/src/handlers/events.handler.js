@@ -28,13 +28,13 @@ export const getEventByIdHandler = async (req, res) => {
   }
 
   try {
-    const event = await getEventById(eventId);
+    const {event, trips, tickets} = await getEventById(eventId);
 
     if (!event) {
       return res.status(404).json({ ok: false, message: "Event not found" });
     }
 
-    return res.status(200).json({ ok: true, event });
+    return res.status(200).json({ ok: true, event, trips, tickets });
   } catch (error) {
     console.error("Error in getEventByIdHandler:", error.message);
     return res
@@ -45,23 +45,25 @@ export const getEventByIdHandler = async (req, res) => {
 
 export const postEventHandler = async (req, res) => {
   const { name, date, category, streetName, streetNumber, city, province, country: countryEvent } = req.body;
+
   const { role: userRole } = req.user;
+  const  img  = req.files.img.tempFilePath;  
 
   if (userRole !== "admin")
     return res.status(401).json({ ok: false, message: "Unauthorized" });
 
-  if (!name || !category || !date || !streetName || !streetNumber || !city || !province || !countryEvent) {
+  if (!name || !category || !date || !streetName || !streetNumber || !city || !province || !countryEvent || !img) {
     return res
       .status(400)
       .json({ ok: false, message: "All fields are required" });
   }
 
   try {
-    const { ok, event, message } = await createNewEvent(
-      name, date, category, streetName, streetNumber, city, province, countryEvent
+    const { ok, event, message, statusCode } = await createNewEvent(
+      name, date, category, streetName, streetNumber, city, province, countryEvent, img
     );
-
-    res.status(201).json({ ok, event, message });
+    
+    res.status(statusCode).json({ ok, event, message });
   } catch (error) {
     console.error("Error in postEventHandler:", error.message);
     res.status(500).json({ ok: false, message: "Internal server error" });
@@ -72,6 +74,13 @@ export const putEventHandler = async (req, res) => {
   const eventId = req.params.id;
   const { role: userRole } = req.user;
 
+  let img;
+
+  if (req.files !== null){
+    img  = req.files.img.tempFilePath; 
+  }
+  
+
   if (userRole !== "admin")
     return res.status(401).json({ ok: false, message: "Unauthorized" });
 
@@ -81,27 +90,28 @@ export const putEventHandler = async (req, res) => {
       .json({ ok: false, message: "Invalid eventId format" });
   }
 
+
   const { name, date, category, streetName, streetNumber, city, province, country: countryEvent } = req.body;
-  if (!name || !category || !date || !streetName || !streetNumber || !city || !province || !countryEvent) {
-    return res
+  if (name || category || date || streetName || streetNumber || city || province || countryEvent  || img) {
+    try {
+      const { ok, event, statusCode, message } = await updateEvent(
+        eventId, name, date, category, streetName, streetNumber, city, province, countryEvent, img
+      );
+  
+  
+      return res.status(statusCode).json({ ok, event, message });
+  
+  
+    } catch (error) {
+      console.error("Error in putEventHandler:", error.message);
+      return res.status(500).json({ ok: false, message: "Internal server error" });
+    }
+    
+  }
+  return res
       .status(400)
       .json({ ok: false, message: "All fields are required" });
-  }
 
-  try {
-    const { ok, event } = await updateEvent(
-      eventId, name, date, category, streetName, streetNumber, city, province, countryEvent
-    );
-
-    if (ok) {
-      res.status(200).json({ ok, event });
-    } else {
-      res.status(404).json({ ok, message: "Event not found" });
-    }
-  } catch (error) {
-    console.error("Error in putEventHandler:", error.message);
-    res.status(500).json({ ok: false, message: "Internal server error" });
-  }
 };
 
 export const deleteEventHandler = async (req, res) => {
@@ -118,13 +128,9 @@ export const deleteEventHandler = async (req, res) => {
   }
 
   try {
-    const deletedEventCount = await deleteEvent(eventId);
+    const {ok, statusCode, message} = await deleteEvent(eventId);
 
-    if (deletedEventCount > 0) {
-      res.status(200).json({ ok: true, message: "Event deleted successfully" });
-    } else {
-      res.status(404).json({ ok: false, message: "Event not found" });
-    }
+    res.status(statusCode).json({ ok, message });
   } catch (error) {
     console.error("Error in deleteEventHandler:", error.message);
     res.status(500).json({ ok: false, message: "Internal server error" });

@@ -1,9 +1,6 @@
-
 import { Op } from "sequelize";
-import { User } from "../database.js";
+import { Booking, Ticket, Trip, User } from "../database.js";
 import { validate as validateUuid } from "uuid";
-
-
 
 export const getUserById = async (id) => {
   if (!validateUuid(id)) {
@@ -12,107 +9,122 @@ export const getUserById = async (id) => {
       .json({ ok: false, message: "Invalid eventId format" });
   }
 
-
   try {
-
     const user = await User.findByPk(id, {
       where: {
         deleted: false,
-      }
+      },
+      attributes: {
+        exclude: ['deleted','password', 'createdAt', 'updatedAt', 'code', 'emailVerified'],
+      },
     });
+
+    const bookings = await Booking.findAll({
+      where: { userId: id, status: { [Op.not]: "canceled" } },
+    });
+    const trips = await Trip.findAll({ where: { userId: id, deleted: false } });
+    const tickets = await Ticket.findAll({ where: { userId: id } });
+
     return {
       ok: true,
-      user
-    }
+      user,
+      bookings,
+      trips,
+      tickets,
+    };
   } catch (error) {
     console.log(error.message);
     return {
       ok: false,
-      message: 'Error fetching user',
-    }
+      message: "Error fetching user",
+    };
   }
-}
-
-
+};
 
 export const getUsers = async (name) => {
-
   try {
-
     if (name) {
       const users = await User.findAll({
         where: {
           deleted: false,
           fullName: {
-            [ Op.iLike ]: `%${ name.toLowerCase() }%` 
+            [Op.iLike]: `%${name.toLowerCase()}%`,
           }
-        }
-      })
+        },
+        attributes: {
+          exclude: ['deleted','password', 'createdAt', 'updatedAt', 'code', 'emailVerified'],
+        },
+      });
       if (!users.length) {
         return {
           ok: false,
-          message: "User not found"
-        } 
+          message: "User not found",
+        };
       } else {
-        console.log(users)
+  
         return {
           ok: true,
           users,
-        }
+        };
       }
     }
 
     const users = await User.findAll({
       where: {
         deleted: false,
-      }
+      },
+      attributes: {
+        exclude: ['deleted','password', 'createdAt', 'updatedAt', 'code', 'emailVerified'],
+      },
     });
-    return { 
-      ok: true, 
-      users 
-    };
+
+    
+    return {
+      ok: true,
+      users
+    }
   } catch (error) {
     console.log(error.message);
-    return { 
-      ok: false, 
-      message: "Internal server error" 
+    return {
+      ok: false,
+      message: "Internal server error",
     };
   }
-}
+};
 
-
-
-export const updateUser = async (id, userRole, { 
-  fullName, 
-  email, 
-  password, 
-  isDriver, 
-  plate, 
-  address, 
-  city, 
-  role, 
-  active, 
-  profileImg, 
-  carPhotos,
-  deleted
-}) => {
-
+export const updateUser = async (
+  id,
+  userRole,
+  {
+    fullName,
+    email,
+    password,
+    isDriver,
+    plate,
+    address,
+    city,
+    role,
+    active,
+    profileImg,
+    carPhotos,
+    deleted,
+  }
+) => {
   try {
     const user = await User.findByPk(id);
     if (!user) {
       return {
         ok: false,
-        message: "User not found"
-      }
+        message: "User not found",
+      };
     }
 
-    
-    if (userRole === 'user') {
-
+    if (userRole === "user") {
       if (role !== undefined || active !== undefined) {
         return {
           ok: false,
-          message: "Permission denied: Regular users cannot update role or active status."
+          message:
+            "Permission denied: Regular users cannot update role or active status.",
         };
       }
 
@@ -127,13 +139,12 @@ export const updateUser = async (id, userRole, {
           city,
           profileImg,
           carPhotos,
-          deleted
+          deleted,
         },
         {
           where: { id },
           returning: true,
         }
-        
       );
 
       if (rowsUpdated > 0) {
@@ -147,10 +158,9 @@ export const updateUser = async (id, userRole, {
           message: "User not found",
         };
       }
-
     }
 
-    if (userRole === 'admin') {
+    if (userRole === "admin") {
       const [rowsUpdated, [updatedUser]] = await User.update(
         {
           role,
@@ -161,19 +171,19 @@ export const updateUser = async (id, userRole, {
           address,
           city,
           profileImg,
-          carPhotos
+          carPhotos,
         },
         {
           where: { id },
           returning: true,
         }
-      )
+      );
 
       if (rowsUpdated > 0) {
         return {
           ok: true,
           event: updatedUser,
-          message: "User successfully updtaded"
+          message: "User successfully updtaded",
         };
       } else {
         return {
@@ -186,28 +196,25 @@ export const updateUser = async (id, userRole, {
     console.log(error.message);
     return {
       ok: false,
-      message: "Internal server error"
-    }
+      message: "Internal server error",
+    };
   }
-}
-
+};
 
 export const recoverAccount = async (email) => {
-
   try {
-    
     const user = await User.findOne({
       where: {
         email,
         deleted: true,
-      }
-    })
+      },
+    });
 
     if (!user) {
       return {
         ok: false,
-        message: "User not found"
-      }
+        message: "User not found",
+      };
     }
 
     user.deleted = false;
@@ -215,16 +222,13 @@ export const recoverAccount = async (email) => {
 
     return {
       ok: true,
-      message: "User successfully recovered"
-    }
-
+      message: "User successfully recovered",
+    };
   } catch (error) {
     console.log(error.message);
     return {
       ok: false,
-      message: "Internal server error"
-    }
-    
+      message: "Internal server error",
+    };
   }
-
-}
+};

@@ -1,10 +1,4 @@
 
-
-
-// import { useFormStatus } from "react-dom";
-
-
-// import { IoInformationCircleSharp } from "react-icons/io5";
 import clsx from "clsx";
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
@@ -16,7 +10,7 @@ import { FaRegEye } from "react-icons/fa";
 
 import { resetPasswordSchema } from "../../../schemas/validationSchema";
 import { resetPassword } from "../../../fetch/auth";
-// import { login } from "../../../fetch/auth";
+
 
 export const ResetPasswordForm = () => {
 
@@ -43,8 +37,6 @@ export const ResetPasswordForm = () => {
   });
 
   const { token } = useParams()
-
-  console.log(token);
 
 
 
@@ -153,7 +145,7 @@ export const ResetPasswordForm = () => {
               'btn-disabled': loader,
             })
           }
-          disabled={false}
+          disabled={loader}
         >Guardar contraseña nueva</button>
 
       </form>

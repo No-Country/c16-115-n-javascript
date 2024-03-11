@@ -1,22 +1,60 @@
-import React from "react";
+import { PropTypes } from 'prop-types';
 import { NavLink } from "react-router-dom";
+import { scrollToTop } from '../../helpers/functions';
+import { useSelector } from "react-redux";
 
-const EventCard = ({ Name = "Apple Worldwide", TripAmount = 10, id = 1 }) => {
+const EventCard = ({ event, setActiveEvent }) => {
+
+  const { trips } = useSelector((state) => state.trip);
+
+  const handleClick = (eventData) => {
+    setActiveEvent(eventData);
+    scrollToTop();
+  };
+
   return (
-    <div className=" bg-cover text-[#ffffff]  bg-center   bg-[url('/will-truettner-wcT778-M1WE-unsplash.jpg')]  h-[16rem] w-[95%] ">
+    <>
+      <NavLink 
+        className={"flex lg:hidden"} 
+        to={`/event/${event.id}`} 
+        onClick={ () => handleClick( event ) }
+      >
+        <div 
+          style={{backgroundImage: `url(${event.img})`}} 
+          className={` bg-cover text-[#ffffff] bg-center h-[13rem] sm:h-[16rem]  w-[100%] sm:w-[95%]`}
+        >
+          <div className="backdrop-brightness-75 flex flex-col justify-between w-[100%] py-[2rem] px-[3rem] h-[100%] bg-black/40">
+            <h3 className="text-[2rem] xl:text-[2.5rem] ">{event.name}</h3>
+            <div className="flex justify-between items-end">
+              <p className='text-2xl'>{event.city}</p>
+              <p className="text-[0.9rem]">{trips.filter((trip) => trip.eventId === event.id).length} viajes disponibles</p>
+            </div>
+          </div>
+        </div>
+      </NavLink>
+      <div style={{backgroundImage: `url(${event.img})`}} className={`hidden lg:flex bg-cover text-[#ffffff] h-[13rem] sm:h-[16rem] w-[100%] sm:w-[95%] `}>
         <div className="backdrop-brightness-75 flex flex-col justify-between w-[100%] py-[2rem] px-[3rem] h-[100%] bg-black/40">
-        <h3 className="text-[2.5rem] ">{Name}</h3>
-        <div className="flex justify-between items-end">
-          <NavLink to={`/event/${id}`}>
-            <button className="rounded-3xl bg-[#18A0FB] text-white h-[3rem] w-auto px-[2rem]">
-              Ver viajes
-            </button>
-          </NavLink>
-          <p className="text-[0.9rem]">{TripAmount} viajes disponibles</p>
+          <h3 className="text-[2.5rem] ">{event.name}</h3>
+          <div className="flex justify-between items-end">
+            <NavLink to={`/event/${event.id}`}>
+              <button className="rounded-3xl bg-[#18A0FB] hover:bg-blue-500 transition-colors text-white h-[3rem] w-auto px-[2rem]" onClick={() => handleClick(event)}>
+                Ver viajes
+              </button>
+            </NavLink>
+            <div>
+              <p className='text-2xl'>{event.city}</p>
+              <p className="text-[0.9rem]">{trips.filter((trip) => trip.eventId === event.id).length} viajes disponibles</p>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
 export default EventCard;
+
+EventCard.propTypes = {
+  event: PropTypes.object,
+  setActiveEvent: PropTypes.func,
+};

@@ -8,6 +8,8 @@ const googleMapsClient = new Client({ key: process.env.GOOGLE_MAPS_API_KEY })
 
 export const useLocation = async ( address, city, province, country ) => {
 
+
+
   const args = {
     params: {
       key: process.env.GOOGLE_MAPS_API_KEY,
@@ -15,10 +17,11 @@ export const useLocation = async ( address, city, province, country ) => {
     }
   };
 
+
   const response = await googleMapsClient.geocode(args)
+
   const location = response.data.results[0];
   
-  console.log(location);
 
 
 
@@ -35,10 +38,7 @@ export const useLocation = async ( address, city, province, country ) => {
       const coordinates = location.geometry.location;
       const stateOrProvince = extractStateFromGoogleResponse(location);
       const country = extractCountryFromGoogleResponse(location);
-      console.log("Address: ", address);
-      console.log("City: ", city);
-      console.log("Province: ", stateOrProvince);
-      console.log("Country: ", country);
+      
     
       return {
         ok: true,

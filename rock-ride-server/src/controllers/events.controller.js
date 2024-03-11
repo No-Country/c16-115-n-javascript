@@ -1,6 +1,8 @@
 import { Op } from "sequelize";
-import { Event } from "../database.js";
+import { Event, Trip } from "../database.js";
 import { useLocation } from "../helpers/useLocation.js";
+import { uploadImage } from "../../config/cloudinary.js";
+/* import { cleaner } from "../helpers/cleanerUploads.js"; */
 
 export const getEvents = async (name) => {
   try {
@@ -25,7 +27,11 @@ export const getEvents = async (name) => {
       }
     }
 
-    const events = await Event.findAll();
+    const events = await Event.findAll({
+      where: {
+        deleted: false,
+      }
+    });
     return {
       ok: true,
       events,
@@ -42,7 +48,25 @@ export const getEvents = async (name) => {
 export const getEventById = async (eventId) => {
   try {
     const event = await Event.findByPk(eventId);
-    return event;
+
+    const trips =  await Trip.findAll({ where: { eventId: eventId }})
+    if(!trips){
+      return {
+        ok: false,
+        message: "The user does not have a ticket",
+        statusCode: 404,
+      };
+    }
+    
+    const tickets =  await Trip.findAll({ where: { eventId: eventId }})
+    if(!tickets){
+      return {
+        ok: false,
+        message: "The user does not have a ticket",
+        statusCode: 404,
+      };
+    }
+    return {event, trips, tickets};
   } catch (error) {
     console.error("Error in getEventById:", error.message);
     throw new Error("Error fetching event by ID");
@@ -57,17 +81,18 @@ export const createNewEvent = async (
   streetNumber,
   city,
   province,
-  countryEvent
+  countryEvent,
+  img
 ) => {
   const {
-    ok,
-    message,
     coordinates,
     streetNameGoogle,
     streetNumberGoogle,
     cityGoogle,
     stateOrProvince,
     country,
+    ok,
+    message
   } = await useLocation(
     `${streetName} ${streetNumber}`,
     city,
@@ -75,12 +100,26 @@ export const createNewEvent = async (
     countryEvent
   );
 
-  if (!ok) return { ok, message };
+  if (!ok) {
+    return {
+      ok: false,
+      statusCode: 404,
+      message,
+    };
+  }
+
 
   const formateAddres =
     streetNumberGoogle === null
       ? `${streetNameGoogle} ${streetNumber}`
       : `${streetNameGoogle} ${streetNumberGoogle}`;
+
+  
+  const result = await uploadImage(img);
+  const image = result.secure_url;
+  /* if(image){
+        cleaner();
+      } */
 
   try {
     const event = await Event.create({
@@ -92,17 +131,20 @@ export const createNewEvent = async (
       city: cityGoogle,
       stateOrProvince,
       country,
+      img: image,
     });
 
     return {
       ok: true,
       event,
+      statusCode: 201,
     };
   } catch (error) {
     console.error("Error in createNewEvent:", error.message);
     return {
       ok: false,
       message: "Error creating event",
+      statusCode: 500,
     };
   }
 };
@@ -116,32 +158,49 @@ export const updateEvent = async (
   streetNumber,
   city,
   province,
-  countryEvent
+  countryEvent,
+  img
 ) => {
-  const {
-    ok,
-    message,
-    coordinates,
-    streetNameGoogle,
-    streetNumberGoogle,
-    cityGoogle,
-    stateOrProvince,
-    country,
-  } = await useLocation(
-    `${streetName} ${streetNumber}`,
-    city,
-    province,
-    countryEvent
-  );
-
-  if (!ok) return { ok, message };
+  
+  if (city || province || countryEvent || streetName) {
+    const locationResult = await useLocation(
+      `${streetName} ${streetNumber ? streetNumber : ''}`,
+      city,
+      province,
+      countryEvent
+    );
+    var {
+      coordinates,
+      streetNameGoogle,
+      streetNumberGoogle,
+      cityGoogle,
+      stateOrProvince,
+      country,
+    } = locationResult;
+  }
 
   const formateAddres =
     streetNumberGoogle === null
-      ? `${streetNameGoogle} ${streetNumber}`
+      ? `${streetNameGoogle} ${streetNumber ? streetNumber : ''}`
       : `${streetNameGoogle} ${streetNumberGoogle}`;
 
+  console.log(formateAddres);
+  let image;
+  if (img) {
+    const result = await uploadImage(img);
+    image = result.secure_url;
+  }
+
   try {
+    const event = await Event.findByPk(eventId);
+    if (!event || event.deleted) {
+      return {
+        ok: false,
+        message: "Event not found",
+        statusCode: 404,
+      };
+    }
+
     const [rowsUpdated, [updatedEvent]] = await Event.update(
       {
         name,
@@ -152,6 +211,7 @@ export const updateEvent = async (
         city: cityGoogle,
         stateOrProvince,
         country,
+        img: image,
       },
       {
         where: { id: eventId },
@@ -163,11 +223,13 @@ export const updateEvent = async (
       return {
         ok: true,
         event: updatedEvent,
+        statusCode: 200,
       };
     } else {
       return {
         ok: false,
         message: "Event not found",
+        statusCode: 404,
       };
     }
   } catch (error) {
@@ -175,17 +237,45 @@ export const updateEvent = async (
     return {
       ok: false,
       message: "Error updating event",
+      statusCode: 500,
     };
   }
 };
 
 export const deleteEvent = async (eventId) => {
   try {
-    const deletedEvent = await Event.destroy({
-      where: { id: eventId },
-    });
+    const event = await Event.findByPk(eventId);
+    if (!event || event.deleted) {
+      return {
+        ok: false,
+        message: "Event not found",
+        statusCode: 404,
+      };
+    }
+    
+    const [rowsUpdated, [deletedEvent]] = await Event.update(
+      {
+        deleted: true,
+      },
+      {
+        where: { id: eventId },
+        returning: true,
+      }
+    );
 
-    return deletedEvent;
+    if (rowsUpdated > 0) {
+      return {
+        ok: true,
+        message: "Event deleted",
+        statusCode: 200,
+      };
+    } else {
+      return {
+        ok: false,
+        message: "Event not found",
+        statusCode: 404,
+      };
+    }
   } catch (error) {
     console.error("Error in deleteEventById:", error.message);
     throw new Error("Error deleting event by ID");

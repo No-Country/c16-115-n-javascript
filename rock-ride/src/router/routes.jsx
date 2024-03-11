@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom"
+import {  Routes, Route, useLocation } from "react-router-dom"
 
 import ErrorVerifiedPage from "../views/error-verify/ErrorVerified"
 import PendingVerifiedPage from "../views/pending-verified/PendingVerified"
@@ -7,21 +7,88 @@ import InputEmailToResetPassword from "../views/reset-password/InputEmailToReset
 import HomePage from "../views/Home"
 import LoginPage from "../views/login/Login"
 import RegisterPage from "../views/register/Register"
+import AdminEventsPage from "../views/admin/events/AdminEvents"
+import { NavBar } from "../components"
+import NewEventPage from "../views/admin/events/new-event/NewEvent"
+import ProfilePage from "../views/profile/Profile"
+import DetailEventPage from "../views/user/events/detail-event/DetailEvent"
+import UsersPage from "../views/users/Users"
+import { EventsPage } from "../views/nav-links/EventsPage"
+import { TripsPage } from "../views/nav-links/TripsPage"
+import { AboutUsPage } from "../views/nav-links/AboutUsPage"
+import { useAuthStore } from "../hooks/useAuthStore"
+import { Footer } from "../components/Footer/Footer"
 
 
 
 export default function Navigation() {
+
+  const { status, user } = useAuthStore()
+  
+  const role = user.user && user.user.role 
+
+  const location = useLocation()
+
+  const showNavbar =
+  location.pathname !== "/auth/sign-in" &&
+  location.pathname !== "/auth/sign-up" &&
+  location.pathname !== "/auth/error-verified" &&
+  location.pathname !== "/auth/pending-verified" &&
+  !location.pathname.includes("/auth/reset-password");
+
+
+
   return (
-    <BrowserRouter>
-      <Routes>
-          <Route path="/" element={<HomePage />}/>
-          <Route path="/auth/reset-password" element={<InputEmailToResetPassword />}/>
-          <Route path="/auth/reset-password/:token" element={<ResetPassword />}/>
-          <Route path="/auth/sign-up" element={<RegisterPage />} />
-          <Route path="/auth/sign-in" element={<LoginPage />} />
-          <Route path="/error-verified" element={ <ErrorVerifiedPage /> } />
-          <Route path="/pending-verified" element={ <PendingVerifiedPage /> } />
-        </Routes>
-    </BrowserRouter>
+    <>
+
+    {
+      showNavbar && (
+        <NavBar />
+        )
+      }
+
+        <Routes>
+            <Route path="/" element={<HomePage />}/>
+            <Route path="/auth/reset-password" element={<InputEmailToResetPassword />}/>
+            <Route path="/auth/reset-password/:token" element={<ResetPassword />}/>
+            <Route path="/auth/sign-up" element={<RegisterPage />} />
+            <Route path="/auth/sign-in" element={<LoginPage />} />
+
+            <Route path="/auth/error-verified" element={ <ErrorVerifiedPage /> } />
+            <Route path="/auth/pending-verified" element={ <PendingVerifiedPage /> } />
+
+            <Route path="/event/:id" element={ <DetailEventPage/> } />
+            <Route path="/events" element={ <EventsPage/> } />
+            <Route path="/trips" element={ <TripsPage/> } />
+            <Route path="/about-us" element={ <AboutUsPage/> } />
+
+            {
+              status === 'authenticated' && 
+              <Route path="*" element={
+                <div className="pt-20">
+                  <Routes>
+  
+  
+                    {
+                      role === 'admin' && (
+                        <>
+                          <Route path="/admin/events" element={ <AdminEventsPage /> } />
+                          <Route path="/admin/event/new" element={ <NewEventPage /> } />
+                          <Route path="/admin/users" element={ <UsersPage /> } />
+                        </>
+                      )
+                    }
+  
+                    <Route path="/profile/:name" element={ <ProfilePage />} />
+                    <Route path="*" element={ <HomePage />} />
+                  </Routes>
+                </div>
+              }/>
+            }
+
+            <Route path="*" element={ <HomePage /> } />
+          </Routes>
+      <Footer/>
+    </>
   )
 }

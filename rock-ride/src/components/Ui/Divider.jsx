@@ -1,11 +1,26 @@
-import React from 'react'
+import clsx from 'clsx'
+import { PropTypes } from 'prop-types'
 
-const Divider = () => {
+
+export const Divider = ({ spaceY = '2', bold = false, bg = 'slate-400'}) => {
+
+
   return (
-    <div className='w-[100%]  border-solid border-[1px] border-t-[#D2D2D2] h-[1px]'>
-
-    </div>
+    <div className={
+      clsx(
+        `w-full border-solid bg-${ bg } my-${spaceY}`,
+        {
+          'h-1'  : bold,
+          'h-px' : !bold
+        }
+      )
+    }></div>
   )
 }
 
-export default Divider
+
+Divider.propTypes = {
+  spaceY: PropTypes.string,
+  bold: PropTypes.bool,
+  bg: PropTypes.string,
+}

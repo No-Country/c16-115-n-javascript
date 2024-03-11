@@ -47,8 +47,8 @@ export const getTripByIdHandler = async (req, res) => {
   }
 
   try {
-    const {trip, statusCode, message} = await getTripById(tripId);
-    return res.status(statusCode).json({ trip, message });
+    const {trip, statusCode, bookings, message} = await getTripById(tripId);
+    return res.status(statusCode).json({ trip, bookings, message });
   } catch (error) {
     console.error("Error in getTripByIdHandler:", error.message);
     return res
@@ -94,17 +94,17 @@ export const putTripHandler = async (req, res) => {
 };
 
 export const deleteTripHandler = async (req, res) => {
-  const eventId = req.params.id;
+  const tripId = req.params.id;
   const { role: userRole, id: userId } = req.user;
   
-  if (!validateUuid(eventId)) {
+  if (!validateUuid(tripId)) {
     return res
       .status(400)
-      .json({ ok: false, message: "Invalid eventId format" });
+      .json({ ok: false, message: "Invalid tripId format" });
   }
 
   try {
-    const {ok, message, statusCode} = await deleteTrip(eventId, userRole, userId);
+    const {ok, message, statusCode} = await deleteTrip(tripId, userRole, userId);
 
     res.status(statusCode).json({ ok, message });
   } catch (error) {
