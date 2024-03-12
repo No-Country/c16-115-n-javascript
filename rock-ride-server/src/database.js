@@ -5,17 +5,22 @@ import { EventModel } from "./models/Event.js"
 import { TripModel } from "./models/Trip.js"
 import { TicketModel } from "./models/Ticket.js"
 import { BookingModel } from "./models/Booking.js"
-
+import pg from 'pg';
 dotenv.config()
 
-// const { DB_USER, DB_PASSWORD, DB_HOST } = process.env
-
-// export const sequelize = new Sequelize(
-//   `postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/drive-rock`,
-//   { logging: false, native: false }
-// )
-
-const sequelize = new Sequelize(process.env.DATABASE_URL, { logging: false, native: false })
+const sequelize = new Sequelize(process.env.DATABASE_URL, {
+    logging: false,
+    native: false,
+    dialectModule: pg,
+    dialect: 'postgres',
+    dialectOptions: {
+      ssl: {
+        require: true,
+        rejectUnauthorized: false,
+      },
+    },
+  });
+  
 
 
 UserModel(sequelize)
