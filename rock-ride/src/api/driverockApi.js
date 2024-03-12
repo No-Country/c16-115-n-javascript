@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const driveRockApi = axios.create({
-    baseURL: "http://localhost:3001"
+    baseURL: "https://rock-ride-server-five.vercel.app"
 });
 
 driveRockApi.interceptors.request.use(config => {

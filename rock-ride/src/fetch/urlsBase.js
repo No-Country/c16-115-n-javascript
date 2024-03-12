@@ -1,6 +1,6 @@
 
-export const baseUrl = "http://localhost:3001"
+export const baseUrl = "https://rock-ride-server-five.vercel.app"
 
-export const authUrl = "http://localhost:3001/auth"
+export const authUrl = "https://rock-ride-server-five.vercel.app/auth"
 
 export const countriesUrl = "https://api.countrystatecity.in/v1/countries"
