@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { FaSearch } from "react-icons/fa";
 import { useEventStore } from '../../hooks/useEventStore';
 import { NavLink } from 'react-router-dom';
@@ -64,6 +64,28 @@ const SearchInput = () => {
       setActiveEvent(events.find(event => event.name === nameOption))
     }
   }
+
+
+  const componentRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      // Verificar si el clic ocurrió dentro del componente o en sus descendientes
+      if (componentRef.current && !componentRef.current.contains(event.target)) {
+        // Cerrar las opciones
+        setNameOptions([]);
+      }
+    };
+
+    // Agregar un event listener para clics en el documento
+    document.addEventListener("click", handleClickOutside);
+
+    // Limpiar el event listener cuando el componente se desmonta
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, []);
+
   
 
 
@@ -83,7 +105,7 @@ const SearchInput = () => {
           <FaSearch />
         </button>
         {nameOptions.length > 0 && (
-          <div className='absolute w-[90%] sm:[400px] bg-slate-100 border-2 border-slate-700 top-24'>
+          <div className='absolute w-[90%] sm:[400px] bg-slate-100 border-2 border-slate-700 top-24' ref={componentRef}>
             <ul className='list-none text-left'>
               {nameOptions.map((option, index) => {
                 return (
