@@ -50,7 +50,7 @@
 
 
 .btn-secondary {
-  @apply bg-gray-200 hover:bg-gray-300 text-black py-2 px-4 rounded transition-all shadow-md;
+  @apply bg-gray-200 hover:bg-gray-300 text-black py-[5px] px-[10px] text-sm sm:py-2 sm:px-4 sm:text-base rounded transition-all shadow-md;
 }
 
 .btn-secondary-small {
@@ -74,7 +74,7 @@
 }
 
 .btn-success-small {
-  @apply bg-green-600 hover:bg-red-700 text-white py-[5px] px-[10px] text-sm  transition-all rounded shadow-md;
+  @apply bg-green-600 hover:bg-green-700 text-white py-[5px] px-[10px] text-sm  transition-all rounded shadow-md;
 }
 .btn-danger-disabled {
   @apply bg-gray-300 text-gray-200 py-2 px-4;

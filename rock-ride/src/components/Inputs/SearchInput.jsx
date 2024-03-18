@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { FaSearch } from "react-icons/fa";
 import { useEventStore } from '../../hooks/useEventStore';
 import { NavLink } from 'react-router-dom';
+import { scrollToTop } from '../../helpers/functions';
 
 
 const SearchInput = () => {
@@ -9,7 +10,6 @@ const SearchInput = () => {
   const { events, setActiveEvent } = useEventStore();
   const nameData = events.map((event) => event.name);
 
-  console.log(nameData);
 
   const [name, setName] = useState("");
   const [nameOptions, setNameOptions] = useState([]);
@@ -59,6 +59,7 @@ const SearchInput = () => {
 
   const handleSearchClick = (nameOption) => {
     if(nameOption) {
+      scrollToTop()
       setName("")
       setNameOptions([])
       setActiveEvent(events.find(event => event.name === nameOption))
@@ -105,13 +106,13 @@ const SearchInput = () => {
           <FaSearch />
         </button>
         {nameOptions.length > 0 && (
-          <div className='absolute w-[90%] sm:[400px] bg-slate-100 border-2 border-slate-700 top-24' ref={componentRef}>
+          <div className='absolute w-[100%] left-0 sm:w-[400px] bg-slate-50 border-[1px] border-slate-300 top-24 rounded-lg shadow-2xl' ref={componentRef}>
             <ul className='list-none text-left'>
               {nameOptions.map((option, index) => {
                 return (
-                  <NavLink to={`/event/${findEvent(option)?.id}`} key={index} onClick={() =>handleSearchClick(option)}>
+                  <NavLink onClick={() => handleSearchClick(option)} to={`/event/${findEvent(option)?.id}`} key={index}>
                     <li
-                      className='m-5 text-slate-900 cursor-pointer p-5 hover:bg-blue-300 transition-colors-all'
+                      className='text-xs sm:text-base text-slate-900 cursor-pointer p-2 sm:p-3 hover:bg-blue-300 transition-colors-all'
                     >
                       {option}
                     </li>

@@ -2,17 +2,19 @@ import { PropTypes } from 'prop-types'
 
 import { IoCarOutline, IoLocationOutline, IoMapOutline } from 'react-icons/io5'
 import { formateLocation } from '../../../utils/formateLocation';
-import { Tooltip } from '@chakra-ui/react';
+import { Tooltip, useToast } from '@chakra-ui/react';
 import { ProfileImg } from '../../../components/Ui/ProfileImg';
 import { ModalUpdateUser } from './ModalUpdateUser';
 import { useState } from 'react';
 import { UpdateUserForm } from './UpdateUserForm';
+import { useAuthStore } from '../../../hooks/useAuthStore';
 
 
 export const HeaderProfile = ({ activeUser, userTripsAsOccupant, userTripsDriver, privateProfile }) => {
 
-
+  const { status } = useAuthStore()
   const { country, stateOrProvince, city } = activeUser
+  const toast = useToast();
 
   const [isModalOpen, setModalOpen] = useState(false);
 
@@ -23,7 +25,16 @@ export const HeaderProfile = ({ activeUser, userTripsAsOccupant, userTripsDriver
   };
 
   const handleFollow = () => {
-    setFllow(!follow)
+   status === 'authenticated' 
+    ? setFllow(!follow)
+    : toast({
+      title: "Lo siento!",
+      description: "Debes ingresar con tu cuenta",
+      status: "info",
+      duration: 2000,
+      isClosable: true,
+      position: "top-right"
+    });
   }
 
   return (
@@ -94,12 +105,15 @@ export const HeaderProfile = ({ activeUser, userTripsAsOccupant, userTripsDriver
             )
         }
 
-        <ModalUpdateUser
-          isOpen={isModalOpen}
-          onClose={() => setModalOpen(false)}
-        >
-          <UpdateUserForm isOpen={isModalOpen} />
-        </ModalUpdateUser>
+        {
+          privateProfile &&
+            <ModalUpdateUser
+              isOpen={isModalOpen}
+              onClose={() => setModalOpen(false)}
+            >
+              <UpdateUserForm isOpen={isModalOpen} />
+            </ModalUpdateUser>
+        }
 
       </div>
     </header>
