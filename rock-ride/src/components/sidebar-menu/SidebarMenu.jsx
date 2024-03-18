@@ -13,7 +13,7 @@ import PropTypes from 'prop-types';
 import { Divider } from "..";
 
 import { NavLink } from "react-router-dom";
-import { IoCarOutline, IoLogOutOutline, IoMapOutline, IoPeopleOutline, IoPersonOutline } from "react-icons/io5";
+import { IoLogOutOutline, IoMapOutline, IoPeopleOutline, IoPersonOutline } from "react-icons/io5";
 import { PiHeadset } from "react-icons/pi";
 import { MdOutlineEvent } from "react-icons/md";
 import DriveRockIcon from '../../assets/imgs/icono-drive-rock.png'
@@ -77,10 +77,7 @@ export const SideBarMenu = ({ isOpen, onClose, userData }) => {
                 <IoPersonOutline />
                 <p>Perfil</p>
               </NavLink>
-              <NavLink to="/profile/trips" onClick={handleClose} className='flex items-center gap-2'>
-                <IoCarOutline />
-                <p>Mis viajes</p>
-              </NavLink>
+
               <NavLink to="" className='flex items-center gap-2'>
                 <PiHeadset />
                 <p>Soporte</p>

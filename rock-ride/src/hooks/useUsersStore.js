@@ -32,10 +32,15 @@ export const useUsersStore = () => {
   };
 
 
-  const startUpdateUser = async (id, data) => {
+  const startUpdateUser = async (id, formData) => {
+
+    console.log(id, console.log(Array.from(formData.entries())));
+
     try {
-      const user = await driveRockApi.put(`/users/${id}`, data);
-      dispatch(onUpdateUser(user));
+      const { data } = await driveRockApi.put(`/users/update/${id}`, formData);
+      dispatch(onUpdateUser(data.user));
+      console.log(data);
+      return data
     } catch (error) {
       console.log(error);
     }

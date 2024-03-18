@@ -46,12 +46,18 @@ export const UserBookings = ({ privateProfile, userBookings, activeUser }) => {
     return trips.find(trip => trip.id === tripId)
   }
 
+  
+
 
   const tripDriver = (tripId) => {
+  
     const trip = currentTrip(tripId)
-    const user = users.find(user => user.id === trip.userId)
-    return user
+    if (trip) {
+      const user = users.find(user => user.id === trip.userId)
+      return user
+    }
   }
+
 
 
   const status = (status) => {
@@ -74,7 +80,9 @@ export const UserBookings = ({ privateProfile, userBookings, activeUser }) => {
 
   const slugName = (tripId) => {
     const user = tripDriver(tripId)
-    return getSlugName(user.fullName)
+    if (user) {
+      return getSlugName(user.fullName)
+    }
   }
 
   return (

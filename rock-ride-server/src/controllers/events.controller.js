@@ -162,7 +162,7 @@ export const updateEvent = async (
   img
 ) => {
   
-  if (city || province || countryEvent || streetName) {
+  if (city && province && countryEvent && streetName) {
     const locationResult = await useLocation(
       `${streetName} ${streetNumber ? streetNumber : ''}`,
       city,

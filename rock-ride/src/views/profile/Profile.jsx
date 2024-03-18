@@ -14,17 +14,16 @@ import { UserBookings } from "./ui/UserBookings";
 
 export default function ProfilePage() {
 
-  const { user, status } = useAuthStore();
+  const { user } = useAuthStore();
   const { activeUser } = useUsersStore()
   const { trips } = useTripStore()
   const { bookings } = useBookingStore(state => state.booking)
 
-
-  if (status !== 'authenticated') return
-
   const userData = user.user
 
-  const privateProfile = userData.id === activeUser.id;
+  let privateProfile;
+
+  if ( userData ) privateProfile = userData.id === activeUser.id ;
 
   // const { country, stateOrProvince, city } = userData
 

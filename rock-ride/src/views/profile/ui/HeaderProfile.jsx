@@ -2,22 +2,48 @@ import { PropTypes } from 'prop-types'
 
 import { IoCarOutline, IoLocationOutline, IoMapOutline } from 'react-icons/io5'
 import { formateLocation } from '../../../utils/formateLocation';
-import { Tooltip } from '@chakra-ui/react';
+import { Tooltip, useToast } from '@chakra-ui/react';
 import { ProfileImg } from '../../../components/Ui/ProfileImg';
+import { ModalUpdateUser } from './ModalUpdateUser';
+import { useState } from 'react';
+import { UpdateUserForm } from './UpdateUserForm';
+import { useAuthStore } from '../../../hooks/useAuthStore';
 
 
 export const HeaderProfile = ({ activeUser, userTripsAsOccupant, userTripsDriver, privateProfile }) => {
 
-
+  const { status } = useAuthStore()
   const { country, stateOrProvince, city } = activeUser
+  const toast = useToast();
+
+  const [isModalOpen, setModalOpen] = useState(false);
+
+  const [follow, setFllow] = useState(false)
+
+  const handleOpenModal = () => {
+    setModalOpen(true);
+  };
+
+  const handleFollow = () => {
+   status === 'authenticated' 
+    ? setFllow(!follow)
+    : toast({
+      title: "Lo siento!",
+      description: "Debes ingresar con tu cuenta",
+      status: "info",
+      duration: 2000,
+      isClosable: true,
+      position: "top-right"
+    });
+  }
 
   return (
     <header className="flex mx-auto mb-2 w-full min-h-[200px] justify-center items-center jus gap-0 sm:gap-6 font-semibold">
 
       <div className="flex flex-col items-center gap-2 w-[35%] sm:w-[20%]">
-        <ProfileImg profileImg={ activeUser.profileImg } />
+        <ProfileImg profileImg={activeUser.profileImg} />
 
-     
+
       </div>
       <div className='flex flex-col-reverse sm:flex sm:flex-row w-[65%] sm:w-[80%] justify-between'>
         <div className="space-y-2 ">
@@ -54,22 +80,40 @@ export const HeaderProfile = ({ activeUser, userTripsAsOccupant, userTripsDriver
         </div>
         {
           !privateProfile
-            ?  (
-                <div className='flex justify-end my-4'>
-                  <Tooltip 
-                    hasArrow 
-                    label={`Sigue ${activeUser.fullName.split(' ').at(0)} para enterarte de sus viajes`} 
-                    bg='gray.500'>
-                    <button className='btn-follow h-fit '>Seguir</button>
-                  </Tooltip>
-                </div>
+            ? (
+              <div className='flex justify-end my-4'>
+                {
+                  !follow
+                    ? (
+                      <Tooltip
+                        hasArrow
+                        label={`Sigue ${activeUser.fullName.split(' ').at(0)} para enterarte de sus viajes`}
+                        bg='gray.500'>
+                        <button className='btn-follow h-fit' onClick={handleFollow}>{follow ? "Dejar de seguir " : "Seguir"}</button>
+                      </Tooltip>
+                    ) : (
+
+                      <button className='btn-follow h-fit' onClick={handleFollow}>{follow ? "Dejar de seguir " : "Seguir"}</button>
+
+                    )
+                }
+              </div>
             ) : (
               <div className='flex justify-end my-4'>
-                <button className="btn-secondary-small w-fit h-fit">Editar perfil</button>
+                <button className="btn-secondary-small w-fit h-fit" onClick={handleOpenModal}>Editar perfil</button>
               </div>
             )
         }
 
+        {
+          privateProfile &&
+            <ModalUpdateUser
+              isOpen={isModalOpen}
+              onClose={() => setModalOpen(false)}
+            >
+              <UpdateUserForm isOpen={isModalOpen} />
+            </ModalUpdateUser>
+        }
 
       </div>
     </header>

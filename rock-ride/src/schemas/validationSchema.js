@@ -89,3 +89,31 @@ export const updateLocationEventSchema = yup.object().shape({
   streetName: yup.string().required('La calle es obligatoria'),
   streetNumber: yup.string(),
 })
+
+
+export const editUserInfoSchema = yup.object().shape({
+  fullName: yup.string()
+    .max(50, 'El nombre es muy largo'),
+  email: yup.string()
+    .email('El correo no es válido'),
+  country: yup.string(),
+  province: yup.string(),
+  city: yup.string(),
+  streetName: yup.string(),
+  streetNumber: yup.string(),
+  isDriver: yup.boolean(),
+  plate: yup.string().when( 'isDriver', {
+    is: (isDriver) => isDriver === true,
+    then:() => yup.string().required('La placa es obligatoria'),
+    otherwise: () => yup.string().nullable()
+  } ),
+  password: yup.string(),
+  favoriteArtists: yup.array(),
+  favoriteSong: yup.string().nullable(),
+})
+
+export const addCarPhotos = yup.object().shape({
+  carPhotos: yup.array({
+    type: yup.mixed(),
+  }),
+})

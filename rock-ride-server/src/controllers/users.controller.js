@@ -1,6 +1,7 @@
 import { Op } from "sequelize";
 import { Booking, Ticket, Trip, User } from "../database.js";
 import { validate as validateUuid } from "uuid";
+import { useLocation } from "../helpers/useLocation.js";
 
 export const getUserById = async (id) => {
   if (!validateUuid(id)) {
@@ -101,32 +102,84 @@ export const updateUser = async (
     password,
     isDriver,
     plate,
-    address,
-    city,
+    countryUser,
+    province,
+    city, 
+    streetName,
+    streetNumber,
     role,
     active,
     profileImg,
     carPhotos,
+    favoriteArtists,
+    favoriteSong,
     deleted,
   }
 ) => {
+
   try {
-    const user = await User.findByPk(id);
-    if (!user) {
+
+
+  const user = await User.findByPk(id);
+  
+  if (!user) {
+    return {
+      ok: false,
+      message: "User not found",
+    };
+  }
+  console.log("____________COUNTRY, PROVINCE, ADRDRES____________");
+  console.log({ countryUser, province, city, streetName, streetNumber });
+
+
+
+
+  if (city || province || countryUser || streetName) {
+    const locationResult = await useLocation(
+      `${streetName} ${streetNumber ? streetNumber : ''}`,
+      city ? city : user.city,
+      province ? province : user.stateOrProvince,
+      countryUser ? countryUser : user.country,
+    );
+    var {
+      coordinates,
+      streetNameGoogle,
+      streetNumberGoogle,
+      cityGoogle,
+      stateOrProvince,
+      country,
+    } = locationResult;
+  }
+
+  console.log(user.address);
+
+  console.log(streetNumberGoogle);
+  const formateAddres =
+    streetNumberGoogle === null
+      ? `${streetNameGoogle} ${streetNumber ? streetNumber : user.address.split(' ').reverse().at(0)}`
+      : `${streetNameGoogle} ${streetNumberGoogle}`;
+
+
+  console.log("FORMATE ADRRESS______________");
+  console.log(formateAddres);
+
+  // console.log(formateAddres);
+
+
+
+
+    if (role !== undefined || active !== undefined) {
       return {
         ok: false,
-        message: "User not found",
+        message:
+          "Permission denied: Regular users cannot update role or active status.",
       };
     }
 
+    const parsedFavoriteArtists = favoriteArtists ? JSON.parse(favoriteArtists) : null;
+
+
     if (userRole === "user") {
-      if (role !== undefined || active !== undefined) {
-        return {
-          ok: false,
-          message:
-            "Permission denied: Regular users cannot update role or active status.",
-        };
-      }
 
       const [rowsUpdated, [updatedUser]] = await User.update(
         {
@@ -135,10 +188,15 @@ export const updateUser = async (
           password,
           isDriver,
           plate,
-          address,
-          city,
+          address: formateAddres,
+          location: coordinates,
+          city: cityGoogle,
+          stateOrProvince,
+          country, 
           profileImg,
           carPhotos,
+          favoriteArtists: parsedFavoriteArtists,
+          favoriteSong,
           deleted,
         },
         {
@@ -146,6 +204,8 @@ export const updateUser = async (
           returning: true,
         }
       );
+
+      console.log(rowsUpdated, updateUser);
 
       if (rowsUpdated > 0) {
         return {
@@ -168,10 +228,18 @@ export const updateUser = async (
           fullName,
           email,
           password,
-          address,
-          city,
+          isDriver,
+          plate,
+          address: formateAddres,
+          location: coordinates,
+          city: cityGoogle,
+          stateOrProvince,
+          country, 
           profileImg,
           carPhotos,
+          favoriteArtists: parsedFavoriteArtists,
+          favoriteSong,
+          deleted,
         },
         {
           where: { id },
@@ -182,7 +250,7 @@ export const updateUser = async (
       if (rowsUpdated > 0) {
         return {
           ok: true,
-          event: updatedUser,
+          user: updatedUser,
           message: "User successfully updtaded",
         };
       } else {
