@@ -26,6 +26,9 @@ export default function DetailEventPage() {
     return getSlugName(user.fullName)
   }
 
+  if (!activeEvent) return <h1>Loading...</h1>
+
+
   return (
     <section className="text-gray-600 body-font pt-[5rem]">
       <div

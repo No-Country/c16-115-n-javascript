@@ -2,18 +2,29 @@
 import { PropTypes } from 'prop-types'
 
 import { useSelector } from "react-redux"
+import { useToast } from '@chakra-ui/react';
+
 import { Pagination } from '../../../components/Ui/Pagination';
 import { usePagination } from '../../../hooks/usePagination';
 import { formateDate } from '../../../utils/formateDate';
 import { useBookingStore } from '../../../hooks/useBookingStore';
+import { useAuthStore } from '../../../hooks/useAuthStore';
+import { useState } from 'react';
+import { ModalBooking } from '../../user/ui/MoalBooking';
+import { useTripStore } from '../../../hooks/useTripStore';
+import { useEventStore } from '../../../hooks/useEventStore';
 
 
 
 export const UserTrips = ({ privateProfile, userTripsDriver, activeUser }) => {
 
+  const toast = useToast()
+
   const { events } = useSelector( state => state.event )
   const { bookings } = useBookingStore( state => state.booking )
-
+  const { status } = useAuthStore();
+  const { setActiveTrip } = useTripStore();
+  const { setActiveEvent } = useEventStore();
 
   const currentBokings = (tripId) => {
     return bookings.filter( booking => booking.tripId === tripId )
@@ -29,12 +40,42 @@ export const UserTrips = ({ privateProfile, userTripsDriver, activeUser }) => {
     totalPages 
   } = usePagination( userTripsDriver.length, itemsPerPage )
 
+  const [showNewBooking, setShowNewBooking] = useState(false)
+  const [trip, setTrip] = useState(null)
+  const [event, setEvent] = useState(null)
+
 
   const paginatedUserTripsDriver = userTripsDriver.slice( startIndex, endIndex );
 
 
   const currentEvent = ( eventId ) => {
     return events.find( event => event.id === eventId )
+  }
+
+  const handleNewBooking = (trip) => {
+
+    
+    if (status === 'authenticated' ){
+
+    const tripFind = userTripsDriver.find( tripFind => tripFind.id === trip.id )
+    setTrip(tripFind)
+    const event = currentEvent(trip.eventId)
+    setEvent(event)
+    
+    setActiveTrip(tripFind)
+    setActiveEvent(event)
+    setShowNewBooking(true)
+
+    } else {
+      toast({
+        title: "Lo siento!",
+        description: "Debes ingresar con tu cuenta",
+        status: "info",
+        duration: 2000,
+        isClosable: true,
+        position: "top-right"
+      });
+    }
   }
 
 
@@ -85,7 +126,12 @@ export const UserTrips = ({ privateProfile, userTripsDriver, activeUser }) => {
                     }
                     {
                       !privateProfile && (
-                        <button className='flex text-sm sm:text-base mt-6 w-fit py-[2px] sm:py-1 px-[10px] sm:px-4 rounded-full text-white bg-green-600'>Reservar lugar</button>
+                        <button 
+                        onClick={() => handleNewBooking(trip)}
+                          className='flex text-sm sm:text-base mt-6 w-fit py-[2px] sm:py-1 px-[10px] sm:px-4 rounded-full text-white bg-green-600'
+                        >
+                          Reservar lugar
+                        </button>
                       )
                     }
                   </div>
@@ -103,6 +149,12 @@ export const UserTrips = ({ privateProfile, userTripsDriver, activeUser }) => {
 
             </div>)
         }
+        <ModalBooking 
+          trip={trip}
+          event={event}
+          isModalOpen={showNewBooking}
+          setModalOpen={setShowNewBooking}
+        />
 
         <Pagination 
           endIndex={ endIndex } 

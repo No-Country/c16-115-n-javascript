@@ -25,7 +25,7 @@ export default function HomePage() {
         </div>
         <div className="flex items-center absolute top-[21.5rem] w-[100%] justify-center z-0 ">
           <div className="flex items-center h-[7rem] rounded-full w-[90%] md:w-[75%] justify-center shadow-md bg-[#f0f0f0]">
-            <div className="w-[85%] md:w-[96%]">
+            <div className="w-[90%] md:w-[96%]">
               <SearchInput />
             </div>
           </div>

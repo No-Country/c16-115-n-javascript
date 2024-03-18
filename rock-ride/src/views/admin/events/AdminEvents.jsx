@@ -50,7 +50,7 @@ export default function AdminEventsPage() {
   }
 
   return (
-    <div className="w-full max-w-[1200px] mx-auto h-screenContent mt-32">
+    <div className="w-full max-w-[1200px] mx-auto min-h-screenContent mt-32">
 
       <div className="px-4 w-full">
         <NavLink to={-1} className="mb-4 flex items-center gap-2 hover:text-blue-500 transition-colors w-fit">

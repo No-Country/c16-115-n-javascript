@@ -4,7 +4,7 @@ import clsx from "clsx";
 import { useEffect } from "react";
 
 
-export const ModalUpdate = ({ isOpen, onClose, small = false, children }) => {
+export const ModalUpdateUser = ({ isOpen, onClose, small = false, children }) => {
 
   useEffect(() => {
     // Añadir la clase al body cuando el modal está abierto
@@ -21,8 +21,9 @@ export const ModalUpdate = ({ isOpen, onClose, small = false, children }) => {
     };
   }, [isOpen]);
 
+
   const modalClasses = isOpen ? "flex transition-all scale-100" : "scale-0";
-  const contentClasses = `bg-[#f0f0f0] relative rounded shadow-md flex flex-col relative overflow-hidden w-full sm:w-[600px] font-semibold`;
+  const contentClasses = `h-[95vh] bg-[#f0f0f0] relative rounded shadow-md flex flex-col relative overflow-hidden w-full sm:w-[600px] font-semibold`;
 
   return (
     <div
@@ -32,8 +33,8 @@ export const ModalUpdate = ({ isOpen, onClose, small = false, children }) => {
         clsx(
           contentClasses,
           {
-            'h-[350px] w-full sm:w-[500px]' : small,
-            'h-[500px] w-full sm:w-[600px]' : !small,
+            'w-full sm:w-[500px]' : small,
+            'w-full sm:w-[600px]' : !small,
           }
         )
       }>
@@ -50,7 +51,7 @@ export const ModalUpdate = ({ isOpen, onClose, small = false, children }) => {
     </div>
   )
 }
-ModalUpdate.propTypes = {
+ModalUpdateUser.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
   small: PropTypes.bool,

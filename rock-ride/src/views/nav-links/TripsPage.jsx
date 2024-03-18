@@ -1,7 +1,7 @@
 import { PropTypes } from 'prop-types';
 import { useSelector } from "react-redux";
 import moment from "moment";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import logo from "../../assets/imgs/drive-rock-v4.webp";
 import { useUsersStore } from "../../hooks/useUsersStore";
 import { NewBooking } from "../user/bookings/new-booking/NewBooking";
@@ -16,6 +16,8 @@ export const TripsPage = ({ tripsPerPage = 12, paginated = true }) => {
   const { users } = useSelector((state) => state.user);
   const { setActiveUser } = useUsersStore();
 
+  const navigate = useNavigate()
+
   const { startIndex, endIndex, currentPage, setCurrentPage, totalPages } = usePagination(trips.length, tripsPerPage)
   
   const paginatedTrips = trips.slice(startIndex, endIndex);
@@ -26,16 +28,28 @@ export const TripsPage = ({ tripsPerPage = 12, paginated = true }) => {
   }
 
 
-  const slugName = (userId) => {
-    const user = currentDriver(userId)
-    return getSlugName(user.fullName)
+  // const slugName = (userId) => {
+  //   const user = currentDriver(userId)
+  //   return getSlugName(user.fullName)
+  // }
+
+  const handleUserProfile = async (userId) => {
+
+    const userFind = currentDriver(userId)
+    console.log(userFind);
+    
+    if (userFind) {
+      const userName = userFind.fullName
+      const slug = getSlugName(userName)
+      setActiveUser(userFind)
+      navigate(`/profile/${slug}`)
+      scrollToTop()
+    }
   }
 
-  const handleUserProfile = (userId) => {
-
-    setActiveUser(currentDriver(userId))
-    scrollToTop()
-  }
+  if (!events || !trips) {
+    return
+  } 
   
   return (
     <div className="container px-5 py-[6rem] mx-auto">
@@ -72,16 +86,15 @@ export const TripsPage = ({ tripsPerPage = 12, paginated = true }) => {
                     }")`,
                   }}
                 ></div>
-                <Link
-                  className="text-gray-900 text-lg title-font font-medium"
-                  to={`/profile/${slugName(eventTrip.userId)}`}
+                <span
+                  className="text-gray-900 text-lg title-font font-medium cursor-pointer"
                   onClick={() => handleUserProfile(eventTrip.userId) } 
                 >
                   {
                     users.find((driver) => driver.id === eventTrip.userId)
                       ?.fullName
                   } 🚘
-                </Link>
+                </span>
               </div>
               <div className="flex flex-col mb-3">
                 <h2 className="text-gray-500 text-sm title-font font-medium">

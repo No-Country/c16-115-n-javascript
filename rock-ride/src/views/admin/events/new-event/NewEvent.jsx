@@ -7,7 +7,7 @@ import { NewEventForm } from "./ui/NewEventForm";
 
 export default function NewEventPage() {
   return (
-    <div className="w-full max-w-[1200px] mx-auto mt-16">
+    <div className="w-full max-w-[1200px] min-h-screenContent mx-auto mt-16">
       <div className="px-5 mb-4">
         <NavLink to={-1} className="mb-4 flex items-center gap-2 hover:text-blue-500 transition-colors w-fit">
           <IoPlayBack size={20} />
