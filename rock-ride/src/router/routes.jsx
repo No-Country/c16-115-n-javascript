@@ -1,4 +1,4 @@
-import {  Routes, Route, useLocation } from "react-router-dom"
+import { Routes, Route, useLocation, Navigate } from "react-router-dom"
 
 import ErrorVerifiedPage from "../views/error-verify/ErrorVerified"
 import PendingVerifiedPage from "../views/pending-verified/PendingVerified"
@@ -23,72 +23,75 @@ import { Footer } from "../components/Footer/Footer"
 
 export default function Navigation() {
 
-  const { status, user } = useAuthStore()
-  
-  const role = user.user && user.user.role 
+  const { user } = useAuthStore()
+
+  const role = user.user && user.user.role
 
   const location = useLocation()
 
   const showNavbar =
-  location.pathname !== "/auth/sign-in" &&
-  location.pathname !== "/auth/sign-up" &&
-  location.pathname !== "/auth/error-verified" &&
-  location.pathname !== "/auth/pending-verified" &&
-  !location.pathname.includes("/auth/reset-password");
+    location.pathname !== "/auth/sign-in" &&
+    location.pathname !== "/auth/sign-up" &&
+    location.pathname !== "/auth/error-verified" &&
+    location.pathname !== "/auth/pending-verified" &&
+    !location.pathname.includes("/auth/reset-password");
 
 
 
   return (
     <>
 
-    {
-      showNavbar && (
-        <NavBar />
+      {
+        showNavbar && (
+          <NavBar />
         )
       }
 
-        <Routes>
-            <Route path="/" element={<HomePage />}/>
-            <Route path="/auth/reset-password" element={<InputEmailToResetPassword />}/>
-            <Route path="/auth/reset-password/:token" element={<ResetPassword />}/>
-            <Route path="/auth/sign-up" element={<RegisterPage />} />
-            <Route path="/auth/sign-in" element={<LoginPage />} />
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/auth/reset-password" element={<InputEmailToResetPassword />} />
+        <Route path="/auth/reset-password/:token" element={<ResetPassword />} />
+        <Route path="/auth/sign-up" element={<RegisterPage />} />
+        <Route path="/auth/sign-in" element={<LoginPage />} />
 
-            <Route path="/auth/error-verified" element={ <ErrorVerifiedPage /> } />
-            <Route path="/auth/pending-verified" element={ <PendingVerifiedPage /> } />
+        <Route path="/auth/error-verified" element={<ErrorVerifiedPage />} />
+        <Route path="/auth/pending-verified" element={<PendingVerifiedPage />} />
 
-            <Route path="/event/:id" element={ <DetailEventPage/> } />
-            <Route path="/events" element={ <EventsPage/> } />
-            <Route path="/trips" element={ <TripsPage/> } />
-            <Route path="/about-us" element={ <AboutUsPage/> } />
+        <Route path="/event/:id" element={<DetailEventPage />} />
+        <Route path="/events" element={<EventsPage />} />
+        <Route path="/trips" element={<TripsPage />} />
+        <Route path="/about-us" element={<AboutUsPage />} />
 
-            {
-              status === 'authenticated' && 
-              <Route path="*" element={
-                <div className="pt-20">
-                  <Routes>
-  
-  
-                    {
-                      role === 'admin' && (
-                        <>
-                          <Route path="/admin/events" element={ <AdminEventsPage /> } />
-                          <Route path="/admin/event/new" element={ <NewEventPage /> } />
-                          <Route path="/admin/users" element={ <UsersPage /> } />
-                        </>
-                      )
-                    }
-  
-                    <Route path="/profile/:name" element={ <ProfilePage />} />
-                    <Route path="*" element={ <HomePage />} />
-                  </Routes>
-                </div>
-              }/>
-            }
+        <Route path="*" element={
+          <div className="pt-20">
+            <Routes>
 
-            <Route path="*" element={ <HomePage /> } />
-          </Routes>
-      <Footer/>
+              <Route path="/profile/:name" element={<ProfilePage />} />
+
+              {
+                role === 'admin' && (
+                  <>
+                    <Route path="/admin/events" element={<AdminEventsPage />} />
+                    <Route path="/admin/event/new" element={<NewEventPage />} />
+                    <Route path="/admin/users" element={<UsersPage />} />
+                  </>
+                )
+              }
+
+            </Routes>
+          </div>
+        } />
+
+
+
+        <Route path="*" element={<Navigate to='/' />} />
+      </Routes>
+      {
+        showNavbar && (
+          <Footer />
+        )
+      }
+      
     </>
   )
 }

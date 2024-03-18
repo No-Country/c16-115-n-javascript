@@ -1,9 +1,13 @@
+
 import { RegisterForm } from "./ui/RegisterForm";
 import logo from '@/assets/imgs/drive-rock-v4.webp'
+
+import { ArrowBack } from "../../components";
 
 export default function RegisterPage() {
   return (
     <div className="flex flex-col items-center min-h-screen pt-20 pb-20 gap-8 bg-slate-900">
+      <ArrowBack color="slate-200" />
       <div className="flex flex-col items-center justify-center gap-2 text-[#18A0FB] font-['monserrat']">
         <img 
           width={150} 

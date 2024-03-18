@@ -54,6 +54,7 @@ export const getUsersHandler = async (req, res) => {
 
 export const putUserHandler = async (req, res) => {
   const { id } = req.params;
+
   const { role: userRole } = req.user;
   console.log(userRole);
   const { 
@@ -62,14 +63,21 @@ export const putUserHandler = async (req, res) => {
     password, 
     isDriver, 
     plate, 
-    address, 
+    country,
+    province,
     city, 
+    streetName,
+    streetNumber, 
     role, 
     active, 
     profileImg, 
     carPhotos,
+    favoriteArtists,
+    favoriteSong,
     deleted
   } = req.body;
+
+  console.log({favoriteArtists, favoriteSong})
 
 
   try {
@@ -80,12 +88,17 @@ export const putUserHandler = async (req, res) => {
       password, 
       isDriver, 
       plate, 
-      address, 
+      countryUser: country,
+      province,
       city, 
+      streetName,
+      streetNumber, 
       role, 
       active, 
       profileImg, 
       carPhotos,
+      favoriteArtists,
+      favoriteSong,
       deleted
     });
 

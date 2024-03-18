@@ -1,10 +1,10 @@
 
 
-export function addressNameNumber(direccion) {
+export function getAddressNameNumber(direccion) {
   // Divide la dirección en dos partes usando el último espacio como separador
   const parts = direccion.split(/\s+/g).reverse();
   const streetNumber = parts[0];
-  const streetName = parts.slice(1).join(" ");
+  const streetName = parts.slice(1).reverse().join(" ");
 
   // Retorna un objeto con la calle y el número
   return {
