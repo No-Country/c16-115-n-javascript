@@ -4,7 +4,6 @@ import {
   DrawerBody,
   DrawerFooter,
   DrawerHeader,
-  DrawerOverlay,
   DrawerContent,
   DrawerCloseButton,
 } from "@chakra-ui/react";
@@ -28,9 +27,9 @@ export const SideBarMenu = ({ isOpen, onClose, userData }) => {
   const { startLogout } = useAuthStore();
 
   const handleClose = () => {
+    onClose()
     setActiveUser(userData)
     scrollToTop()
-    onClose()
   }
 
   const handleLogout = () => {
@@ -49,7 +48,7 @@ export const SideBarMenu = ({ isOpen, onClose, userData }) => {
         onClose={onClose}
         size="sm"
       >
-        <DrawerOverlay />
+        <div className="h-screen w-screen bg-[rgba(0,0,0,.3)] absolute top-0 z-10"></div>
         <DrawerContent className="p-2 sm:p-8" backgroundColor="#f2f2f2">
           <div className="flex items-center  justify-end">
             <DrawerCloseButton />
@@ -73,7 +72,7 @@ export const SideBarMenu = ({ isOpen, onClose, userData }) => {
 
           <DrawerBody>
             <div className="flex flex-col gap-2 justify-start">
-              <NavLink to={`/profile/${ slugName }`} onClick={handleClose} className='flex items-center gap-2'>
+              <NavLink onClick={handleClose} to={`/profile/${ slugName }`} className='flex items-center gap-2'>
                 <IoPersonOutline />
                 <p>Perfil</p>
               </NavLink>
@@ -129,7 +128,7 @@ export const SideBarMenu = ({ isOpen, onClose, userData }) => {
                     <MdOutlineEvent />
                     <p>Eventos</p>
                   </NavLink>
-                  <NavLink to="/admin/trips" onClick={onClose} className='flex items-center gap-2'>
+                  <NavLink to="/trips" onClick={onClose} className='flex items-center gap-2'>
                     <IoMapOutline />
                     <p>Viajes</p>
                   </NavLink>

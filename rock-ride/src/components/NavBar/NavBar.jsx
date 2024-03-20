@@ -160,7 +160,7 @@ const NavBar = () => {
                 "flex flex-col gap-4 items-center justify-center absolute right-0 -bottom-36", 
                 "bg-slate-50 text-slate-900 p-6 rounded-lg shadow-2xl border-[#18A0FB] border-[1px] translate-x-[150%] transition-transform",
                 {
-                  'translate-x-0': showOptions
+                  'translate-x-[0%]': showOptions
                 }  
               )
             

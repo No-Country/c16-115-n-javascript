@@ -11,3 +11,5 @@ export { default as InfoItem } from './Ui/InfoItem';
 export * from './sidebar-menu/SidebarMenu'
 export * from './Buttons/EditButton'
 export * from './Buttons/ArrowBack'
+export * from './Ui/WithMargin'
+export * from './Footer/Footer'
