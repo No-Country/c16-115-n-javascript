@@ -9,7 +9,7 @@ import { usePagination } from '../../hooks/usePagination';
 import { Pagination } from '../../components/Ui/Pagination';
 import { getSlugName, scrollToTop } from '../../helpers/functions';
 
-export const TripsPage = ({ tripsPerPage = 12, paginated = true }) => {
+export default function TripsPage({ tripsPerPage = 12, paginated = true }) {
   const { user } = useSelector((state) => state.auth);
   const { trips } = useSelector((state) => state.trip);
   const { events } = useSelector((state) => state.event);
@@ -139,10 +139,11 @@ export const TripsPage = ({ tripsPerPage = 12, paginated = true }) => {
       }
     </div>
   );
-};
+}
 
 
 TripsPage.propTypes = {
   tripsPerPage: PropTypes.number,
   paginated: PropTypes.bool,
 };
+

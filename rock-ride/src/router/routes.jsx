@@ -1,29 +1,30 @@
+import React from "react"
 import { Routes, Route, useLocation, Navigate } from "react-router-dom"
 
-import ErrorVerifiedPage from "../views/error-verify/ErrorVerified"
-import PendingVerifiedPage from "../views/pending-verified/PendingVerified"
-import ResetPassword from "../views/reset-password/ResetPassword"
-import InputEmailToResetPassword from "../views/reset-password/InputEmailToResetPassword"
-import HomePage from "../views/Home"
-import LoginPage from "../views/login/Login"
-import RegisterPage from "../views/register/Register"
-import AdminEventsPage from "../views/admin/events/AdminEvents"
-import { NavBar } from "../components"
-import NewEventPage from "../views/admin/events/new-event/NewEvent"
-import ProfilePage from "../views/profile/Profile"
-import DetailEventPage from "../views/user/events/detail-event/DetailEvent"
-import UsersPage from "../views/users/Users"
-import { EventsPage } from "../views/nav-links/EventsPage"
-import { TripsPage } from "../views/nav-links/TripsPage"
-import { AboutUsPage } from "../views/nav-links/AboutUsPage"
+import { NavBar, Footer, WithMargin, Spinner } from "../components"
 import { useAuthStore } from "../hooks/useAuthStore"
-import { Footer } from "../components/Footer/Footer"
+
+const ErrorVerifiedPage = React.lazy(() => import("../views/error-verify/ErrorVerified")) 
+const PendingVerifiedPage = React.lazy(() => import("../views/pending-verified/PendingVerified")) 
+const ResetPassword = React.lazy(() => import("../views/reset-password/ResetPassword"))
+const InputEmailToResetPassword = React.lazy(() => import("../views/reset-password/InputEmailToResetPassword")) 
+const HomePage = React.lazy(() => import("../views/Home")) 
+const LoginPage = React.lazy(() => import("../views/login/Login")) 
+const RegisterPage = React.lazy(() => import("../views/register/Register"))
+const AdminEventsPage = React.lazy(() => import("../views/admin/events/AdminEvents")) 
+const NewEventPage = React.lazy(() => import("../views/admin/events/new-event/NewEvent")) 
+const ProfilePage = React.lazy(() => import("../views/profile/Profile")) 
+const DetailEventPage = React.lazy(() => import("../views/user/events/detail-event/DetailEvent")) 
+const UsersPage = React.lazy(() => import("../views/users/Users"))
+const EventsPage = React.lazy(() => import("../views/nav-links/EventsPage")) 
+const TripsPage = React.lazy(() => import("../views/nav-links/TripsPage")) 
+const AboutUsPage = React.lazy(() => import("../views/nav-links/AboutUsPage")) 
 
 
 
 export default function Navigation() {
 
-  const { user } = useAuthStore()
+  const { user, status } = useAuthStore()
 
   const role = user.user && user.user.role
 
@@ -37,9 +38,15 @@ export default function Navigation() {
     !location.pathname.includes("/auth/reset-password");
 
 
-
   return (
-    <>
+    <React.Suspense
+      fallback={
+        <div className="flex flex-col gap-4 justify-center items-center h-screen w-screen">
+          Por favor espere...
+          <Spinner />
+        </div>
+      }
+    >
 
       {
         showNavbar && (
@@ -51,8 +58,16 @@ export default function Navigation() {
         <Route path="/" element={<HomePage />} />
         <Route path="/auth/reset-password" element={<InputEmailToResetPassword />} />
         <Route path="/auth/reset-password/:token" element={<ResetPassword />} />
-        <Route path="/auth/sign-up" element={<RegisterPage />} />
-        <Route path="/auth/sign-in" element={<LoginPage />} />
+        {
+          status !== 'authenticated' && (
+
+            <Route>
+              <Route path="/auth/sign-up" element={<RegisterPage />} />
+              <Route path="/auth/sign-in" element={<LoginPage />} />
+            </Route>
+          ) 
+        }
+        
 
         <Route path="/auth/error-verified" element={<ErrorVerifiedPage />} />
         <Route path="/auth/pending-verified" element={<PendingVerifiedPage />} />
@@ -62,29 +77,23 @@ export default function Navigation() {
         <Route path="/trips" element={<TripsPage />} />
         <Route path="/about-us" element={<AboutUsPage />} />
 
-        <Route path="*" element={
-          <div className="pt-20">
-            <Routes>
-
-              <Route path="/profile/:name" element={<ProfilePage />} />
-
-              {
-                role === 'admin' && (
-                  <>
-                    <Route path="/admin/events" element={<AdminEventsPage />} />
-                    <Route path="/admin/event/new" element={<NewEventPage />} />
-                    <Route path="/admin/users" element={<UsersPage />} />
-                  </>
-                )
-              }
-
-            </Routes>
-          </div>
-        } />
 
 
 
-        <Route path="*" element={<Navigate to='/' />} />
+        <Route path="/profile/:name" element={<WithMargin><ProfilePage /></WithMargin>} />
+
+        {
+          role === 'admin' && (
+            <>
+              <Route path="/admin/events" element={<WithMargin><AdminEventsPage /></WithMargin>} />
+              <Route path="/admin/event/new" element={<WithMargin><NewEventPage /></WithMargin>} />
+              <Route path="/admin/users" element={<WithMargin><UsersPage /></WithMargin>} />
+            </>
+          )
+        }
+
+
+        <Route path="*" element={<Navigate to='/' replace={true} />} />
       </Routes>
       {
         showNavbar && (
@@ -92,6 +101,6 @@ export default function Navigation() {
         )
       }
       
-    </>
+      </React.Suspense>
   )
 }
