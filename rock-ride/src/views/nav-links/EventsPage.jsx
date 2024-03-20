@@ -6,7 +6,7 @@ import { useEventStore } from "../../hooks/useEventStore";
 import { usePagination } from "../../hooks/usePagination";
 import { Pagination } from "../../components/Ui/Pagination";
 
-export const EventsPage = ({ tripsPerPage = 12, paginated = true }) => {
+export default function EventsPage({ tripsPerPage = 12, paginated = true }) {
   const { events } = useSelector((state) => state.event);
   const { trips } = useSelector((state) => state.trip);
   const { setActiveEvent } = useEventStore();
@@ -99,7 +99,7 @@ export const EventsPage = ({ tripsPerPage = 12, paginated = true }) => {
       )}
     </div>
   );
-};
+}
 
 EventsPage.propTypes = {
   tripsPerPage: PropTypes.number,
