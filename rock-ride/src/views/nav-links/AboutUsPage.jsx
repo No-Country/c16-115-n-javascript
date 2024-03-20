@@ -1,4 +1,8 @@
-export const AboutUsPage = () => {
+
+
+
+export default function AboutUsPage() {
+  
   return (
     <section className="text-gray-600 body-font px-2">
       <article className="container px-5 pt-32 pb-4 mx-auto">
@@ -202,4 +206,4 @@ export const AboutUsPage = () => {
       </article>
     </section>
   );
-};
+}

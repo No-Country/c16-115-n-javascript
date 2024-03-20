@@ -8,7 +8,7 @@ import {
 import { MdOutlineSavings } from "react-icons/md";
 import { IoPlayForward } from "react-icons/io5";
 import { FaUserFriends } from "react-icons/fa";
-import { TripsPage } from "./nav-links/TripsPage";
+import TripsPage from "./nav-links/TripsPage";
 import { NavLink } from "react-router-dom";
 import { scrollToTop } from "../helpers/functions";
 
